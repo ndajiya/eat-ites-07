@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -16,9 +17,11 @@ export const SimulatorHeader = ({ onSimulate }: SimulatorHeaderProps) => {
       className="space-y-6 px-4 sm:px-0"
     >
       <div className="text-center space-y-4">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Economic Simulator
-        </h1>
+        <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Economic Simulator
+          </h1>
+        </Link>
         <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
           Simulate market conditions and observe how agents react to changes in
           the economy.
