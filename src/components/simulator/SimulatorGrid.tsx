@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Agent, Commodity } from "@/types/simulator";
 
 interface SimulatorGridProps {
@@ -34,7 +35,7 @@ export const SimulatorGrid = ({
 }: SimulatorGridProps) => {
   return (
     <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 px-4 sm:px-0">
-      <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto">
+      <Card className="glass-card p-4 sm:p-6 space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-semibold">Agent Information</h2>
           <Dialog>
@@ -53,7 +54,7 @@ export const SimulatorGrid = ({
                   <Input
                     value={newAgent.name}
                     onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, name: e.target.value }))
+                      setNewAgent({ ...newAgent, name: e.target.value })
                     }
                   />
                 </div>
@@ -63,7 +64,7 @@ export const SimulatorGrid = ({
                     type="number"
                     value={newAgent.cash}
                     onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, cash: Number(e.target.value) }))
+                      setNewAgent({ ...newAgent, cash: Number(e.target.value) })
                     }
                   />
                 </div>
@@ -72,7 +73,7 @@ export const SimulatorGrid = ({
                   <Input
                     value={newAgent.class}
                     onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, class: e.target.value }))
+                      setNewAgent({ ...newAgent, class: e.target.value })
                     }
                   />
                 </div>
@@ -83,12 +84,14 @@ export const SimulatorGrid = ({
             </DialogContent>
           </Dialog>
         </div>
-        <div className="min-w-[300px]">
-          <AgentTable agents={agents} onAgentEdit={onAgentEdit} />
-        </div>
+        <ScrollArea className="w-full">
+          <div className="min-w-[600px]">
+            <AgentTable agents={agents} onAgentEdit={onAgentEdit} />
+          </div>
+        </ScrollArea>
       </Card>
 
-      <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto">
+      <Card className="glass-card p-4 sm:p-6 space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-semibold">Commodity Information</h2>
           <Dialog>
@@ -107,7 +110,7 @@ export const SimulatorGrid = ({
                   <Input
                     value={newCommodity.name}
                     onChange={(e) =>
-                      setNewCommodity((prev) => ({ ...prev, name: e.target.value }))
+                      setNewCommodity({ ...newCommodity, name: e.target.value })
                     }
                   />
                 </div>
@@ -117,10 +120,10 @@ export const SimulatorGrid = ({
                     type="number"
                     value={newCommodity.averagePrice}
                     onChange={(e) =>
-                      setNewCommodity((prev) => ({
-                        ...prev,
+                      setNewCommodity({
+                        ...newCommodity,
                         averagePrice: Number(e.target.value),
-                      }))
+                      })
                     }
                   />
                 </div>
@@ -131,9 +134,11 @@ export const SimulatorGrid = ({
             </DialogContent>
           </Dialog>
         </div>
-        <div className="min-w-[300px]">
-          <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
-        </div>
+        <ScrollArea className="w-full">
+          <div className="min-w-[600px]">
+            <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
+          </div>
+        </ScrollArea>
       </Card>
     </div>
   );
