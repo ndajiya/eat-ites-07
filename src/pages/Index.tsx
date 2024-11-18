@@ -26,8 +26,8 @@ const Index = () => {
   ]);
 
   const [commodities, setCommodities] = useState<Commodity[]>([
-    { name: "Commodity1", averagePrice: 50, priceTrend: "Up" },
-    { name: "Commodity2", averagePrice: 30, priceTrend: "Down" },
+    { name: "Commodity1", averagePrice: 50, priceTrend: "Up" as const },
+    { name: "Commodity2", averagePrice: 30, priceTrend: "Down" as const },
   ]);
 
   const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
@@ -56,10 +56,11 @@ const Index = () => {
 
     const updatedCommodities = commodities.map((commodity) => {
       const priceChange = Math.floor(Math.random() * 21) - 10;
+      const newPrice = commodity.averagePrice + priceChange;
       return {
         ...commodity,
-        averagePrice: commodity.averagePrice + priceChange,
-        priceTrend: priceChange >= 0 ? "Up" : "Down",
+        averagePrice: newPrice,
+        priceTrend: priceChange >= 0 ? ("Up" as const) : ("Down" as const),
       };
     });
 

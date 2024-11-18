@@ -32,6 +32,41 @@ export const SimulatorGrid = ({
   setNewAgent,
   setNewCommodity,
 }: SimulatorGridProps) => {
+  const handleAgentNameChange = (value: string) => {
+    setNewAgent({
+      ...newAgent,
+      name: value
+    });
+  };
+
+  const handleAgentCashChange = (value: number) => {
+    setNewAgent({
+      ...newAgent,
+      cash: value
+    });
+  };
+
+  const handleAgentClassChange = (value: string) => {
+    setNewAgent({
+      ...newAgent,
+      class: value
+    });
+  };
+
+  const handleCommodityNameChange = (value: string) => {
+    setNewCommodity({
+      ...newCommodity,
+      name: value
+    });
+  };
+
+  const handleCommodityPriceChange = (value: number) => {
+    setNewCommodity({
+      ...newCommodity,
+      averagePrice: value
+    });
+  };
+
   return (
     <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 px-4 sm:px-0">
       <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto">
@@ -52,9 +87,7 @@ export const SimulatorGrid = ({
                   <label>Name</label>
                   <Input
                     value={newAgent.name}
-                    onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, name: e.target.value }))
-                    }
+                    onChange={(e) => handleAgentNameChange(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -62,18 +95,14 @@ export const SimulatorGrid = ({
                   <Input
                     type="number"
                     value={newAgent.cash}
-                    onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, cash: Number(e.target.value) }))
-                    }
+                    onChange={(e) => handleAgentCashChange(Number(e.target.value))}
                   />
                 </div>
                 <div className="space-y-2">
                   <label>Class</label>
                   <Input
                     value={newAgent.class}
-                    onChange={(e) =>
-                      setNewAgent((prev) => ({ ...prev, class: e.target.value }))
-                    }
+                    onChange={(e) => handleAgentClassChange(e.target.value)}
                   />
                 </div>
                 <Button className="w-full" onClick={onAddAgent}>
@@ -106,9 +135,7 @@ export const SimulatorGrid = ({
                   <label>Name</label>
                   <Input
                     value={newCommodity.name}
-                    onChange={(e) =>
-                      setNewCommodity((prev) => ({ ...prev, name: e.target.value }))
-                    }
+                    onChange={(e) => handleCommodityNameChange(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -116,12 +143,7 @@ export const SimulatorGrid = ({
                   <Input
                     type="number"
                     value={newCommodity.averagePrice}
-                    onChange={(e) =>
-                      setNewCommodity((prev) => ({
-                        ...prev,
-                        averagePrice: Number(e.target.value),
-                      }))
-                    }
+                    onChange={(e) => handleCommodityPriceChange(Number(e.target.value))}
                   />
                 </div>
                 <Button className="w-full" onClick={onAddCommodity}>
