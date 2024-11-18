@@ -2,7 +2,21 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { SimulatorHeader } from "@/components/simulator/SimulatorHeader";
 import { SimulatorGrid } from "@/components/simulator/SimulatorGrid";
+import { StatsDashboard } from "@/components/simulator/StatsDashboard";
 import { Agent, Commodity } from "@/types/simulator";
+
+interface RoundData {
+  round: number;
+  agents: {
+    name: string;
+    cash: number;
+    difference: number;
+  }[];
+  commodities: {
+    name: string;
+    price: number;
+  }[];
+}
 
 const Index = () => {
   const { toast } = useToast();
@@ -16,6 +30,9 @@ const Index = () => {
     { name: "Commodity2", averagePrice: 30, priceTrend: "Down" },
   ]);
 
+  const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
+  const [currentRound, setCurrentRound] = useState(1);
+
   const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
     name: "",
     cash: 1000,
@@ -28,27 +45,42 @@ const Index = () => {
   });
 
   const simulateRound = () => {
-    setAgents((prevAgents) =>
-      prevAgents.map((agent) => {
-        const cashChange = Math.floor(Math.random() * 201) - 100;
-        return {
-          ...agent,
-          cash: agent.cash + cashChange,
-          lastRoundDifference: cashChange,
-        };
-      })
-    );
+    const updatedAgents = agents.map((agent) => {
+      const cashChange = Math.floor(Math.random() * 201) - 100;
+      return {
+        ...agent,
+        cash: agent.cash + cashChange,
+        lastRoundDifference: cashChange,
+      };
+    });
 
-    setCommodities((prevCommodities) =>
-      prevCommodities.map((commodity) => {
-        const priceChange = Math.floor(Math.random() * 21) - 10;
-        return {
-          ...commodity,
-          averagePrice: commodity.averagePrice + priceChange,
-          priceTrend: priceChange >= 0 ? "Up" : "Down",
-        };
-      })
-    );
+    const updatedCommodities = commodities.map((commodity) => {
+      const priceChange = Math.floor(Math.random() * 21) - 10;
+      return {
+        ...commodity,
+        averagePrice: commodity.averagePrice + priceChange,
+        priceTrend: priceChange >= 0 ? "Up" : "Down",
+      };
+    });
+
+    // Record round history
+    const roundData: RoundData = {
+      round: currentRound,
+      agents: updatedAgents.map(agent => ({
+        name: agent.name,
+        cash: agent.cash,
+        difference: agent.lastRoundDifference,
+      })),
+      commodities: updatedCommodities.map(commodity => ({
+        name: commodity.name,
+        price: commodity.averagePrice,
+      })),
+    };
+
+    setRoundsHistory(prev => [...prev, roundData]);
+    setCurrentRound(prev => prev + 1);
+    setAgents(updatedAgents);
+    setCommodities(updatedCommodities);
 
     toast({
       title: "Simulation Round Complete",
@@ -137,6 +169,13 @@ const Index = () => {
         setNewAgent={setNewAgent}
         setNewCommodity={setNewCommodity}
       />
+      {roundsHistory.length > 0 && (
+        <StatsDashboard
+          roundsHistory={roundsHistory}
+          agents={agents}
+          commodities={commodities}
+        />
+      )}
     </div>
   );
 };
