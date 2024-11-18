@@ -103,7 +103,7 @@ const Index = () => {
           <Button
             onClick={simulateRound}
             size="lg"
-            className="glass-card hover:bg-white/30 transition-all duration-300 text-lg font-semibold shadow-lg border-2 border-white/20 px-8 py-6 h-auto"
+            className="glass-card hover:bg-white/30 transition-all duration-300 text-lg font-semibold shadow-lg border-2 border-white/20 px-8 py-6 h-auto text-foreground"
           >
             <Play className="mr-2 h-5 w-5" />
             Simulate Round
