@@ -35,7 +35,7 @@ export const SimulatorGrid = ({
 }: SimulatorGridProps) => {
   return (
     <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 px-4 sm:px-0">
-      <Card className="glass-card p-4 sm:p-6 space-y-4">
+      <Card className="glass-card p-4 sm:p-6 space-y-4 max-w-full">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-semibold">Agent Information</h2>
           <Dialog>
@@ -84,14 +84,16 @@ export const SimulatorGrid = ({
             </DialogContent>
           </Dialog>
         </div>
-        <ScrollArea className="w-full">
-          <div className="min-w-[600px]">
-            <AgentTable agents={agents} onAgentEdit={onAgentEdit} />
-          </div>
-        </ScrollArea>
+        <div className="w-full overflow-hidden">
+          <ScrollArea className="w-full">
+            <div className="min-w-[600px] max-w-full">
+              <AgentTable agents={agents} onAgentEdit={onAgentEdit} />
+            </div>
+          </ScrollArea>
+        </div>
       </Card>
 
-      <Card className="glass-card p-4 sm:p-6 space-y-4">
+      <Card className="glass-card p-4 sm:p-6 space-y-4 max-w-full">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-semibold">Commodity Information</h2>
           <Dialog>
@@ -134,11 +136,13 @@ export const SimulatorGrid = ({
             </DialogContent>
           </Dialog>
         </div>
-        <ScrollArea className="w-full">
-          <div className="min-w-[600px]">
-            <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
-          </div>
-        </ScrollArea>
+        <div className="w-full overflow-hidden">
+          <ScrollArea className="w-full">
+            <div className="min-w-[600px] max-w-full">
+              <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
+            </div>
+          </ScrollArea>
+        </div>
       </Card>
     </div>
   );
