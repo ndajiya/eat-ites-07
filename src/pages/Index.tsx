@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ArrowDownRight, Play } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Play, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 interface Agent {
   name: string;
@@ -37,6 +39,9 @@ const Index = () => {
     { name: "Commodity1", averagePrice: 50, priceTrend: "Up" },
     { name: "Commodity2", averagePrice: 30, priceTrend: "Down" },
   ]);
+
+  const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
+  const [editingCommodity, setEditingCommodity] = useState<Commodity | null>(null);
 
   const simulateRound = () => {
     setAgents((prevAgents) =>
@@ -64,6 +69,28 @@ const Index = () => {
     toast({
       title: "Simulation Round Complete",
       description: "Market conditions have been updated.",
+    });
+  };
+
+  const handleAgentEdit = (updatedAgent: Agent) => {
+    setAgents(agents.map(agent => 
+      agent.name === updatedAgent.name ? updatedAgent : agent
+    ));
+    setEditingAgent(null);
+    toast({
+      title: "Agent Updated",
+      description: `${updatedAgent.name} has been updated successfully.`,
+    });
+  };
+
+  const handleCommodityEdit = (updatedCommodity: Commodity) => {
+    setCommodities(commodities.map(commodity => 
+      commodity.name === updatedCommodity.name ? updatedCommodity : commodity
+    ));
+    setEditingCommodity(null);
+    toast({
+      title: "Commodity Updated",
+      description: `${updatedCommodity.name} has been updated successfully.`,
     });
   };
 
@@ -106,6 +133,7 @@ const Index = () => {
                   <TableHead>Cash</TableHead>
                   <TableHead>Class</TableHead>
                   <TableHead>Last Round</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -121,8 +149,58 @@ const Index = () => {
                           : "text-red-500"
                       }
                     >
-                      {agent.lastRoundDifference >= 0 ? "+" : ""}
-                      ${agent.lastRoundDifference.toLocaleString()}
+                      {agent.lastRoundDifference >= 0 ? "+" : ""}$
+                      {agent.lastRoundDifference.toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      <Dialog open={editingAgent?.name === agent.name} onOpenChange={(open) => !open && setEditingAgent(null)}>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={() => setEditingAgent(agent)}>
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Edit Agent</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                              <label>Name</label>
+                              <Input
+                                value={editingAgent?.name}
+                                onChange={(e) =>
+                                  setEditingAgent(prev => prev ? { ...prev, name: e.target.value } : null)
+                                }
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label>Cash</label>
+                              <Input
+                                type="number"
+                                value={editingAgent?.cash}
+                                onChange={(e) =>
+                                  setEditingAgent(prev => prev ? { ...prev, cash: Number(e.target.value) } : null)
+                                }
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label>Class</label>
+                              <Input
+                                value={editingAgent?.class}
+                                onChange={(e) =>
+                                  setEditingAgent(prev => prev ? { ...prev, class: e.target.value } : null)
+                                }
+                              />
+                            </div>
+                            <Button 
+                              className="w-full" 
+                              onClick={() => editingAgent && handleAgentEdit(editingAgent)}
+                            >
+                              Save Changes
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -138,6 +216,7 @@ const Index = () => {
                   <TableHead>Commodity</TableHead>
                   <TableHead>Average Price</TableHead>
                   <TableHead>Price Trend</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -160,6 +239,47 @@ const Index = () => {
                         )}
                         {commodity.priceTrend}
                       </span>
+                    </TableCell>
+                    <TableCell>
+                      <Dialog open={editingCommodity?.name === commodity.name} onOpenChange={(open) => !open && setEditingCommodity(null)}>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={() => setEditingCommodity(commodity)}>
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Edit Commodity</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                              <label>Name</label>
+                              <Input
+                                value={editingCommodity?.name}
+                                onChange={(e) =>
+                                  setEditingCommodity(prev => prev ? { ...prev, name: e.target.value } : null)
+                                }
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label>Average Price</label>
+                              <Input
+                                type="number"
+                                value={editingCommodity?.averagePrice}
+                                onChange={(e) =>
+                                  setEditingCommodity(prev => prev ? { ...prev, averagePrice: Number(e.target.value) } : null)
+                                }
+                              />
+                            </div>
+                            <Button 
+                              className="w-full" 
+                              onClick={() => editingCommodity && handleCommodityEdit(editingCommodity)}
+                            >
+                              Save Changes
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 ))}
