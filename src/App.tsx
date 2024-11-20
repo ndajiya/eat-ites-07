@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Landing from "./pages/Landing";
 import Index from "./pages/Index";
+import TodoList from "./pages/TodoList";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/simulator" element={<Index />} />
+              <Route path="/todo" element={<TodoList />} />
             </Routes>
           </BrowserRouter>
         </div>
