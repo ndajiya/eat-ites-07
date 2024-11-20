@@ -2,15 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Edit2 } from "lucide-react";
+import { Edit2, BookOpen } from "lucide-react";
 import { useState } from "react";
-
-interface Agent {
-  name: string;
-  cash: number;
-  class: string;
-  lastRoundDifference: number;
-}
+import { Agent } from "@/types/simulator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface AgentTableProps {
   agents: Agent[];
@@ -19,6 +14,7 @@ interface AgentTableProps {
 
 export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
   const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
+  const [viewingLedger, setViewingLedger] = useState<Agent | null>(null);
 
   return (
     <Table>
@@ -47,7 +43,7 @@ export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
               {agent.lastRoundDifference >= 0 ? "+" : ""}$
               {agent.lastRoundDifference.toLocaleString()}
             </TableCell>
-            <TableCell>
+            <TableCell className="space-x-2">
               <Dialog open={editingAgent?.name === agent.name} onOpenChange={(open) => !open && setEditingAgent(null)}>
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="icon" onClick={() => setEditingAgent(agent)}>
@@ -94,6 +90,67 @@ export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
                       Save Changes
                     </Button>
                   </div>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog open={viewingLedger?.name === agent.name} onOpenChange={(open) => !open && setViewingLedger(null)}>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={() => setViewingLedger(agent)}>
+                    <BookOpen className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>{agent.name}'s Ledger</DialogTitle>
+                  </DialogHeader>
+                  <ScrollArea className="h-[400px]">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-semibold mb-2">Account Balances</h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Account</TableHead>
+                              <TableHead>Balance</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {agent.bookkeeping.getAccountBalances().map(({ account, balance }) => (
+                              <TableRow key={account}>
+                                <TableCell>{account}</TableCell>
+                                <TableCell>${balance.toLocaleString()}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-2">Transaction History</h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Date</TableHead>
+                              <TableHead>Account</TableHead>
+                              <TableHead>Amount</TableHead>
+                              <TableHead>Type</TableHead>
+                              <TableHead>Description</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {agent.bookkeeping.getLedger().map((transaction, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{transaction.date}</TableCell>
+                                <TableCell>{transaction.account}</TableCell>
+                                <TableCell>${Math.abs(transaction.amount).toLocaleString()}</TableCell>
+                                <TableCell>{transaction.entryType}</TableCell>
+                                <TableCell>{transaction.description}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                  </ScrollArea>
                 </DialogContent>
               </Dialog>
             </TableCell>
