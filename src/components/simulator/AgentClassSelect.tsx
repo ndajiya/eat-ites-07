@@ -29,14 +29,14 @@ export const AgentClassSelect = ({ value, onChange }: AgentClassSelectProps) => 
           <Info className="h-4 w-4 cursor-help text-muted-foreground" />
         </HoverCardTrigger>
         <HoverCardContent className="w-80">
-          {value && AGENT_CLASSES[value] && (
+          {value && AGENT_CLASSES[value as keyof typeof AGENT_CLASSES] && (
             <div className="space-y-2">
-              <h4 className="font-semibold">{AGENT_CLASSES[value].name}</h4>
-              <p className="text-sm">{AGENT_CLASSES[value].description}</p>
+              <h4 className="font-semibold">{AGENT_CLASSES[value as keyof typeof AGENT_CLASSES].name}</h4>
+              <p className="text-sm">{AGENT_CLASSES[value as keyof typeof AGENT_CLASSES].description}</p>
               <div className="text-sm">
                 <strong>Roles:</strong>
                 <ul className="list-disc pl-4">
-                  {AGENT_CLASSES[value].roles.map((role, index) => (
+                  {AGENT_CLASSES[value as keyof typeof AGENT_CLASSES].roles.map((role, index) => (
                     <li key={index}>{role}</li>
                   ))}
                 </ul>
@@ -44,7 +44,7 @@ export const AgentClassSelect = ({ value, onChange }: AgentClassSelectProps) => 
               <div className="text-sm">
                 <strong>Examples:</strong>
                 <ul className="list-disc pl-4">
-                  {AGENT_CLASSES[value].examples.map((example, index) => (
+                  {AGENT_CLASSES[value as keyof typeof AGENT_CLASSES].examples.map((example, index) => (
                     <li key={index}>{example}</li>
                   ))}
                 </ul>
