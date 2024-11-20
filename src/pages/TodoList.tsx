@@ -13,7 +13,9 @@ interface Todo {
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: "Business and Financial Cycles", completed: false }
+    { id: 1, text: "Business and Financial Cycles", completed: false },
+    { id: 2, text: "Individual Market Behavior", completed: false },
+    { id: 3, text: "Altruism", completed: false }
   ]);
   const [newTodo, setNewTodo] = useState("");
 
