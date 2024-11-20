@@ -13,3 +13,16 @@ export interface Commodity {
   averagePrice: number;
   priceTrend: "Up" | "Down";
 }
+
+export interface RoundData {
+  round: number;
+  agents: {
+    name: string;
+    cash: number;
+    difference: number;
+  }[];
+  commodities: {
+    name: string;
+    price: number;
+  }[];
+}

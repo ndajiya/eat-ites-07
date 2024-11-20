@@ -3,7 +3,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { SimulatorHeader } from "@/components/simulator/SimulatorHeader";
 import { SimulatorGrid } from "@/components/simulator/SimulatorGrid";
 import { StatsDashboard } from "@/components/simulator/StatsDashboard";
-import { Agent, Commodity } from "@/types/simulator";
+import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 
 const Index = () => {
