@@ -6,12 +6,24 @@ import { AgentClassSelect } from "./AgentClassSelect";
 
 interface AgentEditDialogProps {
   agent: Agent | null;
-  onAgentChange: (agent: Agent | null) => void;
+  onAgentChange: (agent: Agent) => void;
   onSave: (agent: Agent) => void;
 }
 
 export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialogProps) => {
   if (!agent) return null;
+
+  const handleNameChange = (value: string) => {
+    onAgentChange({ ...agent, name: value });
+  };
+
+  const handleCashChange = (value: number) => {
+    onAgentChange({ ...agent, cash: value });
+  };
+
+  const handleClassChange = (value: string) => {
+    onAgentChange({ ...agent, class: value });
+  };
 
   return (
     <DialogContent>
@@ -23,9 +35,7 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
           <label>Name</label>
           <Input
             value={agent.name}
-            onChange={(e) =>
-              onAgentChange(prev => prev ? { ...prev, name: e.target.value } : null)
-            }
+            onChange={(e) => handleNameChange(e.target.value)}
           />
         </div>
         <div className="space-y-2">
@@ -33,18 +43,14 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
           <Input
             type="number"
             value={agent.cash}
-            onChange={(e) =>
-              onAgentChange(prev => prev ? { ...prev, cash: Number(e.target.value) } : null)
-            }
+            onChange={(e) => handleCashChange(Number(e.target.value))}
           />
         </div>
         <div className="space-y-2">
           <label>Class</label>
           <AgentClassSelect
             value={agent.class}
-            onChange={(value) =>
-              onAgentChange(prev => prev ? { ...prev, class: value } : null)
-            }
+            onChange={handleClassChange}
           />
         </div>
         <Button 
