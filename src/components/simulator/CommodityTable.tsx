@@ -4,11 +4,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Edit2, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { useState } from "react";
+import { CommodityClassSelect } from "./CommodityClassSelect";
+import { CommodityTypeSelect } from "./CommodityTypeSelect";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Commodity {
   name: string;
   averagePrice: number;
   priceTrend: "Up" | "Down";
+  class: string;
+  type: string;
+  marketType: "Spot" | "Futures";
 }
 
 interface CommodityTableProps {
@@ -26,6 +32,9 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
           <TableHead>Commodity</TableHead>
           <TableHead>Average Price</TableHead>
           <TableHead>Price Trend</TableHead>
+          <TableHead>Class</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Market</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -50,6 +59,9 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
                 {commodity.priceTrend}
               </span>
             </TableCell>
+            <TableCell>{commodity.class}</TableCell>
+            <TableCell>{commodity.type}</TableCell>
+            <TableCell>{commodity.marketType}</TableCell>
             <TableCell>
               <Dialog open={editingCommodity?.name === commodity.name} onOpenChange={(open) => !open && setEditingCommodity(null)}>
                 <DialogTrigger asChild>
@@ -80,6 +92,41 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
                           setEditingCommodity(prev => prev ? { ...prev, averagePrice: Number(e.target.value) } : null)
                         }
                       />
+                    </div>
+                    <div className="space-y-2">
+                      <label>Class</label>
+                      <CommodityClassSelect
+                        value={editingCommodity?.class || ""}
+                        onChange={(value) =>
+                          setEditingCommodity(prev => prev ? { ...prev, class: value } : null)
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label>Type</label>
+                      <CommodityTypeSelect
+                        value={editingCommodity?.type || ""}
+                        onChange={(value) =>
+                          setEditingCommodity(prev => prev ? { ...prev, type: value } : null)
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label>Market Type</label>
+                      <Select 
+                        value={editingCommodity?.marketType} 
+                        onValueChange={(value) =>
+                          setEditingCommodity(prev => prev ? { ...prev, marketType: value as "Spot" | "Futures" } : null)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select market type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Spot">Spot</SelectItem>
+                          <SelectItem value="Futures">Futures</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <Button 
                       className="w-full" 
