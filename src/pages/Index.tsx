@@ -26,8 +26,22 @@ const Index = () => {
   ]);
 
   const [commodities, setCommodities] = useState<Commodity[]>([
-    { name: "Commodity1", averagePrice: 50, priceTrend: "Up" as const },
-    { name: "Commodity2", averagePrice: 30, priceTrend: "Down" as const },
+    { 
+      name: "Commodity1", 
+      averagePrice: 50, 
+      priceTrend: "Up" as const,
+      class: "Hard",
+      type: "Industrial",
+      marketType: "Spot"
+    },
+    { 
+      name: "Commodity2", 
+      averagePrice: 30, 
+      priceTrend: "Down" as const,
+      class: "Soft",
+      type: "Food",
+      marketType: "Futures"
+    },
   ]);
 
   const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
@@ -43,6 +57,9 @@ const Index = () => {
   const [newCommodity, setNewCommodity] = useState<Omit<Commodity, "priceTrend">>({
     name: "",
     averagePrice: 0,
+    class: "Hard",
+    type: "Industrial",
+    marketType: "Spot"
   });
 
   const simulateRound = () => {
@@ -162,7 +179,13 @@ const Index = () => {
     };
 
     setCommodities([...commodities, commodity]);
-    setNewCommodity({ name: "", averagePrice: 0 });
+    setNewCommodity({ 
+      name: "", 
+      averagePrice: 0,
+      class: "Hard",
+      type: "Industrial",
+      marketType: "Spot"
+    });
     toast({
       title: "Commodity Added",
       description: `${commodity.name} has been added successfully.`,
