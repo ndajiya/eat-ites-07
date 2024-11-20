@@ -6,16 +6,8 @@ import { Edit2, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { useState } from "react";
 import { CommodityClassSelect } from "./CommodityClassSelect";
 import { CommodityTypeSelect } from "./CommodityTypeSelect";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-interface Commodity {
-  name: string;
-  averagePrice: number;
-  priceTrend: "Up" | "Down";
-  class: string;
-  type: string;
-  marketType: "Spot" | "Futures";
-}
+import { MarketTypeSelect } from "./MarketTypeSelect";
+import { Commodity } from "@/types/simulator";
 
 interface CommodityTableProps {
   commodities: Commodity[];
@@ -113,20 +105,12 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
                     </div>
                     <div className="space-y-2">
                       <label>Market Type</label>
-                      <Select 
-                        value={editingCommodity?.marketType} 
-                        onValueChange={(value) =>
-                          setEditingCommodity(prev => prev ? { ...prev, marketType: value as "Spot" | "Futures" } : null)
+                      <MarketTypeSelect 
+                        value={editingCommodity?.marketType || "Spot"}
+                        onChange={(value) =>
+                          setEditingCommodity(prev => prev ? { ...prev, marketType: value } : null)
                         }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select market type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Spot">Spot</SelectItem>
-                          <SelectItem value="Futures">Futures</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      />
                     </div>
                     <Button 
                       className="w-full" 
