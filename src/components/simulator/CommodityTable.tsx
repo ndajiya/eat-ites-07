@@ -7,7 +7,7 @@ import { useState } from "react";
 import { CommodityClassSelect } from "./CommodityClassSelect";
 import { CommodityTypeSelect } from "./CommodityTypeSelect";
 import { MarketTypeSelect } from "./MarketTypeSelect";
-import { Commodity } from "@/types/simulator";
+import { Commodity, CommodityClass, CommodityType } from "@/types/simulator";
 
 interface CommodityTableProps {
   commodities: Commodity[];
@@ -90,7 +90,7 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
                       <CommodityClassSelect
                         value={editingCommodity?.class || ""}
                         onChange={(value) =>
-                          setEditingCommodity(prev => prev ? { ...prev, class: value } : null)
+                          setEditingCommodity(prev => prev ? { ...prev, class: value as CommodityClass } : null)
                         }
                       />
                     </div>
@@ -99,7 +99,7 @@ export const CommodityTable = ({ commodities, onCommodityEdit }: CommodityTableP
                       <CommodityTypeSelect
                         value={editingCommodity?.type || ""}
                         onChange={(value) =>
-                          setEditingCommodity(prev => prev ? { ...prev, type: value } : null)
+                          setEditingCommodity(prev => prev ? { ...prev, type: value as CommodityType } : null)
                         }
                       />
                     </div>
