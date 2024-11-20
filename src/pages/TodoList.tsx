@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,9 @@ const TodoList = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
+      <Link to="/" className="block text-center mb-8 hover:opacity-80 transition-opacity">
+        <h1 className="text-3xl font-bold tracking-tight">Economic Simulator</h1>
+      </Link>
       <Card>
         <CardHeader>
           <CardTitle>To Do List</CardTitle>
