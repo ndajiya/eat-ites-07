@@ -116,5 +116,53 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     ],
     riskTolerance: 0.5,
     tradingStrategy: "conservative"
+  },
+  Governments: {
+    name: "Governments",
+    description: "State entities responsible for fiscal policy, regulation, and public services.",
+    roles: [
+      "Policy making",
+      "Market regulation",
+      "Public services provision",
+      "Tax collection"
+    ],
+    examples: [
+      "Federal government",
+      "State governments",
+      "Municipal authorities"
+    ],
+    defaultInventory: [
+      {
+        commodityName: "Strategic Reserves",
+        quantity: 1000,
+        averagePurchasePrice: 100
+      }
+    ],
+    riskTolerance: 0.2,
+    tradingStrategy: "conservative"
+  },
+  CentralBanks: {
+    name: "Central Banks",
+    description: "Monetary authorities responsible for monetary policy and financial stability.",
+    roles: [
+      "Monetary policy implementation",
+      "Interest rate management",
+      "Financial system oversight",
+      "Currency issuance"
+    ],
+    examples: [
+      "Federal Reserve",
+      "European Central Bank",
+      "Bank of Japan"
+    ],
+    defaultInventory: [
+      {
+        commodityName: "Foreign Exchange Reserves",
+        quantity: 10000,
+        averagePurchasePrice: 1000
+      }
+    ],
+    riskTolerance: 0.1,
+    tradingStrategy: "conservative"
   }
 };
