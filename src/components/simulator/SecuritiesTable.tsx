@@ -57,7 +57,7 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
       sellerId,
       quantity: tradeQuantity,
       price: selectedSecurity.price,
-      type: "Trade",
+      type: "Buy", // Changed from "Trade" to "Buy"
     });
 
     toast({
