@@ -17,25 +17,35 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
   const { toast } = useToast();
   const [selectedSecurity, setSelectedSecurity] = useState<Security | null>(null);
   const [tradeQuantity, setTradeQuantity] = useState(0);
-  const [selectedAgent, setSelectedAgent] = useState<string>("");
+  const [buyerId, setBuyerId] = useState<string>("");
+  const [sellerId, setSellerId] = useState<string>("");
 
-  const handleTrade = (type: "Buy" | "Sell") => {
-    if (!selectedSecurity || !selectedAgent) {
+  const handleTrade = () => {
+    if (!selectedSecurity || !buyerId || !sellerId) {
       toast({
         title: "Error",
-        description: "Please select an agent and security to trade",
+        description: "Please select both a buyer and seller to trade",
         variant: "destructive",
       });
       return;
     }
 
-    const agent = agents.find(a => a.name === selectedAgent);
-    if (!agent) return;
+    if (buyerId === sellerId) {
+      toast({
+        title: "Error",
+        description: "Buyer and seller cannot be the same agent",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    if (type === "Buy" && agent.cash < selectedSecurity.price * tradeQuantity) {
+    const buyer = agents.find(a => a.name === buyerId);
+    if (!buyer) return;
+
+    if (buyer.cash < selectedSecurity.price * tradeQuantity) {
       toast({
         title: "Insufficient Funds",
-        description: "Agent does not have enough cash for this trade",
+        description: "Buyer does not have enough cash for this trade",
         variant: "destructive",
       });
       return;
@@ -43,17 +53,22 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
 
     onTrade({
       securityId: selectedSecurity.id,
-      buyerId: type === "Buy" ? selectedAgent : "MARKET",
-      sellerId: type === "Sell" ? selectedAgent : "MARKET",
+      buyerId,
+      sellerId,
       quantity: tradeQuantity,
       price: selectedSecurity.price,
-      type,
+      type: "Trade",
     });
 
     toast({
       title: "Trade Executed",
-      description: `Successfully ${type.toLowerCase()}ed ${tradeQuantity} shares of ${selectedSecurity.name}`,
+      description: `Successfully traded ${tradeQuantity} shares of ${selectedSecurity.name}`,
     });
+
+    // Reset form
+    setBuyerId("");
+    setSellerId("");
+    setTradeQuantity(0);
   };
 
   return (
@@ -93,13 +108,28 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                       <div className="space-y-2">
-                        <label>Select Agent</label>
+                        <label>Select Buyer</label>
                         <select 
                           className="w-full p-2 border rounded bg-background text-foreground dark:bg-secondary dark:text-secondary-foreground"
-                          value={selectedAgent}
-                          onChange={(e) => setSelectedAgent(e.target.value)}
+                          value={buyerId}
+                          onChange={(e) => setBuyerId(e.target.value)}
                         >
-                          <option value="">Select an agent...</option>
+                          <option value="">Select buyer...</option>
+                          {agents.map((agent) => (
+                            <option key={agent.name} value={agent.name}>
+                              {agent.name} (${agent.cash.toLocaleString()})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label>Select Seller</label>
+                        <select 
+                          className="w-full p-2 border rounded bg-background text-foreground dark:bg-secondary dark:text-secondary-foreground"
+                          value={sellerId}
+                          onChange={(e) => setSellerId(e.target.value)}
+                        >
+                          <option value="">Select seller...</option>
                           {agents.map((agent) => (
                             <option key={agent.name} value={agent.name}>
                               {agent.name} (${agent.cash.toLocaleString()})
@@ -119,21 +149,12 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
                       <div className="space-y-2">
                         <p>Total Cost: ${(security.price * tradeQuantity).toLocaleString()}</p>
                       </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          className="flex-1" 
-                          onClick={() => handleTrade("Buy")}
-                        >
-                          Buy
-                        </Button>
-                        <Button 
-                          className="flex-1" 
-                          variant="secondary"
-                          onClick={() => handleTrade("Sell")}
-                        >
-                          Sell
-                        </Button>
-                      </div>
+                      <Button 
+                        className="w-full" 
+                        onClick={handleTrade}
+                      >
+                        Execute Trade
+                      </Button>
                     </div>
                   </DialogContent>
                 </Dialog>
