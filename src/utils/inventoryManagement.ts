@@ -1,5 +1,5 @@
 import { Agent, Inventory, Commodity } from "@/types/simulator";
-import { calculateUtility } from "./rationalAgent/utilityCalculator";
+import { createUtilityCalculator } from "./rationalAgent/utilityCalculator";
 import { UtilityParameters } from "./rationalAgent/types";
 
 interface InventoryDecision {
@@ -30,6 +30,7 @@ export const getOptimalInventoryDecision = (
   commodity: Commodity,
   utilityParams: UtilityParameters
 ): InventoryDecision => {
+  const calculator = createUtilityCalculator();
   const currentHolding = agent.inventory.find(
     item => item.commodityName === commodity.name
   );
@@ -44,7 +45,7 @@ export const getOptimalInventoryDecision = (
   // Calculate utility for buying
   const potentialBuyQuantity = Math.floor(agent.cash / commodity.averagePrice);
   const buyUtility = potentialBuyQuantity > 0 
-    ? calculateUtility({
+    ? calculator.calculateUtility({
         ...utilityParams,
         values: {
           ...utilityParams.values,
@@ -56,7 +57,7 @@ export const getOptimalInventoryDecision = (
 
   // Calculate utility for selling
   const sellUtility = currentQuantity > 0
-    ? calculateUtility({
+    ? calculator.calculateUtility({
         ...utilityParams,
         values: {
           ...utilityParams.values,
@@ -67,7 +68,7 @@ export const getOptimalInventoryDecision = (
     : -Infinity;
 
   // Calculate utility for holding
-  const holdUtility = calculateUtility(utilityParams);
+  const holdUtility = calculator.calculateUtility(utilityParams);
 
   // Determine optimal action
   if (buyUtility > holdUtility && buyUtility > sellUtility) {
