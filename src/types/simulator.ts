@@ -1,12 +1,26 @@
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { CommodityClass, CommodityType, MarketType } from "./commodityTypes";
 
+export interface Inventory {
+  commodityName: string;
+  quantity: number;
+  averagePurchasePrice: number;
+}
+
+export interface Production {
+  commodityName: string;
+  rate: number; // units per round
+  cost: number; // cost per unit
+}
+
 export interface Agent {
   name: string;
   cash: number;
   class: string;
   lastRoundDifference: number;
   bookkeeping: Bookkeeping;
+  inventory: Inventory[];
+  production?: Production[];
 }
 
 export interface Commodity {

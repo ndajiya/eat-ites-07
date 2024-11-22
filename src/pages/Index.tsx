@@ -3,25 +3,40 @@ import { useToast } from "@/components/ui/use-toast";
 import { SimulatorHeader } from "@/components/simulator/SimulatorHeader";
 import { SimulatorGrid } from "@/components/simulator/SimulatorGrid";
 import { StatsDashboard } from "@/components/simulator/StatsDashboard";
-import { Agent, Commodity, RoundData } from "@/types/simulator";
+import { Agent, Commodity, RoundData, Inventory, Production } from "@/types/simulator";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 
 const Index = () => {
   const { toast } = useToast();
   const [agents, setAgents] = useState<Agent[]>([
     { 
-      name: "Agent1", 
+      name: "Producer", 
       cash: 1000, 
-      class: "ClassA", 
+      class: "Firms", 
       lastRoundDifference: 0,
-      bookkeeping: new Bookkeeping()
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      production: [
+        {
+          commodityName: "Commodity1",
+          rate: 10,
+          cost: 30
+        }
+      ]
     },
     { 
-      name: "Agent2", 
+      name: "Trader", 
       cash: 800, 
-      class: "ClassB", 
+      class: "Firms", 
       lastRoundDifference: 0,
-      bookkeeping: new Bookkeeping()
+      bookkeeping: new Bookkeeping(),
+      inventory: [
+        {
+          commodityName: "Commodity1",
+          quantity: 50,
+          averagePurchasePrice: 45
+        }
+      ]
     },
   ]);
 
@@ -52,6 +67,8 @@ const Index = () => {
     cash: 1000,
     class: "",
     bookkeeping: new Bookkeeping(),
+    inventory: [],
+    production: [],
   });
 
   const [newCommodity, setNewCommodity] = useState<Omit<Commodity, "priceTrend">>({
@@ -156,7 +173,7 @@ const Index = () => {
     };
 
     setAgents([...agents, agent]);
-    setNewAgent({ name: "", cash: 1000, class: "", bookkeeping: new Bookkeeping() });
+    setNewAgent({ name: "", cash: 1000, class: "", bookkeeping: new Bookkeeping(), inventory: [], production: [] });
     toast({
       title: "Agent Added",
       description: `${agent.name} has been added successfully.`,

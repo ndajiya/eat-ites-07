@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog } from "@/components/ui/dialog";
-import { Edit2, BookOpen } from "lucide-react";
+import { Edit2, BookOpen, Package } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/simulator";
 import { AgentEditDialog } from "./AgentEditDialog";
 import { FinancialRecordsDialog } from "./FinancialRecordsDialog";
+import { InventoryDialog } from "./InventoryDialog";
 
 interface AgentTableProps {
   agents: Agent[];
@@ -15,6 +16,7 @@ interface AgentTableProps {
 export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
   const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
   const [viewingLedger, setViewingLedger] = useState<Agent | null>(null);
+  const [viewingInventory, setViewingInventory] = useState<Agent | null>(null);
 
   return (
     <Table>
@@ -60,6 +62,13 @@ export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
                   <BookOpen className="h-4 w-4" />
                 </Button>
                 <FinancialRecordsDialog agent={viewingLedger} />
+              </Dialog>
+
+              <Dialog open={viewingInventory?.name === agent.name} onOpenChange={(open) => !open && setViewingInventory(null)}>
+                <Button variant="ghost" size="icon" onClick={() => setViewingInventory(agent)}>
+                  <Package className="h-4 w-4" />
+                </Button>
+                <InventoryDialog agent={viewingInventory} />
               </Dialog>
             </TableCell>
           </TableRow>
