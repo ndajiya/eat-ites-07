@@ -1,6 +1,7 @@
 import { Agent, Commodity } from "@/types/simulator";
 import { AGENT_CLASSES } from "@/types/agentClasses";
 import { createUtilityCalculator } from "./rationalAgent/utilityCalculator";
+import { Bookkeeping } from "./Bookkeeping";
 
 export const calculateTradeDecision = (
   agent: Agent,
