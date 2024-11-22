@@ -1,19 +1,23 @@
 import { Card } from "@/components/ui/card";
 import { AgentTable } from "./AgentTable";
 import { CommodityTable } from "./CommodityTable";
+import { SecuritiesTable } from "./SecuritiesTable";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Agent, Commodity } from "@/types/simulator";
+import { Security, Trade } from "@/types/securities";
 
 interface SimulatorGridProps {
   agents: Agent[];
   commodities: Commodity[];
+  securities: Security[];
   newAgent: Omit<Agent, "lastRoundDifference">;
   newCommodity: Omit<Commodity, "priceTrend">;
   onAgentEdit: (agent: Agent) => void;
   onCommodityEdit: (commodity: Commodity) => void;
+  onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddAgent: () => void;
   onAddCommodity: () => void;
   setNewAgent: (agent: Omit<Agent, "lastRoundDifference">) => void;
@@ -23,10 +27,12 @@ interface SimulatorGridProps {
 export const SimulatorGrid = ({
   agents,
   commodities,
+  securities,
   newAgent,
   newCommodity,
   onAgentEdit,
   onCommodityEdit,
+  onSecurityTrade,
   onAddAgent,
   onAddCommodity,
   setNewAgent,
@@ -155,6 +161,19 @@ export const SimulatorGrid = ({
         </div>
         <div className="min-w-[300px]">
           <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
+        </div>
+      </Card>
+
+      <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto col-span-2">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl sm:text-2xl font-semibold">Securities Market</h2>
+        </div>
+        <div className="min-w-[300px]">
+          <SecuritiesTable 
+            securities={securities} 
+            agents={agents} 
+            onTrade={onSecurityTrade}
+          />
         </div>
       </Card>
     </div>

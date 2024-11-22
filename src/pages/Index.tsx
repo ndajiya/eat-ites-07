@@ -3,11 +3,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { SimulatorHeader } from "@/components/simulator/SimulatorHeader";
 import { SimulatorGrid } from "@/components/simulator/SimulatorGrid";
 import { StatsDashboard } from "@/components/simulator/StatsDashboard";
-import { Agent, Commodity, RoundData, Inventory, Production } from "@/types/simulator";
+import { Agent, Commodity, RoundData } from "@/types/simulator";
+import { Security, Trade } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
+import { calculateMarketImpact, updateSecurityPrice, generateRandomPriceFluctuation } from "@/utils/marketOperations";
 
 const Index = () => {
   const { toast } = useToast();
+  
   const [agents, setAgents] = useState<Agent[]>([
     { 
       name: "Producer", 
@@ -79,7 +82,67 @@ const Index = () => {
     marketType: "Spot"
   });
 
+  const [securities, setSecurities] = useState<Security[]>([
+    {
+      id: "1",
+      name: "Tech Corp Common Stock",
+      class: "Equity",
+      type: "CommonStock",
+      price: 100,
+      volatility: 0.3,
+      quantity: 1000000,
+      issuer: "Tech Corporation",
+      description: "Common stock of leading tech company",
+      marketCap: 100000000
+    },
+    {
+      id: "2",
+      name: "Gov 10Y Bond",
+      class: "Government",
+      type: "GovernmentBond",
+      price: 1000,
+      volatility: 0.1,
+      quantity: 500000,
+      issuer: "Federal Government",
+      description: "10-year government bond",
+      interestRate: 0.035,
+      maturityDate: "2034-03-15"
+    }
+  ]);
+
+  const handleSecurityTrade = (trade: Omit<Trade, "id" | "timestamp">) => {
+    const security = securities.find(s => s.id === trade.securityId);
+    if (!security) return;
+
+    const impact = calculateMarketImpact(security, trade);
+    const updatedSecurity = updateSecurityPrice(security, impact);
+
+    // Update securities
+    setSecurities(securities.map(s => 
+      s.id === security.id ? updatedSecurity : s
+    ));
+
+    // Update agent cash
+    const tradeValue = trade.price * trade.quantity;
+    setAgents(agents.map(agent => {
+      if (agent.name === trade.buyerId) {
+        return { ...agent, cash: agent.cash - tradeValue };
+      }
+      if (agent.name === trade.sellerId) {
+        return { ...agent, cash: agent.cash + tradeValue };
+      }
+      return agent;
+    }));
+  };
+
   const simulateRound = () => {
+    // Update security prices based on volatility
+    const updatedSecurities = securities.map(security => ({
+      ...security,
+      price: security.price + generateRandomPriceFluctuation(security)
+    }));
+    setSecurities(updatedSecurities);
+
     const updatedAgents = agents.map((agent) => {
       const cashChange = Math.floor(Math.random() * 201) - 100;
       const newCash = agent.cash + cashChange;
@@ -215,10 +278,12 @@ const Index = () => {
       <SimulatorGrid
         agents={agents}
         commodities={commodities}
+        securities={securities}
         newAgent={newAgent}
         newCommodity={newCommodity}
         onAgentEdit={handleAgentEdit}
         onCommodityEdit={handleCommodityEdit}
+        onSecurityTrade={handleSecurityTrade}
         onAddAgent={handleAddAgent}
         onAddCommodity={handleAddCommodity}
         setNewAgent={setNewAgent}
