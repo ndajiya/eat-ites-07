@@ -49,6 +49,10 @@ export const AgentClassSelect = ({ value, onChange }: AgentClassSelectProps) => 
                   ))}
                 </ul>
               </div>
+              <div className="text-sm">
+                <strong>Trading Style:</strong>
+                <p className="capitalize">{AGENT_CLASSES[value as keyof typeof AGENT_CLASSES].tradingStrategy}</p>
+              </div>
             </div>
           )}
         </HoverCardContent>
