@@ -4,10 +4,11 @@ import { CommodityTable } from "./CommodityTable";
 import { SecuritiesTable } from "./SecuritiesTable";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Agent, Commodity } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
+import { AddAgentDialog } from "./AddAgentDialog";
+import { AddCommodityDialog } from "./AddCommodityDialog";
 
 interface SimulatorGridProps {
   agents: Agent[];
@@ -84,38 +85,13 @@ export const SimulatorGrid = ({
                 <Plus className="h-4 w-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Agent</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <label>Name</label>
-                  <Input
-                    value={newAgent.name}
-                    onChange={(e) => handleAgentNameChange(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label>Cash</label>
-                  <Input
-                    type="number"
-                    value={newAgent.cash}
-                    onChange={(e) => handleAgentCashChange(Number(e.target.value))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label>Class</label>
-                  <Input
-                    value={newAgent.class}
-                    onChange={(e) => handleAgentClassChange(e.target.value)}
-                  />
-                </div>
-                <Button className="w-full" onClick={onAddAgent}>
-                  Add Agent
-                </Button>
-              </div>
-            </DialogContent>
+            <AddAgentDialog
+              newAgent={newAgent}
+              onAgentNameChange={handleAgentNameChange}
+              onAgentCashChange={handleAgentCashChange}
+              onAgentClassChange={handleAgentClassChange}
+              onAddAgent={onAddAgent}
+            />
           </Dialog>
         </div>
         <div className="min-w-[300px]">
@@ -132,31 +108,12 @@ export const SimulatorGrid = ({
                 <Plus className="h-4 w-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Commodity</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <label>Name</label>
-                  <Input
-                    value={newCommodity.name}
-                    onChange={(e) => handleCommodityNameChange(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label>Average Price</label>
-                  <Input
-                    type="number"
-                    value={newCommodity.averagePrice}
-                    onChange={(e) => handleCommodityPriceChange(Number(e.target.value))}
-                  />
-                </div>
-                <Button className="w-full" onClick={onAddCommodity}>
-                  Add Commodity
-                </Button>
-              </div>
-            </DialogContent>
+            <AddCommodityDialog
+              newCommodity={newCommodity}
+              onCommodityNameChange={handleCommodityNameChange}
+              onCommodityPriceChange={handleCommodityPriceChange}
+              onAddCommodity={onAddCommodity}
+            />
           </Dialog>
         </div>
         <div className="min-w-[300px]">
