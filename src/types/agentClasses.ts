@@ -13,7 +13,7 @@ export type AgentClass = {
     quantity: number;
     averagePurchasePrice: number;
   }[];
-  riskTolerance: number; // 0-1, higher means more risk-taking
+  riskTolerance: number;
   tradingStrategy: "conservative" | "aggressive" | "balanced";
 };
 
