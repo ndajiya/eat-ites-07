@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Agent, Inventory, Production } from "@/types/simulator";
 import { AgentClassSelect } from "./AgentClassSelect";
 import { Plus, Minus } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AgentEditDialogProps {
   agent: Agent | null;
@@ -76,32 +77,70 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <label>Inventory</label>
-            <Button variant="outline" size="sm" onClick={addInventoryItem}>
-              <Plus className="h-4 w-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm" onClick={addInventoryItem}>
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add a new commodity to the agent's inventory</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           {agent.inventory.map((item, index) => (
             <div key={index} className="flex gap-2 items-center">
-              <Input
-                placeholder="Commodity"
-                value={item.commodityName}
-                onChange={(e) => handleInventoryChange(index, "commodityName", e.target.value)}
-              />
-              <Input
-                type="number"
-                placeholder="Quantity"
-                value={item.quantity}
-                onChange={(e) => handleInventoryChange(index, "quantity", Number(e.target.value))}
-              />
-              <Input
-                type="number"
-                placeholder="Avg. Price"
-                value={item.averagePurchasePrice}
-                onChange={(e) => handleInventoryChange(index, "averagePurchasePrice", Number(e.target.value))}
-              />
-              <Button variant="ghost" size="icon" onClick={() => removeInventoryItem(index)}>
-                <Minus className="h-4 w-4" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Input
+                    placeholder="Commodity"
+                    value={item.commodityName}
+                    onChange={(e) => handleInventoryChange(index, "commodityName", e.target.value)}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Name of the commodity held in inventory</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Input
+                    type="number"
+                    placeholder="Quantity"
+                    value={item.quantity}
+                    onChange={(e) => handleInventoryChange(index, "quantity", Number(e.target.value))}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Amount of commodity currently held</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Input
+                    type="number"
+                    placeholder="Avg. Price"
+                    value={item.averagePurchasePrice}
+                    onChange={(e) => handleInventoryChange(index, "averagePurchasePrice", Number(e.target.value))}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Average price paid per unit of this commodity</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={() => removeInventoryItem(index)}>
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Remove this commodity from inventory</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           ))}
         </div>
