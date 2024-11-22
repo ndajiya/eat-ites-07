@@ -95,7 +95,7 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
                       <div className="space-y-2">
                         <label>Select Agent</label>
                         <select 
-                          className="w-full p-2 border rounded"
+                          className="w-full p-2 border rounded bg-background text-foreground dark:bg-secondary dark:text-secondary-foreground"
                           value={selectedAgent}
                           onChange={(e) => setSelectedAgent(e.target.value)}
                         >
