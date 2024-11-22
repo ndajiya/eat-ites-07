@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { SimulatorHeader } from "@/components/simulator/SimulatorHeader";
-import { SimulatorGrid } from "@/components/simulator/SimulatorGrid";
-import { StatsDashboard } from "@/components/simulator/StatsDashboard";
+import { SimulatorDashboard } from "@/components/simulator/SimulatorDashboard";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
@@ -273,30 +271,22 @@ const Index = () => {
   };
 
   return (
-    <div className="container mx-auto py-4 sm:py-8 max-w-7xl space-y-6 sm:space-y-8">
-      <SimulatorHeader onSimulate={simulateRound} />
-      <SimulatorGrid
-        agents={agents}
-        commodities={commodities}
-        securities={securities}
-        newAgent={newAgent}
-        newCommodity={newCommodity}
-        onAgentEdit={handleAgentEdit}
-        onCommodityEdit={handleCommodityEdit}
-        onSecurityTrade={handleSecurityTrade}
-        onAddAgent={handleAddAgent}
-        onAddCommodity={handleAddCommodity}
-        setNewAgent={setNewAgent}
-        setNewCommodity={setNewCommodity}
-      />
-      {roundsHistory.length > 0 && (
-        <StatsDashboard
-          roundsHistory={roundsHistory}
-          agents={agents}
-          commodities={commodities}
-        />
-      )}
-    </div>
+    <SimulatorDashboard
+      agents={agents}
+      commodities={commodities}
+      securities={securities}
+      roundsHistory={roundsHistory}
+      newAgent={newAgent}
+      newCommodity={newCommodity}
+      onSimulate={simulateRound}
+      onAgentEdit={handleAgentEdit}
+      onCommodityEdit={handleCommodityEdit}
+      onSecurityTrade={handleSecurityTrade}
+      onAddAgent={handleAddAgent}
+      onAddCommodity={handleAddCommodity}
+      setNewAgent={setNewAgent}
+      setNewCommodity={setNewCommodity}
+    />
   );
 };
 
