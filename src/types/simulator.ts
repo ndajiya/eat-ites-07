@@ -13,6 +13,11 @@ export interface Production {
   cost: number; // cost per unit
 }
 
+export interface MonetaryPolicy {
+  interestRate: number;
+  reserveRequirement: number;
+}
+
 export interface Agent {
   name: string;
   cash: number;
@@ -21,6 +26,7 @@ export interface Agent {
   bookkeeping: Bookkeeping;
   inventory: Inventory[];
   production?: Production[];
+  monetaryPolicy?: MonetaryPolicy;
 }
 
 export interface Commodity {

@@ -1,10 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Agent, Inventory, Production } from "@/types/simulator";
+import { Agent, Inventory } from "@/types/simulator";
 import { AgentClassSelect } from "./AgentClassSelect";
 import { Plus, Minus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Slider } from "@/components/ui/slider";
 
 interface AgentEditDialogProps {
   agent: Agent | null;
@@ -25,6 +26,26 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
 
   const handleClassChange = (value: string) => {
     onAgentChange({ ...agent, class: value });
+  };
+
+  const handleInterestRateChange = (value: number[]) => {
+    onAgentChange({
+      ...agent,
+      monetaryPolicy: {
+        ...agent.monetaryPolicy,
+        interestRate: value[0]
+      }
+    });
+  };
+
+  const handleReserveRequirementChange = (value: number[]) => {
+    onAgentChange({
+      ...agent,
+      monetaryPolicy: {
+        ...agent.monetaryPolicy,
+        reserveRequirement: value[0]
+      }
+    });
   };
 
   const handleInventoryChange = (index: number, field: keyof Inventory, value: string | number) => {
@@ -73,74 +94,68 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
             onChange={handleClassChange}
           />
         </div>
+
+        {agent.class === "CentralBanks" && (
+          <>
+            <div className="space-y-2">
+              <label>Interest Rate (%)</label>
+              <Slider
+                defaultValue={[agent.monetaryPolicy?.interestRate || 2]}
+                max={10}
+                min={0}
+                step={0.25}
+                onValueChange={handleInterestRateChange}
+              />
+              <div className="text-sm text-muted-foreground">
+                Current: {agent.monetaryPolicy?.interestRate || 2}%
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label>Reserve Requirement (%)</label>
+              <Slider
+                defaultValue={[agent.monetaryPolicy?.reserveRequirement || 10]}
+                max={20}
+                min={0}
+                step={0.5}
+                onValueChange={handleReserveRequirementChange}
+              />
+              <div className="text-sm text-muted-foreground">
+                Current: {agent.monetaryPolicy?.reserveRequirement || 10}%
+              </div>
+            </div>
+          </>
+        )}
         
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <label>Inventory</label>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="sm" onClick={addInventoryItem}>
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Add a new commodity to the agent's inventory</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button variant="outline" size="sm" onClick={addInventoryItem}>
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
           {agent.inventory.map((item, index) => (
             <div key={index} className="flex gap-2 items-center">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Input
-                    placeholder="Commodity"
-                    value={item.commodityName}
-                    onChange={(e) => handleInventoryChange(index, "commodityName", e.target.value)}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Name of the commodity held in inventory</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Input
-                    type="number"
-                    placeholder="Quantity"
-                    value={item.quantity}
-                    onChange={(e) => handleInventoryChange(index, "quantity", Number(e.target.value))}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Amount of commodity currently held</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Input
-                    type="number"
-                    placeholder="Avg. Price"
-                    value={item.averagePurchasePrice}
-                    onChange={(e) => handleInventoryChange(index, "averagePurchasePrice", Number(e.target.value))}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Average price paid per unit of this commodity</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" onClick={() => removeInventoryItem(index)}>
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Remove this commodity from inventory</p>
-                </TooltipContent>
-              </Tooltip>
+              <Input
+                placeholder="Commodity"
+                value={item.commodityName}
+                onChange={(e) => handleInventoryChange(index, "commodityName", e.target.value)}
+              />
+              <Input
+                type="number"
+                placeholder="Quantity"
+                value={item.quantity}
+                onChange={(e) => handleInventoryChange(index, "quantity", Number(e.target.value))}
+              />
+              <Input
+                type="number"
+                placeholder="Avg. Price"
+                value={item.averagePurchasePrice}
+                onChange={(e) => handleInventoryChange(index, "averagePurchasePrice", Number(e.target.value))}
+              />
+              <Button variant="ghost" size="icon" onClick={() => removeInventoryItem(index)}>
+                <Minus className="h-4 w-4" />
+              </Button>
             </div>
           ))}
         </div>
