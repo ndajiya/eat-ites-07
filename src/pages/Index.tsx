@@ -4,7 +4,8 @@ import { SimulatorDashboard } from "@/components/simulator/SimulatorDashboard";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
-import { calculateMarketImpact, updateSecurityPrice, generateRandomPriceFluctuation } from "@/utils/marketOperations";
+import { calculateMarketImpact, updateSecurityPrice } from "@/utils/marketOperations";
+import { calculateNewPrice, determinePriceTrend } from "@/utils/commodityPricing";
 
 const Index = () => {
   const { toast } = useToast();
@@ -134,12 +135,22 @@ const Index = () => {
   };
 
   const simulateRound = () => {
-    // Update security prices based on volatility
+    // Update security prices
     const updatedSecurities = securities.map(security => ({
       ...security,
       price: security.price + generateRandomPriceFluctuation(security)
     }));
     setSecurities(updatedSecurities);
+
+    // Update commodity prices using new pricing system
+    const updatedCommodities = commodities.map(commodity => {
+      const newPrice = calculateNewPrice(commodity, currentRound, roundsHistory);
+      return {
+        ...commodity,
+        averagePrice: newPrice,
+        priceTrend: determinePriceTrend(commodity.averagePrice, newPrice)
+      };
+    });
 
     const updatedAgents = agents.map((agent) => {
       const cashChange = Math.floor(Math.random() * 201) - 100;
@@ -180,7 +191,7 @@ const Index = () => {
         cash: agent.cash,
         difference: agent.lastRoundDifference,
       })),
-      commodities: commodities.map(commodity => ({
+      commodities: updatedCommodities.map(commodity => ({
         name: commodity.name,
         price: commodity.averagePrice,
       })),
@@ -189,7 +200,7 @@ const Index = () => {
     setRoundsHistory(prev => [...prev, roundData]);
     setCurrentRound(prev => prev + 1);
     setAgents(updatedAgents);
-    setCommodities(commodities);
+    setCommodities(updatedCommodities);
 
     toast({
       title: "Simulation Round Complete",
