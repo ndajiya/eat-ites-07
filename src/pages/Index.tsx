@@ -5,7 +5,7 @@ import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { calculateMarketImpact, updateSecurityPrice } from "@/utils/marketOperations";
-import { calculateNewPrice, determinePriceTrend } from "@/utils/commodityPricing";
+import { simulateRound } from "@/utils/simulationOperations";
 
 const Index = () => {
   const { toast } = useToast();
@@ -116,12 +116,10 @@ const Index = () => {
     const impact = calculateMarketImpact(security, trade);
     const updatedSecurity = updateSecurityPrice(security, impact);
 
-    // Update securities
     setSecurities(securities.map(s => 
       s.id === security.id ? updatedSecurity : s
     ));
 
-    // Update agent cash
     const tradeValue = trade.price * trade.quantity;
     setAgents(agents.map(agent => {
       if (agent.name === trade.buyerId) {
@@ -134,73 +132,19 @@ const Index = () => {
     }));
   };
 
-  const simulateRound = () => {
-    // Update security prices
-    const updatedSecurities = securities.map(security => ({
-      ...security,
-      price: security.price + generateRandomPriceFluctuation(security)
-    }));
-    setSecurities(updatedSecurities);
+  const simulateNewRound = () => {
+    const {
+      updatedSecurities,
+      updatedCommodities,
+      updatedAgents,
+      newRoundData
+    } = simulateRound(currentRound, agents, commodities, securities, roundsHistory);
 
-    // Update commodity prices using new pricing system
-    const updatedCommodities = commodities.map(commodity => {
-      const newPrice = calculateNewPrice(commodity, currentRound, roundsHistory);
-      return {
-        ...commodity,
-        averagePrice: newPrice,
-        priceTrend: determinePriceTrend(commodity.averagePrice, newPrice)
-      };
-    });
-
-    const updatedAgents = agents.map((agent) => {
-      const cashChange = Math.floor(Math.random() * 201) - 100;
-      const newCash = agent.cash + cashChange;
-      
-      // Record the transaction in the agent's books
-      agent.bookkeeping.addTransaction(
-        new Date().toISOString().split('T')[0],
-        cashChange >= 0 ? "Revenue" : "Expenses",
-        cashChange >= 0 ? "Trading Income" : "Trading Expenses",
-        Math.abs(cashChange),
-        `Round ${currentRound} trading result`,
-        "Increase"
-      );
-
-      // Update cash balance
-      agent.bookkeeping.addTransaction(
-        new Date().toISOString().split('T')[0],
-        "Assets",
-        "Cash",
-        Math.abs(cashChange),
-        `Round ${currentRound} cash adjustment`,
-        cashChange >= 0 ? "Increase" : "Decrease"
-      );
-
-      return {
-        ...agent,
-        cash: newCash,
-        lastRoundDifference: cashChange,
-      };
-    });
-
-    // Record round history
-    const roundData: RoundData = {
-      round: currentRound,
-      agents: updatedAgents.map(agent => ({
-        name: agent.name,
-        cash: agent.cash,
-        difference: agent.lastRoundDifference,
-      })),
-      commodities: updatedCommodities.map(commodity => ({
-        name: commodity.name,
-        price: commodity.averagePrice,
-      })),
-    };
-
-    setRoundsHistory(prev => [...prev, roundData]);
+    setRoundsHistory(prev => [...prev, newRoundData]);
     setCurrentRound(prev => prev + 1);
     setAgents(updatedAgents);
     setCommodities(updatedCommodities);
+    setSecurities(updatedSecurities);
 
     toast({
       title: "Simulation Round Complete",
@@ -289,7 +233,7 @@ const Index = () => {
       roundsHistory={roundsHistory}
       newAgent={newAgent}
       newCommodity={newCommodity}
-      onSimulate={simulateRound}
+      onSimulate={simulateNewRound}
       onAgentEdit={handleAgentEdit}
       onCommodityEdit={handleCommodityEdit}
       onSecurityTrade={handleSecurityTrade}
