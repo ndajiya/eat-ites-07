@@ -3,9 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Agent, Inventory } from "@/types/simulator";
 import { AgentClassSelect } from "./AgentClassSelect";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Code } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
+import { AgentCodeEditor } from "./AgentProgramming/AgentCodeEditor";
 
 interface AgentEditDialogProps {
   agent: Agent | null;
@@ -14,6 +16,8 @@ interface AgentEditDialogProps {
 }
 
 export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialogProps) => {
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
+  
   if (!agent) return null;
 
   const handleNameChange = (value: string) => {
@@ -26,6 +30,14 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
 
   const handleClassChange = (value: string) => {
     onAgentChange({ ...agent, class: value });
+  };
+
+  const handleStrategyChange = (strategyCode: string) => {
+    onAgentChange({
+      ...agent,
+      tradingStrategy: strategyCode
+    });
+    setShowCodeEditor(false);
   };
 
   const handleInterestRateChange = (value: number[]) => {
@@ -67,33 +79,43 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
   };
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Edit Agent</DialogTitle>
-      </DialogHeader>
-      <div className="space-y-4 py-4">
-        <div className="space-y-2">
-          <label>Name</label>
-          <Input
-            value={agent.name}
-            onChange={(e) => handleNameChange(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <label>Cash</label>
-          <Input
-            type="number"
-            value={agent.cash}
-            onChange={(e) => handleCashChange(Number(e.target.value))}
-          />
-        </div>
-        <div className="space-y-2">
-          <label>Class</label>
-          <AgentClassSelect
-            value={agent.class}
-            onChange={handleClassChange}
-          />
-        </div>
+    <>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit Agent</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <label>Name</label>
+            <Input
+              value={agent.name}
+              onChange={(e) => handleNameChange(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label>Cash</label>
+            <Input
+              type="number"
+              value={agent.cash}
+              onChange={(e) => handleCashChange(Number(e.target.value))}
+            />
+          </div>
+          <div className="space-y-2">
+            <label>Class</label>
+            <AgentClassSelect
+              value={agent.class}
+              onChange={handleClassChange}
+            />
+          </div>
+
+          <Button 
+            variant="outline" 
+            className="w-full"
+            onClick={() => setShowCodeEditor(true)}
+          >
+            <Code className="w-4 h-4 mr-2" />
+            Program Trading Strategy
+          </Button>
 
         {agent.class === "CentralBanks" && (
           <>
@@ -159,14 +181,22 @@ export const AgentEditDialog = ({ agent, onAgentChange, onSave }: AgentEditDialo
             </div>
           ))}
         </div>
-        
-        <Button 
-          className="w-full" 
-          onClick={() => onSave(agent)}
-        >
-          Save Changes
-        </Button>
-      </div>
-    </DialogContent>
+          
+          <Button 
+            className="w-full" 
+            onClick={() => onSave(agent)}
+          >
+            Save Changes
+          </Button>
+        </div>
+      </DialogContent>
+
+      <Dialog open={showCodeEditor} onOpenChange={setShowCodeEditor}>
+        <AgentCodeEditor
+          agentName={agent.name}
+          onSaveStrategy={handleStrategyChange}
+        />
+      </Dialog>
+    </>
   );
 };

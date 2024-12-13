@@ -27,6 +27,7 @@ export interface Agent {
   inventory: Inventory[];
   production?: Production[];
   monetaryPolicy?: MonetaryPolicy;
+  tradingStrategy?: string;
 }
 
 export interface Commodity {
