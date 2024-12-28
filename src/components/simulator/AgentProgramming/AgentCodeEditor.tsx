@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { LanguageSelector } from "./LanguageSelector";
 import { DEFAULT_JS_STRATEGY, DEFAULT_TS_STRATEGY, DEFAULT_YAML_STRATEGY, DEFAULT_PYTHON_STRATEGY } from "./defaultStrategies";
+import yaml from "js-yaml";
 
 interface AgentCodeEditorProps {
   agentName: string;
