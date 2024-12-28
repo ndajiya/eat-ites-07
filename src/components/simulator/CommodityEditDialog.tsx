@@ -5,6 +5,7 @@ import { Commodity } from "@/types/simulator";
 import { CommodityClassSelect } from "./CommodityClassSelect";
 import { CommodityTypeSelect } from "./CommodityTypeSelect";
 import { MarketTypeSelect } from "./MarketTypeSelect";
+import { CommodityClass, CommodityType } from "@/types/commodityTypes";
 
 interface CommodityEditDialogProps {
   commodity: Commodity | null;
@@ -52,7 +53,7 @@ export const CommodityEditDialog = ({
           <CommodityClassSelect
             value={commodity.class}
             onChange={(value) =>
-              onCommodityChange({ ...commodity, class: value })
+              onCommodityChange({ ...commodity, class: value as CommodityClass })
             }
           />
         </div>
@@ -61,7 +62,7 @@ export const CommodityEditDialog = ({
           <CommodityTypeSelect
             value={commodity.type}
             onChange={(value) =>
-              onCommodityChange({ ...commodity, type: value })
+              onCommodityChange({ ...commodity, type: value as CommodityType })
             }
           />
         </div>
