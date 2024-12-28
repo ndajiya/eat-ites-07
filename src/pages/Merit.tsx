@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Book, Users, Network, Puzzle, Atom, Brain, Target, ChartBar } from "lucide-react"
+import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 interface ResearchArea {
   id: number
@@ -103,7 +105,14 @@ const researchAreas: ResearchArea[] = [
 const Merit = () => {
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Research Areas and Contributions</h1>
+      <div className="flex items-center gap-4 mb-8">
+        <Link to="/">
+          <Button variant="ghost" className="hover:bg-primary/10">
+            ← Back to Home
+          </Button>
+        </Link>
+        <h1 className="text-3xl font-bold">Research Areas and Contributions</h1>
+      </div>
       <p className="text-lg text-muted-foreground mb-8 text-center max-w-3xl mx-auto">
         The goal for these contributions is to deepen our understanding of individual decision-making, 
         market behavior, or mechanisms to solve economic problems.
