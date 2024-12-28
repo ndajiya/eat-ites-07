@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Security, Trade } from "@/types/securities";
 import { Agent } from "@/types/simulator";
-import { useToast } from "@/components/ui/use-toast";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { useToast } from "@/hooks/use-toast";
+import { TablePagination } from "./TablePagination";
 
 interface SecuritiesTableProps {
   securities: Security[];
@@ -65,7 +65,7 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
       sellerId,
       quantity: tradeQuantity,
       price: selectedSecurity.price,
-      type: "Buy", // Changed from "Trade" to "Buy"
+      type: "Buy",
     });
 
     toast({
@@ -73,7 +73,6 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
       description: `Successfully traded ${tradeQuantity} shares of ${selectedSecurity.name}`,
     });
 
-    // Reset form
     setBuyerId("");
     setSellerId("");
     setTradeQuantity(0);
@@ -172,34 +171,11 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
         </TableBody>
       </Table>
 
-      {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious 
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <PaginationItem key={page}>
-                <PaginationLink
-                  onClick={() => setCurrentPage(page)}
-                  isActive={currentPage === page}
-                >
-                  {page}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+      <TablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
