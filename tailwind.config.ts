@@ -24,18 +24,6 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        mint: {
-          50: "#f2fcf9",
-          100: "#e6f9f3",
-          200: "#bff0e1",
-          300: "#99e7cf",
-          400: "#4dd5ab",
-          500: "#00c487",
-          600: "#00b07a",
-          700: "#009366",
-          800: "#007651",
-          900: "#006042",
-        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -64,11 +52,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
