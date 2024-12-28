@@ -5,6 +5,12 @@ import { generateRandomPriceFluctuation } from "./marketOperations";
 
 const CHUNK_SIZE = 50;
 
+interface Transaction {
+  agentId: string;
+  cashChange: number;
+  date: string;
+}
+
 function processInChunks<T>(
   items: T[],
   processor: (item: T, index: number) => T,
@@ -55,20 +61,20 @@ export const simulateRound = async (
     }
   );
 
-  // Generate transactions for all agents
-  const transactions = processInChunks<Agent>(
-    agents,
-    () => ({
-      cashChange: Math.floor(Math.random() * 201) - 100,
-      date: new Date().toISOString().split('T')[0],
-    })
-  );
+  // Generate transactions
+  const transactions: Transaction[] = agents.map((agent) => ({
+    agentId: agent.name,
+    cashChange: Math.floor(Math.random() * 201) - 100,
+    date: new Date().toISOString().split('T')[0]
+  }));
 
   // Process agents in chunks with their transactions
   const updatedAgents = processInChunks<Agent>(
     agents,
-    (agent, index) => {
-      const transaction = transactions[index];
+    (agent) => {
+      const transaction = transactions.find(t => t.agentId === agent.name);
+      if (!transaction) return agent;
+
       const cashChange = transaction.cashChange;
       const date = transaction.date;
       const newCash = agent.cash + cashChange;

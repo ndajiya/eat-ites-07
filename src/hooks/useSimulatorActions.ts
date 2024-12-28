@@ -22,12 +22,12 @@ export const useSimulatorActions = (
     const impact = calculateMarketImpact(security, trade);
     const updatedSecurity = updateSecurityPrice(security, impact);
 
-    setSecurities(securities.map(s => 
-      s.id === security.id ? updatedSecurity : s
-    ));
+    setSecurities(prevSecurities => 
+      prevSecurities.map(s => s.id === security.id ? updatedSecurity : s)
+    );
 
     const tradeValue = trade.price * trade.quantity;
-    setAgents(agents.map(agent => {
+    setAgents(prevAgents => prevAgents.map(agent => {
       if (agent.name === trade.buyerId) {
         return { ...agent, cash: agent.cash - tradeValue };
       }
@@ -36,7 +36,7 @@ export const useSimulatorActions = (
       }
       return agent;
     }));
-  }, [agents, securities, setAgents, setSecurities]);
+  }, [securities, setAgents, setSecurities]);
 
   const simulateNewRound = useCallback(async () => {
     const {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Agent, Commodity } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export const useNewEntityState = () => {
   const { toast } = useToast();
-
+  
   const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
     name: "",
     cash: 1000,
@@ -35,12 +35,12 @@ export const useNewEntityState = () => {
     description: "",
   });
 
-  const handleSecurityChange = (field: keyof Omit<Security, "id">, value: any) => {
+  const handleSecurityChange = useCallback((field: keyof Omit<Security, "id">, value: any) => {
     setNewSecurity(prev => ({
       ...prev,
       [field]: value
     }));
-  };
+  }, []);
 
   return {
     newAgent,
