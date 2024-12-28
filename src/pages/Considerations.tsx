@@ -1,4 +1,3 @@
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Brain, BookOpen, Network, Atom, Users, Globe, ChartLine, ChartBar, Book, Leaf } from "lucide-react"
 
 const considerations = [
@@ -128,45 +127,43 @@ export default function Considerations() {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-4xl font-bold mb-8 text-center">Economic Considerations</h1>
-      <ScrollArea className="h-[calc(100vh-12rem)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {considerations.map((item, index) => (
-            <div
-              key={index}
-              className="glass-card p-6 space-y-4 animate-fadeIn"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="flex items-center gap-3">
-                <item.icon className="w-6 h-6 text-primary" />
-                <h2 className="text-xl font-semibold">{item.title}</h2>
-              </div>
-              <p className="text-sm text-muted-foreground">{item.core}</p>
-              {item.features.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Key Features:</h3>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
-                    {item.features.map((feature, idx) => (
-                      <li key={idx} className="text-muted-foreground">{feature}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {item.figures.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Key Figures:</h3>
-                  <p className="text-sm text-muted-foreground">{item.figures.join(", ")}</p>
-                </div>
-              )}
-              {item.applications.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Applications:</h3>
-                  <p className="text-sm text-muted-foreground">{item.applications.join(" ")}</p>
-                </div>
-              )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
+        {considerations.map((item, index) => (
+          <div
+            key={index}
+            className="glass-card p-6 space-y-4 animate-fadeIn"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <div className="flex items-center gap-3">
+              <item.icon className="w-6 h-6 text-primary" />
+              <h2 className="text-xl font-semibold">{item.title}</h2>
             </div>
-          ))}
-        </div>
-      </ScrollArea>
+            <p className="text-sm text-muted-foreground">{item.core}</p>
+            {item.features.length > 0 && (
+              <div>
+                <h3 className="font-semibold mb-2">Key Features:</h3>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {item.features.map((feature, idx) => (
+                    <li key={idx} className="text-muted-foreground">{feature}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {item.figures.length > 0 && (
+              <div>
+                <h3 className="font-semibold mb-2">Key Figures:</h3>
+                <p className="text-sm text-muted-foreground">{item.figures.join(", ")}</p>
+              </div>
+            )}
+            {item.applications.length > 0 && (
+              <div>
+                <h3 className="font-semibold mb-2">Applications:</h3>
+                <p className="text-sm text-muted-foreground">{item.applications.join(" ")}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
