@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Agent } from "@/types/simulator";
 import { AGENT_CLASSES } from "@/types/agentClasses";
+import { useState, useEffect } from "react";
 
 interface AddAgentDialogProps {
   newAgent: Omit<Agent, "lastRoundDifference">;
@@ -19,6 +20,23 @@ export const AddAgentDialog = ({
   onAgentClassChange,
   onAddAgent,
 }: AddAgentDialogProps) => {
+  const [localName, setLocalName] = useState(newAgent.name);
+
+  useEffect(() => {
+    setLocalName(newAgent.name);
+  }, [newAgent.name]);
+
+  const handleNameChange = (value: string) => {
+    setLocalName(value);
+    onAgentNameChange(value);
+  };
+
+  const handleSubmit = () => {
+    if (localName.trim()) {
+      onAddAgent();
+    }
+  };
+
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
@@ -28,8 +46,9 @@ export const AddAgentDialog = ({
         <div className="space-y-2">
           <label>Name</label>
           <Input
-            value={newAgent.name}
-            onChange={(e) => onAgentNameChange(e.target.value)}
+            value={localName}
+            onChange={(e) => handleNameChange(e.target.value)}
+            placeholder="Enter agent name"
           />
         </div>
         <div className="space-y-2">
@@ -38,6 +57,7 @@ export const AddAgentDialog = ({
             type="number"
             value={newAgent.cash}
             onChange={(e) => onAgentCashChange(Number(e.target.value))}
+            placeholder="Enter initial cash amount"
           />
         </div>
         <div className="space-y-2">
@@ -60,7 +80,11 @@ export const AddAgentDialog = ({
             ))}
           </select>
         </div>
-        <Button className="w-full" onClick={onAddAgent}>
+        <Button 
+          className="w-full" 
+          onClick={handleSubmit}
+          disabled={!localName.trim()}
+        >
           Add Agent
         </Button>
       </div>
