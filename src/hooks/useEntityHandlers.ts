@@ -39,7 +39,7 @@ export const useEntityHandlers = (
   }, [setCommodities, toast]);
 
   const handleAddAgent = useCallback(() => {
-    setAgents(prev => [...prev, {
+    const newAgentData = {
       name: "",
       cash: 1000,
       class: "",
@@ -47,7 +47,9 @@ export const useEntityHandlers = (
       bookkeeping: new Bookkeeping(),
       inventory: [],
       production: []
-    }]);
+    };
+
+    setAgents(prev => [...prev, newAgentData]);
     setNewAgent({ 
       name: "", 
       cash: 1000, 
@@ -63,14 +65,16 @@ export const useEntityHandlers = (
   }, [setAgents, setNewAgent, toast]);
 
   const handleAddCommodity = useCallback(() => {
-    setCommodities(prev => [...prev, {
+    const newCommodityData = {
       name: "",
       averagePrice: 0,
-      priceTrend: "Up",
-      class: "Hard",
-      type: "Industrial",
-      marketType: "Spot"
-    }]);
+      priceTrend: "Up" as const,
+      class: "Hard" as const,
+      type: "Industrial" as const,
+      marketType: "Spot" as const
+    };
+
+    setCommodities(prev => [...prev, newCommodityData]);
     setNewCommodity({ 
       name: "", 
       averagePrice: 0,
@@ -85,17 +89,19 @@ export const useEntityHandlers = (
   }, [setCommodities, setNewCommodity, toast]);
 
   const handleAddSecurity = useCallback(() => {
-    setSecurities(prev => [...prev, {
-      id: (prev.length + 1).toString(),
+    const newSecurityData = {
+      id: Date.now().toString(),
       name: "",
-      class: "Equity",
-      type: "CommonStock",
+      class: "Equity" as const,
+      type: "CommonStock" as const,
       price: 0,
       volatility: 0.3,
       quantity: 0,
       issuer: "",
       description: "",
-    }]);
+    };
+
+    setSecurities(prev => [...prev, newSecurityData]);
     setNewSecurity({
       name: "",
       class: "Equity",
