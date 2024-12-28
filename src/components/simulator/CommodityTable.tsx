@@ -1,16 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Edit2, ArrowUpRight, ArrowDownRight, Factory } from "lucide-react";
 import { useState } from "react";
-import { CommodityClassSelect } from "./CommodityClassSelect";
-import { CommodityTypeSelect } from "./CommodityTypeSelect";
-import { MarketTypeSelect } from "./MarketTypeSelect";
 import { Commodity } from "@/types/simulator";
-import { CommodityClass, CommodityType, MarketType } from "@/types/commodityTypes";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { TablePagination } from "./TablePagination";
+import { CommodityEditDialog } from "./CommodityEditDialog";
 
 interface CommodityTableProps {
   commodities: Commodity[];
@@ -109,65 +105,11 @@ export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: Co
                         <Edit2 className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Edit Commodity</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4 py-4">
-                      <div className="space-y-2">
-                        <label>Name</label>
-                        <Input
-                          value={editingCommodity?.name}
-                          onChange={(e) =>
-                            setEditingCommodity(prev => prev ? { ...prev, name: e.target.value } : null)
-                          }
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label>Average Price</label>
-                        <Input
-                          type="number"
-                          value={editingCommodity?.averagePrice}
-                          onChange={(e) =>
-                            setEditingCommodity(prev => prev ? { ...prev, averagePrice: Number(e.target.value) } : null)
-                          }
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label>Class</label>
-                        <CommodityClassSelect
-                          value={editingCommodity?.class || ""}
-                          onChange={(value) =>
-                            setEditingCommodity(prev => prev ? { ...prev, class: value as CommodityClass } : null)
-                          }
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label>Type</label>
-                        <CommodityTypeSelect
-                          value={editingCommodity?.type || ""}
-                          onChange={(value) =>
-                            setEditingCommodity(prev => prev ? { ...prev, type: value as CommodityType } : null)
-                          }
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label>Market Type</label>
-                        <MarketTypeSelect 
-                          value={editingCommodity?.marketType || "Spot"}
-                          onChange={(value) =>
-                            setEditingCommodity(prev => prev ? { ...prev, marketType: value as MarketType } : null)
-                          }
-                        />
-                      </div>
-                      <Button 
-                        className="w-full" 
-                        onClick={() => editingCommodity && onCommodityEdit(editingCommodity)}
-                      >
-                        Save Changes
-                      </Button>
-                      </div>
-                    </DialogContent>
+                    <CommodityEditDialog
+                      commodity={editingCommodity}
+                      onCommodityChange={setEditingCommodity}
+                      onSave={onCommodityEdit}
+                    />
                   </Dialog>
                 </TableCell>
               </TableRow>
