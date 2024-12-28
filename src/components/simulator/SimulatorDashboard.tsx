@@ -3,6 +3,7 @@ import { SimulatorHeader } from "./SimulatorHeader";
 import { SimulatorGrid } from "./SimulatorGrid";
 import { StatsDashboard } from "./StatsDashboard";
 import { CompetitorAnalysis } from "./CompetitorAnalysis";
+import { PerformanceMonitor } from "./PerformanceMonitor";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { useToast } from "@/components/ui/use-toast";
@@ -90,11 +91,14 @@ export const SimulatorDashboard = ({
       />
       <CompetitorAnalysis agents={agents} />
       {roundsHistory.length > 0 && (
-        <StatsDashboard
-          roundsHistory={roundsHistory}
-          agents={agents}
-          commodities={commodities}
-        />
+        <>
+          <PerformanceMonitor roundsHistory={roundsHistory} />
+          <StatsDashboard
+            roundsHistory={roundsHistory}
+            agents={agents}
+            commodities={commodities}
+          />
+        </>
       )}
     </div>
   );
