@@ -31,6 +31,7 @@ const Index = () => {
     newCommodity,
     setNewCommodity,
     newSecurity,
+    setNewSecurity,
     handleSecurityChange
   } = useNewEntityState();
 
