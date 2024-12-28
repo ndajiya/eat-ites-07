@@ -1,207 +1,38 @@
-import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { SimulatorDashboard } from "@/components/simulator/SimulatorDashboard";
-import { Agent, Commodity, RoundData } from "@/types/simulator";
-import { Security, Trade } from "@/types/securities";
+import { useSimulatorState } from "@/hooks/useSimulatorState";
+import { useSimulatorActions } from "@/hooks/useSimulatorActions";
+import { useNewEntityState } from "@/hooks/useNewEntityState";
+import { Agent, Commodity } from "@/types/simulator";
+import { Security } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
-import { calculateMarketImpact, updateSecurityPrice } from "@/utils/marketOperations";
-import { simulateRound } from "@/utils/simulationOperations";
 
 const Index = () => {
   const { toast } = useToast();
   
-  const [agents, setAgents] = useState<Agent[]>([
-    { 
-      name: "Producer", 
-      cash: 1000, 
-      class: "Firms", 
-      lastRoundDifference: 0,
-      bookkeeping: new Bookkeeping(),
-      inventory: [],
-      production: [
-        {
-          commodityName: "Commodity1",
-          rate: 10,
-          cost: 30
-        }
-      ]
-    },
-    { 
-      name: "Trader", 
-      cash: 800, 
-      class: "Firms", 
-      lastRoundDifference: 0,
-      bookkeeping: new Bookkeeping(),
-      inventory: [
-        {
-          commodityName: "Commodity1",
-          quantity: 50,
-          averagePurchasePrice: 45
-        }
-      ]
-    },
-  ]);
+  const {
+    agents,
+    setAgents,
+    commodities,
+    setCommodities,
+    securities,
+    setSecurities
+  } = useSimulatorState();
 
-  const [commodities, setCommodities] = useState<Commodity[]>([
-    { 
-      name: "Commodity1", 
-      averagePrice: 50, 
-      priceTrend: "Up" as const,
-      class: "Hard",
-      type: "Industrial",
-      marketType: "Spot"
-    },
-    { 
-      name: "Commodity2", 
-      averagePrice: 30, 
-      priceTrend: "Down" as const,
-      class: "Soft",
-      type: "Food",
-      marketType: "Futures"
-    },
-  ]);
+  const {
+    roundsHistory,
+    simulateNewRound,
+    handleSecurityTrade
+  } = useSimulatorActions(agents, setAgents, commodities, setCommodities, securities, setSecurities);
 
-  const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
-  const [currentRound, setCurrentRound] = useState(1);
-
-  const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
-    name: "",
-    cash: 1000,
-    class: "",
-    bookkeeping: new Bookkeeping(),
-    inventory: [],
-    production: [],
-  });
-
-  const [newCommodity, setNewCommodity] = useState<Omit<Commodity, "priceTrend">>({
-    name: "",
-    averagePrice: 0,
-    class: "Hard",
-    type: "Industrial",
-    marketType: "Spot"
-  });
-
-  const [securities, setSecurities] = useState<Security[]>([
-    {
-      id: "1",
-      name: "Tech Corp Common Stock",
-      class: "Equity",
-      type: "CommonStock",
-      price: 100,
-      volatility: 0.3,
-      quantity: 1000000,
-      issuer: "Tech Corporation",
-      description: "Common stock of leading tech company",
-      marketCap: 100000000
-    },
-    {
-      id: "2",
-      name: "Gov 10Y Bond",
-      class: "Government",
-      type: "GovernmentBond",
-      price: 1000,
-      volatility: 0.1,
-      quantity: 500000,
-      issuer: "Federal Government",
-      description: "10-year government bond",
-      interestRate: 0.035,
-      maturityDate: "2034-03-15"
-    }
-  ]);
-
-  const [newSecurity, setNewSecurity] = useState<Omit<Security, "id">>({
-    name: "",
-    class: "Equity",
-    type: "CommonStock",
-    price: 0,
-    volatility: 0.3,
-    quantity: 0,
-    issuer: "",
-    description: "",
-  });
-
-  const handleSecurityChange = (field: keyof Omit<Security, "id">, value: any) => {
-    setNewSecurity(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleAddSecurity = () => {
-    if (!newSecurity.name || !newSecurity.issuer) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const security: Security = {
-      ...newSecurity,
-      id: (securities.length + 1).toString(),
-    };
-
-    setSecurities([...securities, security]);
-    setNewSecurity({
-      name: "",
-      class: "Equity",
-      type: "CommonStock",
-      price: 0,
-      volatility: 0.3,
-      quantity: 0,
-      issuer: "",
-      description: "",
-    });
-
-    toast({
-      title: "Security Added",
-      description: `${security.name} has been added successfully.`,
-    });
-  };
-
-  const handleSecurityTrade = (trade: Omit<Trade, "id" | "timestamp">) => {
-    const security = securities.find(s => s.id === trade.securityId);
-    if (!security) return;
-
-    const impact = calculateMarketImpact(security, trade);
-    const updatedSecurity = updateSecurityPrice(security, impact);
-
-    setSecurities(securities.map(s => 
-      s.id === security.id ? updatedSecurity : s
-    ));
-
-    const tradeValue = trade.price * trade.quantity;
-    setAgents(agents.map(agent => {
-      if (agent.name === trade.buyerId) {
-        return { ...agent, cash: agent.cash - tradeValue };
-      }
-      if (agent.name === trade.sellerId) {
-        return { ...agent, cash: agent.cash + tradeValue };
-      }
-      return agent;
-    }));
-  };
-
-  const simulateNewRound = () => {
-    const {
-      updatedSecurities,
-      updatedCommodities,
-      updatedAgents,
-      newRoundData
-    } = simulateRound(currentRound, agents, commodities, securities, roundsHistory);
-
-    setRoundsHistory(prev => [...prev, newRoundData]);
-    setCurrentRound(prev => prev + 1);
-    setAgents(updatedAgents);
-    setCommodities(updatedCommodities);
-    setSecurities(updatedSecurities);
-
-    toast({
-      title: "Simulation Round Complete",
-      description: "Market conditions have been updated.",
-    });
-  };
+  const {
+    newAgent,
+    setNewAgent,
+    newCommodity,
+    setNewCommodity,
+    newSecurity,
+    handleSecurityChange
+  } = useNewEntityState();
 
   const handleAgentEdit = (updatedAgent: Agent) => {
     setAgents(agents.map(agent => 
@@ -273,6 +104,39 @@ const Index = () => {
     toast({
       title: "Commodity Added",
       description: `${commodity.name} has been added successfully.`,
+    });
+  };
+
+  const handleAddSecurity = () => {
+    if (!newSecurity.name || !newSecurity.issuer) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const security: Security = {
+      ...newSecurity,
+      id: (securities.length + 1).toString(),
+    };
+
+    setSecurities([...securities, security]);
+    setNewSecurity({
+      name: "",
+      class: "Equity",
+      type: "CommonStock",
+      price: 0,
+      volatility: 0.3,
+      quantity: 0,
+      issuer: "",
+      description: "",
+    });
+
+    toast({
+      title: "Security Added",
+      description: `${security.name} has been added successfully.`,
     });
   };
 
