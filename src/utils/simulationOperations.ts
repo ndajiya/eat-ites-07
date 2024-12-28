@@ -2,7 +2,6 @@ import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { calculateNewPrice, determinePriceTrend } from "./commodityPricing";
 import { generateRandomPriceFluctuation } from "./marketOperations";
-import { Bookkeeping } from "./Bookkeeping";
 
 export const simulateRound = (
   currentRound: number,
@@ -47,19 +46,19 @@ export const simulateRound = (
     const bookkeepingEntries = [
       {
         date,
-        category: cashChange >= 0 ? "Revenue" : "Expenses",
+        category: "Revenue" as const,
         subcategory: cashChange >= 0 ? "Trading Income" : "Trading Expenses",
         amount: Math.abs(cashChange),
         description: `Round ${currentRound} trading result`,
-        type: "Increase"
+        type: "Increase" as const
       },
       {
         date,
-        category: "Assets",
+        category: "Assets" as const,
         subcategory: "Cash",
         amount: Math.abs(cashChange),
         description: `Round ${currentRound} cash adjustment`,
-        type: cashChange >= 0 ? "Increase" : "Decrease"
+        type: cashChange >= 0 ? "Increase" as const : "Decrease" as const
       }
     ];
 
@@ -71,7 +70,7 @@ export const simulateRound = (
         entry.subcategory,
         entry.amount,
         entry.description,
-        entry.type as "Increase" | "Decrease"
+        entry.type
       );
     });
 
