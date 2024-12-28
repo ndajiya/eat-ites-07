@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Security, Trade } from "@/types/securities";
 import { Agent } from "@/types/simulator";
 import { useToast } from "@/components/ui/use-toast";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 interface SecuritiesTableProps {
   securities: Security[];
@@ -19,6 +20,13 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
   const [tradeQuantity, setTradeQuantity] = useState(0);
   const [buyerId, setBuyerId] = useState<string>("");
   const [sellerId, setSellerId] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(securities.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentSecurities = securities.slice(startIndex, endIndex);
 
   const handleTrade = () => {
     if (!selectedSecurity || !buyerId || !sellerId) {
@@ -85,7 +93,7 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
           </TableRow>
         </TableHeader>
         <TableBody>
-          {securities.map((security) => (
+          {currentSecurities.map((security) => (
             <TableRow key={security.id}>
               <TableCell>{security.name}</TableCell>
               <TableCell>{security.class}</TableCell>
@@ -163,6 +171,35 @@ export const SecuritiesTable = ({ securities, agents, onTrade }: SecuritiesTable
           ))}
         </TableBody>
       </Table>
+
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

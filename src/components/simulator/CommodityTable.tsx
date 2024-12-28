@@ -10,6 +10,7 @@ import { MarketTypeSelect } from "./MarketTypeSelect";
 import { Commodity } from "@/types/simulator";
 import { CommodityClass, CommodityType, MarketType } from "@/types/commodityTypes";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 interface CommodityTableProps {
   commodities: Commodity[];
@@ -19,6 +20,13 @@ interface CommodityTableProps {
 
 export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: CommodityTableProps) => {
   const [editingCommodity, setEditingCommodity] = useState<Commodity | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(commodities.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCommodities = commodities.slice(startIndex, endIndex);
 
   const getProducers = (commodityName: string) => {
     return agents
@@ -30,81 +38,82 @@ export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: Co
   };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Commodity</TableHead>
-          <TableHead>Average Price</TableHead>
-          <TableHead>Price Trend</TableHead>
-          <TableHead>Class</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Market</TableHead>
-          <TableHead>Producers</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {commodities.map((commodity) => {
-          const producers = getProducers(commodity.name);
-          return (
-            <TableRow key={commodity.name}>
-              <TableCell>{commodity.name}</TableCell>
-              <TableCell>${commodity.averagePrice.toLocaleString()}</TableCell>
-              <TableCell>
-                <span
-                  className={`inline-flex items-center ${
-                    commodity.priceTrend === "Up"
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
-                >
-                  {commodity.priceTrend === "Up" ? (
-                    <ArrowUpRight className="h-4 w-4 mr-1" />
+    <div className="space-y-4">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Commodity</TableHead>
+            <TableHead>Average Price</TableHead>
+            <TableHead>Price Trend</TableHead>
+            <TableHead>Class</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Market</TableHead>
+            <TableHead>Producers</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {currentCommodities.map((commodity) => {
+            const producers = getProducers(commodity.name);
+            return (
+              <TableRow key={commodity.name}>
+                <TableCell>{commodity.name}</TableCell>
+                <TableCell>${commodity.averagePrice.toLocaleString()}</TableCell>
+                <TableCell>
+                  <span
+                    className={`inline-flex items-center ${
+                      commodity.priceTrend === "Up"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {commodity.priceTrend === "Up" ? (
+                      <ArrowUpRight className="h-4 w-4 mr-1" />
+                    ) : (
+                      <ArrowDownRight className="h-4 w-4 mr-1" />
+                    )}
+                    {commodity.priceTrend}
+                  </span>
+                </TableCell>
+                <TableCell>{commodity.class}</TableCell>
+                <TableCell>{commodity.type}</TableCell>
+                <TableCell>{commodity.marketType}</TableCell>
+                <TableCell>
+                  {producers.length > 0 ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="flex items-center gap-1 cursor-help">
+                          <Factory className="h-4 w-4" />
+                          <span>{producers.length}</span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="space-y-2">
+                          <p className="font-semibold">Producers:</p>
+                          {producers.map((producer, idx) => (
+                            <p key={idx}>
+                              {producer.name}: {producer.rate} units/round
+                            </p>
+                          ))}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
                   ) : (
-                    <ArrowDownRight className="h-4 w-4 mr-1" />
+                    "-"
                   )}
-                  {commodity.priceTrend}
-                </span>
-              </TableCell>
-              <TableCell>{commodity.class}</TableCell>
-              <TableCell>{commodity.type}</TableCell>
-              <TableCell>{commodity.marketType}</TableCell>
-              <TableCell>
-                {producers.length > 0 ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center gap-1 cursor-help">
-                        <Factory className="h-4 w-4" />
-                        <span>{producers.length}</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="space-y-2">
-                        <p className="font-semibold">Producers:</p>
-                        {producers.map((producer, idx) => (
-                          <p key={idx}>
-                            {producer.name}: {producer.rate} units/round
-                          </p>
-                        ))}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  "-"
-                )}
-              </TableCell>
-              <TableCell>
-                <Dialog open={editingCommodity?.name === commodity.name} onOpenChange={(open) => !open && setEditingCommodity(null)}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="icon" onClick={() => setEditingCommodity(commodity)}>
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Edit Commodity</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
+                </TableCell>
+                <TableCell>
+                  <Dialog open={editingCommodity?.name === commodity.name} onOpenChange={(open) => !open && setEditingCommodity(null)}>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" size="icon" onClick={() => setEditingCommodity(commodity)}>
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Commodity</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
                       <div className="space-y-2">
                         <label>Name</label>
                         <Input
@@ -157,14 +166,44 @@ export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: Co
                       >
                         Save Changes
                       </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </TableCell>
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
+    </div>
   );
 };
