@@ -41,7 +41,7 @@ export const useSimulatorActions = (
     }));
   };
 
-  const simulateNewRound = () => {
+  const simulateNewRound = async () => {
     const {
       updatedSecurities,
       updatedCommodities,
@@ -54,11 +54,6 @@ export const useSimulatorActions = (
     setAgents(updatedAgents);
     setCommodities(updatedCommodities);
     setSecurities(updatedSecurities);
-
-    toast({
-      title: "Simulation Round Complete",
-      description: "Market conditions have been updated.",
-    });
   };
 
   return {
