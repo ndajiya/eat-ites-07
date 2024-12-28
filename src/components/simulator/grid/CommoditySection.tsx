@@ -24,7 +24,7 @@ export const CommoditySection = ({
   onCommodityPriceChange,
 }: CommoditySectionProps) => {
   return (
-    <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto">
+    <div className="glass-card p-6 space-y-4 w-full">
       <div className="flex justify-between items-center">
         <h2 className="text-xl sm:text-2xl font-semibold">Commodity Information</h2>
         <Dialog>
@@ -42,8 +42,11 @@ export const CommoditySection = ({
         </Dialog>
       </div>
       <div className="min-w-[300px]">
-        <CommodityTable commodities={commodities} onCommodityEdit={onCommodityEdit} />
+        <CommodityTable 
+          commodities={commodities} 
+          onCommodityEdit={onCommodityEdit}
+        />
       </div>
-    </Card>
+    </div>
   );
 };

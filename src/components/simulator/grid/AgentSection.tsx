@@ -28,7 +28,7 @@ export const AgentSection = ({
   onAgentClassChange,
 }: AgentSectionProps) => {
   return (
-    <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto">
+    <div className="glass-card p-6 space-y-4 w-full">
       <div className="flex justify-between items-center">
         <h2 className="text-xl sm:text-2xl font-semibold">Agent Information</h2>
         <Dialog>
@@ -53,6 +53,6 @@ export const AgentSection = ({
           onAgentDelete={onAgentDelete}
         />
       </div>
-    </Card>
+    </div>
   );
 };

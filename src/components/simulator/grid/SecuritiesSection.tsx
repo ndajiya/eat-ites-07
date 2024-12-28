@@ -25,7 +25,7 @@ export const SecuritiesSection = ({
   onSecurityChange,
 }: SecuritiesSectionProps) => {
   return (
-    <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto col-span-2">
+    <div className="glass-card p-6 space-y-4 w-full">
       <div className="flex justify-between items-center">
         <h2 className="text-xl sm:text-2xl font-semibold">Securities Market</h2>
         <Dialog>
@@ -44,10 +44,10 @@ export const SecuritiesSection = ({
       <div className="min-w-[300px]">
         <SecuritiesTable 
           securities={securities} 
-          agents={agents} 
+          agents={agents}
           onTrade={onSecurityTrade}
         />
       </div>
-    </Card>
+    </div>
   );
 };

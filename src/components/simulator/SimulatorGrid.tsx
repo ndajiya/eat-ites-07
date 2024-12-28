@@ -77,7 +77,7 @@ export const SimulatorGrid = ({
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 px-4 sm:px-0">
+    <div className="flex flex-col gap-4 sm:gap-8">
       <AgentSection
         agents={agents}
         newAgent={newAgent}
