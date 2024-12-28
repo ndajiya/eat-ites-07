@@ -32,6 +32,7 @@ const Index = () => {
 
   const {
     handleAgentEdit,
+    handleAgentDelete,
     handleCommodityEdit,
     handleAddAgent,
     handleAddCommodity,
@@ -56,6 +57,7 @@ const Index = () => {
       newSecurity={newSecurity}
       onSimulate={simulateNewRound}
       onAgentEdit={handleAgentEdit}
+      onAgentDelete={handleAgentDelete}
       onCommodityEdit={handleCommodityEdit}
       onSecurityTrade={handleSecurityTrade}
       onAddAgent={handleAddAgent}

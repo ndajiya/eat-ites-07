@@ -18,6 +18,7 @@ interface SimulatorDashboardProps {
   newSecurity: Omit<Security, "id">;
   onSimulate: () => Promise<void>;
   onAgentEdit: (agent: Agent) => void;
+  onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: Commodity) => void;
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddAgent: () => void;
@@ -38,6 +39,7 @@ export const SimulatorDashboard = ({
   newSecurity,
   onSimulate,
   onAgentEdit,
+  onAgentDelete,
   onCommodityEdit,
   onSecurityTrade,
   onAddAgent,
@@ -80,6 +82,7 @@ export const SimulatorDashboard = ({
         newCommodity={newCommodity}
         newSecurity={newSecurity}
         onAgentEdit={onAgentEdit}
+        onAgentDelete={onAgentDelete}
         onCommodityEdit={onCommodityEdit}
         onSecurityTrade={onSecurityTrade}
         onAddAgent={onAddAgent}

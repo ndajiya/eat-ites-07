@@ -19,6 +19,7 @@ interface SimulatorGridProps {
   newCommodity: Omit<Commodity, "priceTrend">;
   newSecurity: Omit<Security, "id">;
   onAgentEdit: (agent: Agent) => void;
+  onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: Commodity) => void;
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddAgent: () => void;
@@ -37,6 +38,7 @@ export const SimulatorGrid = ({
   newCommodity,
   newSecurity,
   onAgentEdit,
+  onAgentDelete,
   onCommodityEdit,
   onSecurityTrade,
   onAddAgent,
@@ -102,7 +104,11 @@ export const SimulatorGrid = ({
           </Dialog>
         </div>
         <div className="min-w-[300px]">
-          <AgentTable agents={agents} onAgentEdit={onAgentEdit} />
+          <AgentTable 
+            agents={agents} 
+            onAgentEdit={onAgentEdit} 
+            onAgentDelete={onAgentDelete}
+          />
         </div>
       </Card>
 

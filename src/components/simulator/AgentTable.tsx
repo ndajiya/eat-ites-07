@@ -1,30 +1,41 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog } from "@/components/ui/dialog";
-import { Edit2, BookOpen, Package } from "lucide-react";
+import { Edit2, BookOpen, Package, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/simulator";
 import { AgentEditDialog } from "./AgentEditDialog";
 import { FinancialRecordsDialog } from "./FinancialRecordsDialog";
 import { InventoryDialog } from "./InventoryDialog";
 import { TablePagination } from "./TablePagination";
+import { useToast } from "@/components/ui/use-toast";
 
 interface AgentTableProps {
   agents: Agent[];
   onAgentEdit: (agent: Agent) => void;
+  onAgentDelete: (agentName: string) => void;
 }
 
-export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
+export const AgentTable = ({ agents, onAgentEdit, onAgentDelete }: AgentTableProps) => {
   const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
   const [viewingLedger, setViewingLedger] = useState<Agent | null>(null);
   const [viewingInventory, setViewingInventory] = useState<Agent | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const { toast } = useToast();
   const itemsPerPage = 10;
 
   const totalPages = Math.ceil(agents.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentAgents = agents.slice(startIndex, endIndex);
+
+  const handleDelete = (agentName: string) => {
+    onAgentDelete(agentName);
+    toast({
+      title: "Agent Deleted",
+      description: `${agentName} has been removed from the simulation.`,
+    });
+  };
 
   return (
     <div className="space-y-4">
@@ -79,6 +90,15 @@ export const AgentTable = ({ agents, onAgentEdit }: AgentTableProps) => {
                   </Button>
                   <InventoryDialog agent={viewingInventory} />
                 </Dialog>
+
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => handleDelete(agent.name)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}

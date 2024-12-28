@@ -26,6 +26,10 @@ export const useEntityHandlers = (
     });
   }, [setAgents, toast]);
 
+  const handleAgentDelete = useCallback((agentName: string) => {
+    setAgents(prevAgents => prevAgents.filter(agent => agent.name !== agentName));
+  }, [setAgents]);
+
   const handleCommodityEdit = useCallback((updatedCommodity: Commodity) => {
     setCommodities(prevCommodities => 
       prevCommodities.map(commodity => 
@@ -120,6 +124,7 @@ export const useEntityHandlers = (
 
   return {
     handleAgentEdit,
+    handleAgentDelete,
     handleCommodityEdit,
     handleAddAgent,
     handleAddCommodity,
