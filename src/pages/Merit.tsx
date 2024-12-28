@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Book, Users, Network, Puzzle, Atom, Brain, Target, ChartBar } from "lucide-react"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ResearchArea {
   id: number
@@ -110,36 +109,34 @@ const Merit = () => {
         market behavior, or mechanisms to solve economic problems.
       </p>
       
-      <ScrollArea className="h-[calc(100vh-200px)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {researchAreas.map((area) => (
-            <Card key={area.id} className="glass-card">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  {area.icon}
-                  <CardTitle>{area.title}</CardTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
+        {researchAreas.map((area) => (
+          <Card key={area.id} className="glass-card">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                {area.icon}
+                <CardTitle>{area.title}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold mb-2">Research Focus:</h3>
+                  <p className="text-muted-foreground">{area.focus}</p>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold mb-2">Research Focus:</h3>
-                    <p className="text-muted-foreground">{area.focus}</p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Work:</h3>
-                    <ul className="list-disc pl-5 space-y-2">
-                      {area.work.map((item, index) => (
-                        <li key={index} className="text-muted-foreground">{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Work:</h3>
+                  <ul className="list-disc pl-5 space-y-2">
+                    {area.work.map((item, index) => (
+                      <li key={index} className="text-muted-foreground">{item}</li>
+                    ))}
+                  </ul>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </ScrollArea>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }
