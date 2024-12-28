@@ -3,23 +3,23 @@ import { Security } from "@/types/securities";
 import { calculateNewPrice, determinePriceTrend } from "./commodityPricing";
 import { generateRandomPriceFluctuation } from "./marketOperations";
 
-const CHUNK_SIZE = 50; // Process 50 items at a time
+const CHUNK_SIZE = 50;
 
-const processInChunks = <T, R>(
+function processInChunks<T>(
   items: T[],
-  processor: (item: T) => R,
+  processor: (item: T, index: number) => T,
   chunkSize: number = CHUNK_SIZE
-): R[] => {
-  const results: R[] = [];
+): T[] {
+  const results: T[] = [];
   
   for (let i = 0; i < items.length; i += chunkSize) {
     const chunk = items.slice(i, i + chunkSize);
-    const processedChunk = chunk.map(processor);
+    const processedChunk = chunk.map((item, index) => processor(item, i + index));
     results.push(...processedChunk);
   }
   
   return results;
-};
+}
 
 export const simulateRound = async (
   currentRound: number,
@@ -34,35 +34,29 @@ export const simulateRound = async (
   newRoundData: RoundData;
 }> => {
   // Process securities in chunks
-  const updatedSecurities = await new Promise<Security[]>((resolve) => {
-    const processed = processInChunks(
-      securities,
-      security => ({
-        ...security,
-        price: security.price + generateRandomPriceFluctuation(security)
-      })
-    );
-    resolve(processed);
-  });
+  const updatedSecurities = processInChunks<Security>(
+    securities,
+    (security) => ({
+      ...security,
+      price: security.price + generateRandomPriceFluctuation(security)
+    })
+  );
 
   // Process commodities in chunks
-  const updatedCommodities = await new Promise<Commodity[]>((resolve) => {
-    const processed = processInChunks(
-      commodities,
-      commodity => {
-        const newPrice = calculateNewPrice(commodity, currentRound, roundsHistory);
-        return {
-          ...commodity,
-          averagePrice: newPrice,
-          priceTrend: determinePriceTrend(commodity.averagePrice, newPrice)
-        };
-      }
-    );
-    resolve(processed);
-  });
+  const updatedCommodities = processInChunks<Commodity>(
+    commodities,
+    (commodity) => {
+      const newPrice = calculateNewPrice(commodity, currentRound, roundsHistory);
+      return {
+        ...commodity,
+        averagePrice: newPrice,
+        priceTrend: determinePriceTrend(commodity.averagePrice, newPrice)
+      };
+    }
+  );
 
-  // Process agents in chunks
-  const transactions = processInChunks(
+  // Generate transactions for all agents
+  const transactions = processInChunks<Agent>(
     agents,
     () => ({
       cashChange: Math.floor(Math.random() * 201) - 100,
@@ -70,52 +64,40 @@ export const simulateRound = async (
     })
   );
 
-  const updatedAgents = await new Promise<Agent[]>((resolve) => {
-    const processed = processInChunks(
-      agents,
-      (agent, index) => {
-        const { cashChange, date } = transactions[index];
-        const newCash = agent.cash + cashChange;
-        
-        const bookkeepingEntries = [
-          {
-            date,
-            category: "Revenue" as const,
-            subcategory: cashChange >= 0 ? "Trading Income" : "Trading Expenses",
-            amount: Math.abs(cashChange),
-            description: `Round ${currentRound} trading result`,
-            type: "Increase" as const
-          },
-          {
-            date,
-            category: "Assets" as const,
-            subcategory: "Cash",
-            amount: Math.abs(cashChange),
-            description: `Round ${currentRound} cash adjustment`,
-            type: cashChange >= 0 ? "Increase" as const : "Decrease" as const
-          }
-        ];
+  // Process agents in chunks with their transactions
+  const updatedAgents = processInChunks<Agent>(
+    agents,
+    (agent, index) => {
+      const transaction = transactions[index];
+      const cashChange = transaction.cashChange;
+      const date = transaction.date;
+      const newCash = agent.cash + cashChange;
+      
+      agent.bookkeeping.addTransaction(
+        date,
+        "Revenue",
+        cashChange >= 0 ? "Trading Income" : "Trading Expenses",
+        Math.abs(cashChange),
+        `Round ${currentRound} trading result`,
+        cashChange >= 0 ? "Increase" : "Decrease"
+      );
 
-        bookkeepingEntries.forEach(entry => {
-          agent.bookkeeping.addTransaction(
-            entry.date,
-            entry.category,
-            entry.subcategory,
-            entry.amount,
-            entry.description,
-            entry.type
-          );
-        });
+      agent.bookkeeping.addTransaction(
+        date,
+        "Assets",
+        "Cash",
+        Math.abs(cashChange),
+        `Round ${currentRound} cash adjustment`,
+        cashChange >= 0 ? "Increase" : "Decrease"
+      );
 
-        return {
-          ...agent,
-          cash: newCash,
-          lastRoundDifference: cashChange,
-        };
-      }
-    );
-    resolve(processed);
-  });
+      return {
+        ...agent,
+        cash: newCash,
+        lastRoundDifference: cashChange,
+      };
+    }
+  );
 
   // Create round history record
   const newRoundData: RoundData = {

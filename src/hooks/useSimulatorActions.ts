@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { calculateMarketImpact, updateSecurityPrice } from "@/utils/marketOperations";
@@ -15,7 +15,7 @@ export const useSimulatorActions = (
   const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
   const [currentRound, setCurrentRound] = useState(1);
 
-  const handleSecurityTrade = (trade: Omit<Trade, "id" | "timestamp">) => {
+  const handleSecurityTrade = useCallback((trade: Omit<Trade, "id" | "timestamp">) => {
     const security = securities.find(s => s.id === trade.securityId);
     if (!security) return;
 
@@ -36,9 +36,9 @@ export const useSimulatorActions = (
       }
       return agent;
     }));
-  };
+  }, [agents, securities, setAgents, setSecurities]);
 
-  const simulateNewRound = async () => {
+  const simulateNewRound = useCallback(async () => {
     const {
       updatedSecurities,
       updatedCommodities,
@@ -51,7 +51,16 @@ export const useSimulatorActions = (
     setAgents(updatedAgents);
     setCommodities(updatedCommodities);
     setSecurities(updatedSecurities);
-  };
+  }, [
+    currentRound,
+    agents,
+    commodities,
+    securities,
+    roundsHistory,
+    setAgents,
+    setCommodities,
+    setSecurities
+  ]);
 
   return {
     roundsHistory,
