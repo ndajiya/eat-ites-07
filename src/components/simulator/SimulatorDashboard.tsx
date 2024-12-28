@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { SimulatorHeader } from "./SimulatorHeader";
 import { SimulatorGrid } from "./SimulatorGrid";
 import { StatsDashboard } from "./StatsDashboard";
 import { CompetitorAnalysis } from "./CompetitorAnalysis";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
+import { useToast } from "@/components/ui/use-toast";
 
 interface SimulatorDashboardProps {
   agents: Agent[];
@@ -13,7 +15,7 @@ interface SimulatorDashboardProps {
   newAgent: Omit<Agent, "lastRoundDifference">;
   newCommodity: Omit<Commodity, "priceTrend">;
   newSecurity: Omit<Security, "id">;
-  onSimulate: () => void;
+  onSimulate: () => Promise<void>;
   onAgentEdit: (agent: Agent) => void;
   onCommodityEdit: (commodity: Commodity) => void;
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
@@ -44,9 +46,31 @@ export const SimulatorDashboard = ({
   setNewCommodity,
   onSecurityChange,
 }: SimulatorDashboardProps) => {
+  const [isSimulating, setIsSimulating] = useState(false);
+  const { toast } = useToast();
+
+  const handleSimulate = async () => {
+    try {
+      setIsSimulating(true);
+      await onSimulate();
+      toast({
+        title: "Simulation Complete",
+        description: "The market has been updated with new data.",
+      });
+    } catch (error) {
+      toast({
+        title: "Simulation Failed",
+        description: "An error occurred during simulation.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSimulating(false);
+    }
+  };
+
   return (
     <div className="container mx-auto py-4 sm:py-8 max-w-7xl space-y-6 sm:space-y-8">
-      <SimulatorHeader onSimulate={onSimulate} />
+      <SimulatorHeader onSimulate={handleSimulate} isSimulating={isSimulating} />
       <SimulatorGrid
         agents={agents}
         commodities={commodities}

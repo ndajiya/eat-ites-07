@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { Play, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 
 interface SimulatorHeaderProps {
   onSimulate: () => void;
+  isSimulating: boolean;
 }
 
-export const SimulatorHeader = ({ onSimulate }: SimulatorHeaderProps) => {
+export const SimulatorHeader = ({ onSimulate, isSimulating }: SimulatorHeaderProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,11 +31,16 @@ export const SimulatorHeader = ({ onSimulate }: SimulatorHeaderProps) => {
       <div className="flex justify-center">
         <Button
           onClick={onSimulate}
+          disabled={isSimulating}
           size="lg"
           className="glass-card hover:bg-white/30 transition-all duration-300 text-base sm:text-lg font-semibold shadow-lg border-2 border-white/20 px-6 sm:px-8 py-4 sm:py-6 h-auto text-foreground"
         >
-          <Play className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-          Simulate Round
+          {isSimulating ? (
+            <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+          ) : (
+            <Play className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+          )}
+          {isSimulating ? "Simulating..." : "Simulate Round"}
         </Button>
       </div>
     </motion.div>
