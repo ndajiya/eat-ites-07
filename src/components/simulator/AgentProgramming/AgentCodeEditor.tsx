@@ -4,8 +4,7 @@ import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/c
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { LanguageSelector } from "./LanguageSelector";
-import { DEFAULT_JS_STRATEGY, DEFAULT_YAML_STRATEGY } from "./defaultStrategies";
-import yaml from "js-yaml";
+import { DEFAULT_JS_STRATEGY, DEFAULT_TS_STRATEGY, DEFAULT_YAML_STRATEGY, DEFAULT_PYTHON_STRATEGY } from "./defaultStrategies";
 
 interface AgentCodeEditorProps {
   agentName: string;
@@ -13,18 +12,25 @@ interface AgentCodeEditorProps {
 }
 
 export const AgentCodeEditor = ({ agentName, onSaveStrategy }: AgentCodeEditorProps) => {
-  const [language, setLanguage] = useState<"javascript" | "yaml">("javascript");
+  const [language, setLanguage] = useState<"javascript" | "typescript" | "python" | "yaml">("javascript");
   const [code, setCode] = useState(DEFAULT_JS_STRATEGY);
   const { toast } = useToast();
 
-  const handleLanguageChange = (newLanguage: "javascript" | "yaml") => {
+  const handleLanguageChange = (newLanguage: "javascript" | "typescript" | "python" | "yaml") => {
     try {
-      if (newLanguage === "yaml" && language === "javascript") {
-        // Convert JS to YAML format
-        const jsStrategy = new Function("agent", "market", code);
-        setCode(DEFAULT_YAML_STRATEGY);
-      } else if (newLanguage === "javascript" && language === "yaml") {
-        setCode(DEFAULT_JS_STRATEGY);
+      switch (newLanguage) {
+        case "javascript":
+          setCode(DEFAULT_JS_STRATEGY);
+          break;
+        case "typescript":
+          setCode(DEFAULT_TS_STRATEGY);
+          break;
+        case "python":
+          setCode(DEFAULT_PYTHON_STRATEGY);
+          break;
+        case "yaml":
+          setCode(DEFAULT_YAML_STRATEGY);
+          break;
       }
       setLanguage(newLanguage);
     } catch (error) {
@@ -36,14 +42,28 @@ export const AgentCodeEditor = ({ agentName, onSaveStrategy }: AgentCodeEditorPr
     }
   };
 
-  const validateStrategy = (code: string, language: "javascript" | "yaml") => {
+  const getMonacoLanguage = (lang: string) => {
+    switch (lang) {
+      case "javascript":
+        return "javascript";
+      case "typescript":
+        return "typescript";
+      case "python":
+        return "python";
+      case "yaml":
+        return "yaml";
+      default:
+        return "javascript";
+    }
+  };
+
+  const validateStrategy = (code: string, language: string) => {
     try {
-      if (language === "javascript") {
-        // Validate JavaScript
-        new Function("agent", "market", code);
-      } else {
-        // Validate YAML
+      if (language === "yaml") {
         yaml.load(code);
+      } else {
+        // For other languages, basic syntax check
+        new Function(code);
       }
       return true;
     } catch (error) {
@@ -72,7 +92,7 @@ export const AgentCodeEditor = ({ agentName, onSaveStrategy }: AgentCodeEditorPr
       <DialogHeader>
         <DialogTitle>Program Trading Strategy: {agentName}</DialogTitle>
         <DialogDescription>
-          Write a trading strategy using {language === "javascript" ? "JavaScript" : "YAML"} that receives agent and market information and returns trading decisions.
+          Write a trading strategy using {language} that receives agent and market information and returns trading decisions.
         </DialogDescription>
       </DialogHeader>
       <div className="space-y-4 py-4">
@@ -81,7 +101,7 @@ export const AgentCodeEditor = ({ agentName, onSaveStrategy }: AgentCodeEditorPr
         </div>
         <Editor
           height="400px"
-          defaultLanguage={language}
+          defaultLanguage={getMonacoLanguage(language)}
           value={code}
           onChange={(value) => setCode(value || "")}
           theme="vs-dark"

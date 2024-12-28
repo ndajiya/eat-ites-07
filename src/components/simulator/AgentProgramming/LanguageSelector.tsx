@@ -1,8 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface LanguageSelectorProps {
-  value: "javascript" | "yaml";
-  onChange: (value: "javascript" | "yaml") => void;
+  value: "javascript" | "typescript" | "python" | "yaml";
+  onChange: (value: "javascript" | "typescript" | "python" | "yaml") => void;
 }
 
 export const LanguageSelector = ({ value, onChange }: LanguageSelectorProps) => {
@@ -13,6 +13,8 @@ export const LanguageSelector = ({ value, onChange }: LanguageSelectorProps) => 
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="javascript">JavaScript</SelectItem>
+        <SelectItem value="typescript">TypeScript</SelectItem>
+        <SelectItem value="python">Python</SelectItem>
         <SelectItem value="yaml">YAML</SelectItem>
       </SelectContent>
     </Select>

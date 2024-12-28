@@ -8,7 +8,7 @@ interface TradingDecision {
 }
 
 interface StrategyData {
-  language: "javascript" | "yaml";
+  language: "javascript" | "typescript" | "python" | "yaml";
   code: string;
 }
 
@@ -22,7 +22,6 @@ const executeYamlStrategy = (yamlCode: string, agent: Agent, market: { commoditi
 
     for (const condition of strategy.conditions) {
       if (condition.if) {
-        // Parse simple conditions
         const conditionMet = new Function('agent', 'market', `return ${condition.if}`)(agent, market);
         if (conditionMet) {
           return condition.then as TradingDecision;
@@ -39,27 +38,61 @@ const executeYamlStrategy = (yamlCode: string, agent: Agent, market: { commoditi
   }
 };
 
-export const executeStrategy = (
+const executePythonStrategy = async (pythonCode: string, agent: Agent, market: { commodities: Commodity[] }): Promise<TradingDecision> => {
+  try {
+    // Using Pyodide for Python execution in browser
+    // Note: This is a simplified example. In production, you'd want to properly initialize Pyodide
+    const pyodide = (window as any).pyodide;
+    if (!pyodide) {
+      console.error("Pyodide not loaded");
+      return { action: 'hold' };
+    }
+
+    // Convert JS objects to Python
+    await pyodide.runPythonAsync(`
+      import json
+      agent = json.loads('${JSON.stringify(agent)}')
+      market = json.loads('${JSON.stringify({ commodities: market.commodities })}')
+      ${pythonCode}
+      result = trading_strategy(agent, market)
+    `);
+
+    const result = pyodide.globals.get('result').toJs();
+    return result as TradingDecision;
+  } catch (error) {
+    console.error("Error executing Python strategy:", error);
+    return { action: 'hold' };
+  }
+};
+
+export const executeStrategy = async (
   strategyCode: string,
   agent: Agent,
   commodities: Commodity[]
-): TradingDecision => {
+): Promise<TradingDecision> => {
   try {
     const { language, code } = JSON.parse(strategyCode) as StrategyData;
     const market = { commodities };
 
-    if (language === "yaml") {
-      return executeYamlStrategy(code, agent, market);
-    } else {
-      const strategyFn = new Function("agent", "market", code);
-      const decision = strategyFn(agent, market);
-      
-      if (!decision || !decision.action) {
-        console.error("Invalid strategy result format");
+    switch (language) {
+      case "yaml":
+        return executeYamlStrategy(code, agent, market);
+      case "python":
+        return await executePythonStrategy(code, agent, market);
+      case "typescript":
+      case "javascript":
+        const strategyFn = new Function("agent", "market", code);
+        const decision = strategyFn(agent, market);
+        
+        if (!decision || !decision.action) {
+          console.error("Invalid strategy result format");
+          return { action: 'hold' };
+        }
+        
+        return decision;
+      default:
+        console.error("Unsupported language");
         return { action: 'hold' };
-      }
-      
-      return decision;
     }
   } catch (error) {
     console.error("Error executing strategy:", error);
