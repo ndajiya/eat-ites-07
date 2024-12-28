@@ -6,11 +6,11 @@ import { simulateRound } from "@/utils/simulationOperations";
 
 export const useSimulatorActions = (
   agents: Agent[],
-  setAgents: (agents: Agent[]) => void,
+  setAgents: React.Dispatch<React.SetStateAction<Agent[]>>,
   commodities: Commodity[],
-  setCommodities: (commodities: Commodity[]) => void,
+  setCommodities: React.Dispatch<React.SetStateAction<Commodity[]>>,
   securities: Security[],
-  setSecurities: (securities: Security[]) => void
+  setSecurities: React.Dispatch<React.SetStateAction<Security[]>>
 ) => {
   const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
   const [currentRound, setCurrentRound] = useState(1);
@@ -22,12 +22,12 @@ export const useSimulatorActions = (
     const impact = calculateMarketImpact(security, trade);
     const updatedSecurity = updateSecurityPrice(security, impact);
 
-    setSecurities(prevSecurities => 
+    setSecurities((prevSecurities: Security[]) => 
       prevSecurities.map(s => s.id === security.id ? updatedSecurity : s)
     );
 
     const tradeValue = trade.price * trade.quantity;
-    setAgents(prevAgents => prevAgents.map(agent => {
+    setAgents((prevAgents: Agent[]) => prevAgents.map(agent => {
       if (agent.name === trade.buyerId) {
         return { ...agent, cash: agent.cash - tradeValue };
       }
@@ -36,7 +36,7 @@ export const useSimulatorActions = (
       }
       return agent;
     }));
-  }, [securities, setAgents, setSecurities]);
+  }, [securities]);
 
   const simulateNewRound = useCallback(async () => {
     const {

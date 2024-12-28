@@ -2,6 +2,7 @@ import { Agent, Commodity } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { useToast } from "@/components/ui/use-toast";
+import { useCallback } from "react";
 
 export const useEntityHandlers = (
   setAgents: React.Dispatch<React.SetStateAction<Agent[]>>,
@@ -13,9 +14,9 @@ export const useEntityHandlers = (
 ) => {
   const { toast } = useToast();
 
-  const handleAgentEdit = (updatedAgent: Agent) => {
-    setAgents(agents => 
-      agents.map(agent => 
+  const handleAgentEdit = useCallback((updatedAgent: Agent) => {
+    setAgents(prevAgents => 
+      prevAgents.map(agent => 
         agent.name === updatedAgent.name ? updatedAgent : agent
       )
     );
@@ -23,11 +24,11 @@ export const useEntityHandlers = (
       title: "Agent Updated",
       description: `${updatedAgent.name} has been updated successfully.`,
     });
-  };
+  }, [setAgents, toast]);
 
-  const handleCommodityEdit = (updatedCommodity: Commodity) => {
-    setCommodities(commodities => 
-      commodities.map(commodity => 
+  const handleCommodityEdit = useCallback((updatedCommodity: Commodity) => {
+    setCommodities(prevCommodities => 
+      prevCommodities.map(commodity => 
         commodity.name === updatedCommodity.name ? updatedCommodity : commodity
       )
     );
@@ -35,9 +36,9 @@ export const useEntityHandlers = (
       title: "Commodity Updated",
       description: `${updatedCommodity.name} has been updated successfully.`,
     });
-  };
+  }, [setCommodities, toast]);
 
-  const handleAddAgent = () => {
+  const handleAddAgent = useCallback(() => {
     setAgents(prev => [...prev, {
       name: "",
       cash: 1000,
@@ -59,9 +60,9 @@ export const useEntityHandlers = (
       title: "Agent Added",
       description: "New agent has been added successfully.",
     });
-  };
+  }, [setAgents, setNewAgent, toast]);
 
-  const handleAddCommodity = () => {
+  const handleAddCommodity = useCallback(() => {
     setCommodities(prev => [...prev, {
       name: "",
       averagePrice: 0,
@@ -81,9 +82,9 @@ export const useEntityHandlers = (
       title: "Commodity Added",
       description: "New commodity has been added successfully.",
     });
-  };
+  }, [setCommodities, setNewCommodity, toast]);
 
-  const handleAddSecurity = () => {
+  const handleAddSecurity = useCallback(() => {
     setSecurities(prev => [...prev, {
       id: (prev.length + 1).toString(),
       name: "",
@@ -109,7 +110,7 @@ export const useEntityHandlers = (
       title: "Security Added",
       description: "New security has been added successfully.",
     });
-  };
+  }, [setSecurities, setNewSecurity, toast]);
 
   return {
     handleAgentEdit,
