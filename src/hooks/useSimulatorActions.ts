@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
-import { Bookkeeping } from "@/utils/Bookkeeping";
-import { useToast } from "@/components/ui/use-toast";
 import { calculateMarketImpact, updateSecurityPrice } from "@/utils/marketOperations";
 import { simulateRound } from "@/utils/simulationOperations";
 
@@ -14,7 +12,6 @@ export const useSimulatorActions = (
   securities: Security[],
   setSecurities: (securities: Security[]) => void
 ) => {
-  const { toast } = useToast();
   const [roundsHistory, setRoundsHistory] = useState<RoundData[]>([]);
   const [currentRound, setCurrentRound] = useState(1);
 
@@ -47,7 +44,7 @@ export const useSimulatorActions = (
       updatedCommodities,
       updatedAgents,
       newRoundData
-    } = simulateRound(currentRound, agents, commodities, securities, roundsHistory);
+    } = await simulateRound(currentRound, agents, commodities, securities, roundsHistory);
 
     setRoundsHistory(prev => [...prev, newRoundData]);
     setCurrentRound(prev => prev + 1);
