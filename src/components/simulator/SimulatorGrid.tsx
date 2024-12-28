@@ -9,6 +9,7 @@ import { Agent, Commodity } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { AddAgentDialog } from "./AddAgentDialog";
 import { AddCommodityDialog } from "./AddCommodityDialog";
+import { AddSecurityDialog } from "./AddSecurityDialog";
 
 interface SimulatorGridProps {
   agents: Agent[];
@@ -16,13 +17,16 @@ interface SimulatorGridProps {
   securities: Security[];
   newAgent: Omit<Agent, "lastRoundDifference">;
   newCommodity: Omit<Commodity, "priceTrend">;
+  newSecurity: Omit<Security, "id">;
   onAgentEdit: (agent: Agent) => void;
   onCommodityEdit: (commodity: Commodity) => void;
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddAgent: () => void;
   onAddCommodity: () => void;
+  onAddSecurity: () => void;
   setNewAgent: (agent: Omit<Agent, "lastRoundDifference">) => void;
   setNewCommodity: (commodity: Omit<Commodity, "priceTrend">) => void;
+  onSecurityChange: (field: keyof Omit<Security, "id">, value: any) => void;
 }
 
 export const SimulatorGrid = ({
@@ -31,13 +35,16 @@ export const SimulatorGrid = ({
   securities,
   newAgent,
   newCommodity,
+  newSecurity,
   onAgentEdit,
   onCommodityEdit,
   onSecurityTrade,
   onAddAgent,
   onAddCommodity,
+  onAddSecurity,
   setNewAgent,
   setNewCommodity,
+  onSecurityChange,
 }: SimulatorGridProps) => {
   const handleAgentNameChange = (value: string) => {
     setNewAgent({
@@ -124,6 +131,18 @@ export const SimulatorGrid = ({
       <Card className="glass-card p-4 sm:p-6 space-y-4 overflow-x-auto col-span-2">
         <div className="flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl font-semibold">Securities Market</h2>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <AddSecurityDialog
+              newSecurity={newSecurity}
+              onSecurityChange={onSecurityChange}
+              onAddSecurity={onAddSecurity}
+            />
+          </Dialog>
         </div>
         <div className="min-w-[300px]">
           <SecuritiesTable 

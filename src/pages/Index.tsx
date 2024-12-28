@@ -109,6 +109,57 @@ const Index = () => {
     }
   ]);
 
+  const [newSecurity, setNewSecurity] = useState<Omit<Security, "id">>({
+    name: "",
+    class: "Equity",
+    type: "CommonStock",
+    price: 0,
+    volatility: 0.3,
+    quantity: 0,
+    issuer: "",
+    description: "",
+  });
+
+  const handleSecurityChange = (field: keyof Omit<Security, "id">, value: any) => {
+    setNewSecurity(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleAddSecurity = () => {
+    if (!newSecurity.name || !newSecurity.issuer) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const security: Security = {
+      ...newSecurity,
+      id: (securities.length + 1).toString(),
+    };
+
+    setSecurities([...securities, security]);
+    setNewSecurity({
+      name: "",
+      class: "Equity",
+      type: "CommonStock",
+      price: 0,
+      volatility: 0.3,
+      quantity: 0,
+      issuer: "",
+      description: "",
+    });
+
+    toast({
+      title: "Security Added",
+      description: `${security.name} has been added successfully.`,
+    });
+  };
+
   const handleSecurityTrade = (trade: Omit<Trade, "id" | "timestamp">) => {
     const security = securities.find(s => s.id === trade.securityId);
     if (!security) return;
@@ -233,14 +284,17 @@ const Index = () => {
       roundsHistory={roundsHistory}
       newAgent={newAgent}
       newCommodity={newCommodity}
+      newSecurity={newSecurity}
       onSimulate={simulateNewRound}
       onAgentEdit={handleAgentEdit}
       onCommodityEdit={handleCommodityEdit}
       onSecurityTrade={handleSecurityTrade}
       onAddAgent={handleAddAgent}
       onAddCommodity={handleAddCommodity}
+      onAddSecurity={handleAddSecurity}
       setNewAgent={setNewAgent}
       setNewCommodity={setNewCommodity}
+      onSecurityChange={handleSecurityChange}
     />
   );
 };
