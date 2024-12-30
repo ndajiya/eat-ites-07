@@ -3,11 +3,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgentClassesSection } from "@/components/documentation/AgentClassesSection";
 import { CommoditiesSection } from "@/components/documentation/CommoditiesSection";
 import { SecuritiesSection } from "@/components/documentation/SecuritiesSection";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Documentation = () => {
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">Simulator Documentation</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Simulator Documentation</h1>
+        <Link to="/simulator">
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            Launch Simulator
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </Link>
+      </div>
       
       <Tabs defaultValue="agents" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
