@@ -7,7 +7,7 @@ import { SecuritiesSection } from "@/components/documentation/SecuritiesSection"
 export const Documentation = () => {
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">API Documentation</h1>
+      <h1 className="text-3xl font-bold mb-6">Simulator Documentation</h1>
       
       <Tabs defaultValue="agents" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
