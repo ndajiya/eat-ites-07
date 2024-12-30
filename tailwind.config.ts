@@ -52,6 +52,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        oxytocin: "#1976D2",
+        dopamine: "#388E3C",
+        serotonin: "#FBC02D",
+        cortisol: "#D32F2F",
       },
       borderRadius: {
         lg: "var(--radius)",
