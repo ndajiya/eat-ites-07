@@ -4,6 +4,9 @@ import { useSimulatorActions } from "@/hooks/useSimulatorActions";
 import { useNewEntityState } from "@/hooks/useNewEntityState";
 import { useEntityHandlers } from "@/hooks/useEntityHandlers";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Link } from "react-router-dom";
+import { BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const {
@@ -49,7 +52,15 @@ const Index = () => {
 
   return (
     <div className="relative">
-      <ThemeToggle />
+      <div className="absolute top-4 right-4 flex items-center gap-4">
+        <Link to="/docs">
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <BookOpen className="h-4 w-4" />
+            Documentation
+          </Button>
+        </Link>
+        <ThemeToggle />
+      </div>
       <SimulatorDashboard
         agents={agents}
         commodities={commodities}

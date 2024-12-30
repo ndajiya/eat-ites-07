@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -26,6 +26,12 @@ const Landing = () => {
               <Button size="lg" className="group">
                 Launch Simulator
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link to="/docs">
+              <Button size="lg" variant="outline" className="group">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Documentation
               </Button>
             </Link>
           </div>
