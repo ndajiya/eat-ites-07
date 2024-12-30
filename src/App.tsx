@@ -1,23 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Index from "@/pages/Index"
-import Landing from "@/pages/Landing"
-import TodoList from "@/pages/TodoList"
-import Merit from "@/pages/Merit"
-import Considerations from "@/pages/Considerations"
-import "./App.css"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
+import { Landing } from "@/pages/Landing";
+import { Merit } from "@/pages/Merit";
+import { Considerations } from "@/pages/Considerations";
+import { TodoList } from "@/pages/TodoList";
+import { Documentation } from "@/pages/Documentation";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/simulator" element={<Index />} />
-        <Route path="/todo" element={<TodoList />} />
-        <Route path="/merit" element={<Merit />} />
-        <Route path="/considerations" element={<Considerations />} />
-      </Routes>
-    </Router>
-  )
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/merit" element={<Merit />} />
+          <Route path="/considerations" element={<Considerations />} />
+          <Route path="/todo" element={<TodoList />} />
+          <Route path="/docs" element={<Documentation />} />
+        </Routes>
+      </Router>
+      <Toaster />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
