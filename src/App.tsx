@@ -7,6 +7,7 @@ import Considerations from "@/pages/Considerations";
 import TodoList from "@/pages/TodoList";
 import { Documentation } from "@/pages/Documentation";
 import Index from "@/pages/Index";
+import MoneyAndBanking from "@/pages/MoneyAndBanking";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/todo" element={<TodoList />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/simulator" element={<Index />} />
+          <Route path="/money-and-banking" element={<MoneyAndBanking />} />
         </Routes>
       </Router>
       <Toaster />
