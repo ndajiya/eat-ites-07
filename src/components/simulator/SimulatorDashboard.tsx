@@ -3,8 +3,10 @@ import { SimulatorGrid } from "./SimulatorGrid";
 import { StatsDashboard } from "./StatsDashboard";
 import { CompetitorAnalysis } from "./CompetitorAnalysis";
 import { PerformanceMonitor } from "./PerformanceMonitor";
+import { EnvironmentalControls } from "./EnvironmentalControls";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
+import { useToast } from "@/components/ui/use-toast";
 
 interface SimulatorDashboardProps {
   agents: Agent[];
@@ -47,27 +49,43 @@ export const SimulatorDashboard = ({
   setNewCommodity,
   onSecurityChange,
 }: SimulatorDashboardProps) => {
+  const { toast } = useToast();
+
+  const handleEnvironmentalFactorChange = (factor: string, value: number) => {
+    toast({
+      title: "Environmental Factor Updated",
+      description: `${factor} has been set to ${value}%`,
+    });
+  };
+
   return (
     <div className="container mx-auto py-4 sm:py-8 max-w-7xl space-y-6 sm:space-y-8">
       <SimulationControls onSimulate={onSimulate} />
-      <SimulatorGrid
-        agents={agents}
-        commodities={commodities}
-        securities={securities}
-        newAgent={newAgent}
-        newCommodity={newCommodity}
-        newSecurity={newSecurity}
-        onAgentEdit={onAgentEdit}
-        onAgentDelete={onAgentDelete}
-        onCommodityEdit={onCommodityEdit}
-        onSecurityTrade={onSecurityTrade}
-        onAddAgent={onAddAgent}
-        onAddCommodity={onAddCommodity}
-        onAddSecurity={onAddSecurity}
-        setNewAgent={setNewAgent}
-        setNewCommodity={setNewCommodity}
-        onSecurityChange={onSecurityChange}
-      />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <SimulatorGrid
+            agents={agents}
+            commodities={commodities}
+            securities={securities}
+            newAgent={newAgent}
+            newCommodity={newCommodity}
+            newSecurity={newSecurity}
+            onAgentEdit={onAgentEdit}
+            onAgentDelete={onAgentDelete}
+            onCommodityEdit={onCommodityEdit}
+            onSecurityTrade={onSecurityTrade}
+            onAddAgent={onAddAgent}
+            onAddCommodity={onAddCommodity}
+            onAddSecurity={onAddSecurity}
+            setNewAgent={setNewAgent}
+            setNewCommodity={setNewCommodity}
+            onSecurityChange={onSecurityChange}
+          />
+        </div>
+        <div>
+          <EnvironmentalControls onFactorChange={handleEnvironmentalFactorChange} />
+        </div>
+      </div>
       <CompetitorAnalysis agents={agents} />
       {roundsHistory.length > 0 && (
         <>
