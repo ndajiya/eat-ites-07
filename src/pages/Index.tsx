@@ -52,14 +52,16 @@ const Index = () => {
 
   return (
     <div className="relative">
-      <div className="absolute top-4 right-4 flex items-center gap-4">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      <div className="absolute top-4 left-4">
         <Link to="/docs">
           <Button variant="outline" size="sm" className="flex items-center gap-2">
             <BookOpen className="h-4 w-4" />
             Documentation
           </Button>
         </Link>
-        <ThemeToggle />
       </div>
       <SimulatorDashboard
         agents={agents}
