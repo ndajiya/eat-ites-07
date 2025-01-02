@@ -28,28 +28,44 @@ export const MarketTabsContent = ({
     return agents.filter(agent => classes.includes(agent.class));
   };
 
+  const renderTabContent = (tab: typeof MARKET_TABS[number]) => {
+    if ('agentClasses' in tab) {
+      return (
+        <AgentTab
+          agents={filterAgentsByClass(agents, tab.agentClasses)}
+          onAgentEdit={onAgentEdit}
+          onAgentDelete={onAgentDelete}
+        />
+      );
+    }
+    
+    if (tab.type === 'commodity') {
+      return (
+        <CommodityTable
+          commodities={commodities}
+          onCommodityEdit={onCommodityEdit}
+        />
+      );
+    }
+    
+    if (tab.type === 'security') {
+      return (
+        <SecuritiesTable
+          securities={securities}
+          agents={agents}
+          onTrade={onSecurityTrade}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <>
       {MARKET_TABS.map((tab) => (
         <TabsContent key={tab.value} value={tab.value}>
-          {tab.agentClasses ? (
-            <AgentTab
-              agents={filterAgentsByClass(agents, tab.agentClasses)}
-              onAgentEdit={onAgentEdit}
-              onAgentDelete={onAgentDelete}
-            />
-          ) : tab.value === "commodities" ? (
-            <CommodityTable
-              commodities={commodities}
-              onCommodityEdit={onCommodityEdit}
-            />
-          ) : tab.value === "securities" ? (
-            <SecuritiesTable
-              securities={securities}
-              agents={agents}
-              onTrade={onSecurityTrade}
-            />
-          ) : null}
+          {renderTabContent(tab)}
         </TabsContent>
       ))}
     </>
