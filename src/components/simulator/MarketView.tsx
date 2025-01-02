@@ -69,7 +69,6 @@ export const MarketView = ({
     return filteredAgents;
   };
 
-  // Add useEffect to log agents whenever they change
   useEffect(() => {
     console.log("All agents:", agents);
   }, [agents]);
@@ -96,7 +95,7 @@ export const MarketView = ({
 
         <TabsContent value="central-banks">
           <AgentTab
-            agents={filterAgentsByClass(agents, ["Central Bank"])}
+            agents={filterAgentsByClass(agents, ["CentralBanks"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
@@ -104,7 +103,7 @@ export const MarketView = ({
 
         <TabsContent value="governments">
           <AgentTab
-            agents={filterAgentsByClass(agents, ["Government"])}
+            agents={filterAgentsByClass(agents, ["Governments"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
