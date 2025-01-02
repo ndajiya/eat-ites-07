@@ -1,12 +1,18 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Agent } from "@/types/simulator";
 import { AgentTable } from "./AgentTable";
 import { CommodityTable } from "./CommodityTable";
 import { SecuritiesTable } from "./SecuritiesTable";
 import { FirmsTab } from "./tabs/FirmsTab";
 import { PlaceholderTab } from "./tabs/PlaceholderTab";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { AddAgentDialog } from "./AddAgentDialog";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Bookkeeping } from "@/utils/Bookkeeping";
 
 interface MarketViewProps {
   agents: Agent[];
@@ -27,13 +33,59 @@ export const MarketView = ({
   onCommodityEdit,
   onSecurityTrade
 }: MarketViewProps) => {
+  const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
+    name: "",
+    cash: 1000,
+    class: "",
+    bookkeeping: new Bookkeeping(),
+    inventory: [],
+    production: [],
+  });
+  const { toast } = useToast();
+
+  const handleAddAgent = () => {
+    const agentWithDifference = {
+      ...newAgent,
+      lastRoundDifference: 0,
+    };
+    onAgentEdit(agentWithDifference);
+    setNewAgent({
+      name: "",
+      cash: 1000,
+      class: "",
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      production: [],
+    });
+    toast({
+      title: "Agent Added",
+      description: `${newAgent.name} has been added to the simulation.`,
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold tracking-tight">Market Simulator</h2>
-        <div className="relative w-72">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-8" />
+        <div className="flex items-center gap-4">
+          <div className="relative w-72">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Search..." className="pl-8" />
+          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <AddAgentDialog
+              newAgent={newAgent}
+              onAgentNameChange={(value) => setNewAgent({ ...newAgent, name: value })}
+              onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
+              onAgentClassChange={(value) => setNewAgent({ ...newAgent, class: value })}
+              onAddAgent={handleAddAgent}
+            />
+          </Dialog>
         </div>
       </div>
 
@@ -60,15 +112,27 @@ export const MarketView = ({
         </TabsList>
 
         <TabsContent value="central-banks" className="mt-6">
-          <PlaceholderTab message="Central Banks data will be implemented in the next phase" />
+          <AgentTable 
+            agents={agents.filter(agent => agent.class === "CentralBanks")}
+            onAgentEdit={onAgentEdit}
+            onAgentDelete={onAgentDelete}
+          />
         </TabsContent>
 
         <TabsContent value="governments" className="mt-6">
-          <PlaceholderTab message="Governments data will be implemented in the next phase" />
+          <AgentTable 
+            agents={agents.filter(agent => agent.class === "Governments")}
+            onAgentEdit={onAgentEdit}
+            onAgentDelete={onAgentDelete}
+          />
         </TabsContent>
 
         <TabsContent value="firms" className="mt-6">
-          <FirmsTab />
+          <AgentTable 
+            agents={agents.filter(agent => agent.class === "Firms")}
+            onAgentEdit={onAgentEdit}
+            onAgentDelete={onAgentDelete}
+          />
         </TabsContent>
 
         <TabsContent value="individuals" className="mt-6">
