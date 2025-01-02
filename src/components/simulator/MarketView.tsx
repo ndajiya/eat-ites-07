@@ -63,6 +63,11 @@ export const MarketView = ({
     });
   };
 
+  // Helper function to filter agents by class
+  const filterAgentsByClass = (agents: Agent[], classes: string[]) => {
+    return agents.filter(agent => classes.includes(agent.class));
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -113,7 +118,7 @@ export const MarketView = ({
 
         <TabsContent value="central-banks" className="mt-6">
           <AgentTable 
-            agents={agents.filter(agent => agent.class === "CentralBanks")}
+            agents={filterAgentsByClass(agents, ["CentralBanks"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
@@ -121,7 +126,7 @@ export const MarketView = ({
 
         <TabsContent value="governments" className="mt-6">
           <AgentTable 
-            agents={agents.filter(agent => agent.class === "Governments")}
+            agents={filterAgentsByClass(agents, ["Governments"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
@@ -129,7 +134,7 @@ export const MarketView = ({
 
         <TabsContent value="firms" className="mt-6">
           <AgentTable 
-            agents={agents.filter(agent => agent.class === "Firms")}
+            agents={filterAgentsByClass(agents, ["Firms"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
@@ -137,7 +142,7 @@ export const MarketView = ({
 
         <TabsContent value="individuals" className="mt-6">
           <AgentTable 
-            agents={agents.filter(agent => agent.class === "Households")}
+            agents={filterAgentsByClass(agents, ["Households", "Traders"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
