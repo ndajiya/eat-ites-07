@@ -24,7 +24,7 @@ export const MarketTabsContent = ({
   onCommodityEdit,
   onSecurityTrade,
 }: MarketTabsContentProps) => {
-  const filterAgentsByClass = (agents: Agent[], classes: string[]) => {
+  const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
     return agents.filter(agent => classes.includes(agent.class));
   };
 
