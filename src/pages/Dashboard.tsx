@@ -65,7 +65,15 @@ const Dashboard = () => {
         </Link>
       </div>
       <div className="container mx-auto py-16">
-        <MarketView />
+        <MarketView 
+          agents={agents}
+          commodities={commodities}
+          securities={securities}
+          onAgentEdit={handleAgentEdit}
+          onAgentDelete={handleAgentDelete}
+          onCommodityEdit={handleCommodityEdit}
+          onSecurityTrade={handleSecurityTrade}
+        />
       </div>
     </div>
   );

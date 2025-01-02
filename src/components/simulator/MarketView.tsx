@@ -2,6 +2,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Agent } from "@/types/simulator";
+import { AgentTable } from "./AgentTable";
+import { CommodityTable } from "./CommodityTable";
+import { SecuritiesTable } from "./SecuritiesTable";
 
 interface FirmData {
   name: string;
@@ -43,7 +47,25 @@ const firmData: FirmData[] = [
   }
 ];
 
-export const MarketView = () => {
+interface MarketViewProps {
+  agents: Agent[];
+  commodities: any[];
+  securities: any[];
+  onAgentEdit: (agent: Agent) => void;
+  onAgentDelete: (agentName: string) => void;
+  onCommodityEdit: (commodity: any) => void;
+  onSecurityTrade: (trade: any) => void;
+}
+
+export const MarketView = ({
+  agents,
+  commodities,
+  securities,
+  onAgentEdit,
+  onAgentDelete,
+  onCommodityEdit,
+  onSecurityTrade
+}: MarketViewProps) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -67,6 +89,12 @@ export const MarketView = () => {
           </TabsTrigger>
           <TabsTrigger value="individuals" className="data-[state=active]:bg-background">
             Individuals
+          </TabsTrigger>
+          <TabsTrigger value="commodities" className="data-[state=active]:bg-background">
+            Commodities
+          </TabsTrigger>
+          <TabsTrigger value="securities" className="data-[state=active]:bg-background">
+            Securities
           </TabsTrigger>
         </TabsList>
 
@@ -103,8 +131,8 @@ export const MarketView = () => {
                     <TableCell>{firm.revenue}</TableCell>
                     <TableCell>{firm.marketShare}</TableCell>
                     <TableCell>{firm.size.toLocaleString()}</TableCell>
-                    <TableCell className={parseFloat(firm.growthRate) > 10 ? "trend-up" : ""}>{firm.growthRate}</TableCell>
-                    <TableCell className={parseFloat(firm.profitMargin) > 20 ? "trend-up" : ""}>{firm.profitMargin}</TableCell>
+                    <TableCell className={parseFloat(firm.growthRate) > 10 ? "text-green-500" : ""}>{firm.growthRate}</TableCell>
+                    <TableCell className={parseFloat(firm.profitMargin) > 20 ? "text-green-500" : ""}>{firm.profitMargin}</TableCell>
                     <TableCell>{firm.sector}</TableCell>
                   </TableRow>
                 ))}
@@ -114,9 +142,26 @@ export const MarketView = () => {
         </TabsContent>
 
         <TabsContent value="individuals" className="mt-6">
-          <div className="text-center text-muted-foreground py-8">
-            Individuals data will be implemented in the next phase
-          </div>
+          <AgentTable 
+            agents={agents.filter(agent => agent.class === "Households")}
+            onAgentEdit={onAgentEdit}
+            onAgentDelete={onAgentDelete}
+          />
+        </TabsContent>
+
+        <TabsContent value="commodities" className="mt-6">
+          <CommodityTable 
+            commodities={commodities}
+            onCommodityEdit={onCommodityEdit}
+          />
+        </TabsContent>
+
+        <TabsContent value="securities" className="mt-6">
+          <SecuritiesTable 
+            securities={securities}
+            agents={agents}
+            onTrade={onSecurityTrade}
+          />
         </TabsContent>
       </Tabs>
     </div>
