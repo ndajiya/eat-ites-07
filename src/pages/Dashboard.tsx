@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { Link } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MarketView } from "@/components/simulator/MarketView";
 
 const Dashboard = () => {
   const {
@@ -51,7 +52,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen bg-background">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
@@ -63,26 +64,9 @@ const Dashboard = () => {
           </Button>
         </Link>
       </div>
-      <SimulatorDashboard
-        agents={agents}
-        commodities={commodities}
-        securities={securities}
-        roundsHistory={roundsHistory}
-        newAgent={newAgent}
-        newCommodity={newCommodity}
-        newSecurity={newSecurity}
-        onSimulate={simulateNewRound}
-        onAgentEdit={handleAgentEdit}
-        onAgentDelete={handleAgentDelete}
-        onCommodityEdit={handleCommodityEdit}
-        onSecurityTrade={handleSecurityTrade}
-        onAddAgent={handleAddAgent}
-        onAddCommodity={handleAddCommodity}
-        onAddSecurity={handleAddSecurity}
-        setNewAgent={setNewAgent}
-        setNewCommodity={setNewCommodity}
-        onSecurityChange={handleSecurityChange}
-      />
+      <div className="container mx-auto py-16">
+        <MarketView />
+      </div>
     </div>
   );
 };
