@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Agent } from "@/types/simulator";
 import { CommodityTable } from "./CommodityTable";
 import { SecuritiesTable } from "./SecuritiesTable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { MarketHeader } from "./MarketHeader";
@@ -58,8 +58,21 @@ export const MarketView = ({
   };
 
   const filterAgentsByClass = (agents: Agent[], classes: string[]) => {
-    return agents.filter(agent => classes.includes(agent.class));
+    console.log("Filtering agents:", agents);
+    console.log("Looking for classes:", classes);
+    const filteredAgents = agents.filter(agent => {
+      const matches = classes.includes(agent.class);
+      console.log(`Agent ${agent.name} has class ${agent.class}, matches: ${matches}`);
+      return matches;
+    });
+    console.log("Filtered agents:", filteredAgents);
+    return filteredAgents;
   };
+
+  // Add useEffect to log agents whenever they change
+  useEffect(() => {
+    console.log("All agents:", agents);
+  }, [agents]);
 
   return (
     <div className="space-y-6">
