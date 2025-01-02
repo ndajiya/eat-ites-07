@@ -7,6 +7,13 @@ import { EnvironmentalControls } from "./EnvironmentalControls";
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { useToast } from "@/components/ui/use-toast";
+import { Settings2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface SimulatorDashboardProps {
   agents: Agent[];
@@ -60,7 +67,19 @@ export const SimulatorDashboard = ({
 
   return (
     <div className="container mx-auto py-4 sm:py-8 max-w-7xl space-y-6 sm:space-y-8">
-      <SimulationControls onSimulate={onSimulate} />
+      <div className="flex justify-between items-center">
+        <SimulationControls onSimulate={onSimulate} />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Settings2 className="h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80">
+            <EnvironmentalControls onFactorChange={handleEnvironmentalFactorChange} />
+          </PopoverContent>
+        </Popover>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <SimulatorGrid
@@ -81,9 +100,6 @@ export const SimulatorDashboard = ({
             setNewCommodity={setNewCommodity}
             onSecurityChange={onSecurityChange}
           />
-        </div>
-        <div>
-          <EnvironmentalControls onFactorChange={handleEnvironmentalFactorChange} />
         </div>
       </div>
       <CompetitorAnalysis agents={agents} />

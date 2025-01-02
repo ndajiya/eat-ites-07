@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import {
   Tooltip,
@@ -65,11 +65,9 @@ export const EnvironmentalControls = ({ onFactorChange }: EnvironmentalControlsP
   ];
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-2">
-        <h3 className="text-lg font-semibold">Environmental Controls</h3>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold">Environmental Controls</h3>
+      <div className="space-y-6">
         {factors.map((factor) => (
           <div key={factor.name} className="space-y-2">
             <div className="flex items-center gap-2">
@@ -97,7 +95,7 @@ export const EnvironmentalControls = ({ onFactorChange }: EnvironmentalControlsP
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
