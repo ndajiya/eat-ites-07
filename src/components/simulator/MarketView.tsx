@@ -118,7 +118,7 @@ export const MarketView = ({
 
         <TabsContent value="central-banks" className="mt-6">
           <AgentTable 
-            agents={filterAgentsByClass(agents, ["CentralBanks"])}
+            agents={filterAgentsByClass(agents, ["Central Bank"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
@@ -126,7 +126,7 @@ export const MarketView = ({
 
         <TabsContent value="governments" className="mt-6">
           <AgentTable 
-            agents={filterAgentsByClass(agents, ["Governments"])}
+            agents={filterAgentsByClass(agents, ["Government"])}
             onAgentEdit={onAgentEdit}
             onAgentDelete={onAgentDelete}
           />
