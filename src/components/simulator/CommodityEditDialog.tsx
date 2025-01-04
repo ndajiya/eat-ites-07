@@ -20,8 +20,18 @@ export const CommodityEditDialog = ({
 }: CommodityEditDialogProps) => {
   if (!commodity) return null;
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    onCommodityChange({ ...commodity, name: e.target.value });
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    onCommodityChange({ ...commodity, averagePrice: Number(e.target.value) });
+  };
+
   return (
-    <DialogContent>
+    <DialogContent onClick={(e) => e.stopPropagation()}>
       <DialogHeader>
         <DialogTitle>Edit Commodity</DialogTitle>
       </DialogHeader>
@@ -30,9 +40,7 @@ export const CommodityEditDialog = ({
           <label>Name</label>
           <Input
             value={commodity.name}
-            onChange={(e) =>
-              onCommodityChange({ ...commodity, name: e.target.value })
-            }
+            onChange={handleNameChange}
           />
         </div>
         <div className="space-y-2">
@@ -40,12 +48,7 @@ export const CommodityEditDialog = ({
           <Input
             type="number"
             value={commodity.averagePrice}
-            onChange={(e) =>
-              onCommodityChange({
-                ...commodity,
-                averagePrice: Number(e.target.value),
-              })
-            }
+            onChange={handlePriceChange}
           />
         </div>
         <div className="space-y-2">
