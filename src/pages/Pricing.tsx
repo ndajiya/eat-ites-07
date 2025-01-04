@@ -33,6 +33,10 @@ const PricingPage = () => {
                 </li>
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
+                  Run up to 20 concurrent agents (CPU-based)
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="h-4 w-4 text-dopamine mr-3" />
                   Basic agent-based modeling
                 </li>
                 <li className="flex items-center text-sm">
@@ -66,6 +70,10 @@ const PricingPage = () => {
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
                   Up to 1,000 users
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="h-4 w-4 text-dopamine mr-3" />
+                  Run up to 300 concurrent agents (GPU-accelerated)
                 </li>
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
@@ -108,6 +116,10 @@ const PricingPage = () => {
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
                   Unlimited users
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="h-4 w-4 text-dopamine mr-3" />
+                  Run 1000+ concurrent agents (Cloud-based with multiple GPUs)
                 </li>
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
