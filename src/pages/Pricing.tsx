@@ -98,7 +98,8 @@ const PricingPage = () => {
             </CardHeader>
             <CardContent className="flex-grow">
               <div className="mt-4 text-4xl font-bold">$100,000<span className="text-base font-normal text-muted-foreground">/year</span></div>
-              <ul className="mt-6 space-y-3">
+              <p className="mt-6 mb-3 text-sm text-muted-foreground">Everything in the previous packages and the following:</p>
+              <ul className="space-y-3">
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
                   Unlimited users
