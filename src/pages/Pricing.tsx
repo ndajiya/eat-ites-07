@@ -20,7 +20,7 @@ const PricingPage = () => {
               <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-serotonin/10 mb-4">
                 <BookOpen className="h-6 w-6 text-serotonin" />
               </div>
-              <CardTitle className="text-2xl">Associates</CardTitle>
+              <CardTitle className="text-2xl">Associate's</CardTitle>
               <CardDescription>Perfect for small departments</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
