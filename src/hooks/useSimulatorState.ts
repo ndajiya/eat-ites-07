@@ -13,7 +13,7 @@ export const useSimulatorState = () => {
     { 
       name: "Producer", 
       cash: 1000, 
-      class: "Firms", 
+      class: "Firm", 
       lastRoundDifference: 0,
       bookkeeping: new Bookkeeping(),
       inventory: [],
@@ -28,7 +28,7 @@ export const useSimulatorState = () => {
     { 
       name: "Trader", 
       cash: 800, 
-      class: "Firms", 
+      class: "Firm", 
       lastRoundDifference: 0,
       bookkeeping: new Bookkeeping(),
       inventory: [
