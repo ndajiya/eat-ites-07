@@ -4,6 +4,7 @@ import { AGENT_CLASSES } from "@/types/agentClasses";
 import { Agent } from "@/types/simulator";
 import * as XLSX from "xlsx";
 import { useToast } from "@/hooks/use-toast";
+import { Bookkeeping } from "@/utils/Bookkeeping";
 
 interface AgentsTabContentProps {
   onFileUpload: (agents: Agent[]) => void;
