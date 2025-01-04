@@ -73,6 +73,13 @@ const Dashboard = () => {
           onAgentDelete={handleAgentDelete}
           onCommodityEdit={handleCommodityEdit}
           onSecurityTrade={handleSecurityTrade}
+          newCommodity={newCommodity}
+          onCommodityNameChange={(value) => setNewCommodity({ ...newCommodity, name: value })}
+          onCommodityPriceChange={(value) => setNewCommodity({ ...newCommodity, averagePrice: value })}
+          onAddCommodity={handleAddCommodity}
+          newSecurity={newSecurity}
+          onSecurityChange={handleSecurityChange}
+          onAddSecurity={handleAddSecurity}
         />
       </div>
     </div>

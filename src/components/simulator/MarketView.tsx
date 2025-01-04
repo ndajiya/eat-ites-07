@@ -15,6 +15,13 @@ interface MarketViewProps {
   onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: any) => void;
   onSecurityTrade: (trade: any) => void;
+  newCommodity: any;
+  onCommodityNameChange: (value: string) => void;
+  onCommodityPriceChange: (value: number) => void;
+  onAddCommodity: () => void;
+  newSecurity: any;
+  onSecurityChange: (field: any, value: any) => void;
+  onAddSecurity: () => void;
 }
 
 export const MarketView = ({
@@ -24,7 +31,14 @@ export const MarketView = ({
   onAgentEdit,
   onAgentDelete,
   onCommodityEdit,
-  onSecurityTrade
+  onSecurityTrade,
+  newCommodity,
+  onCommodityNameChange,
+  onCommodityPriceChange,
+  onAddCommodity,
+  newSecurity,
+  onSecurityChange,
+  onAddSecurity,
 }: MarketViewProps) => {
   const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
     name: "",
@@ -64,6 +78,13 @@ export const MarketView = ({
         onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
         onAgentClassChange={(value) => setNewAgent({ ...newAgent, class: value })}
         onAddAgent={handleAddAgent}
+        newCommodity={newCommodity}
+        onCommodityNameChange={onCommodityNameChange}
+        onCommodityPriceChange={onCommodityPriceChange}
+        onAddCommodity={onAddCommodity}
+        newSecurity={newSecurity}
+        onSecurityChange={onSecurityChange}
+        onAddSecurity={onAddSecurity}
       />
 
       <Tabs defaultValue="firms" className="w-full">

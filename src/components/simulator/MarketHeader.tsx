@@ -1,15 +1,10 @@
-import { Input } from "@/components/ui/input";
-import { Search, Plus, Settings2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { AddAgentDialog } from "./AddAgentDialog";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { Agent } from "@/types/simulator";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { EnvironmentalControls } from "./EnvironmentalControls";
+import { AddAgentDialog } from "./AddAgentDialog";
+import { AddCommodityDialog } from "./AddCommodityDialog";
+import { AddSecurityDialog } from "./AddSecurityDialog";
 
 interface MarketHeaderProps {
   newAgent: Omit<Agent, "lastRoundDifference">;
@@ -17,6 +12,13 @@ interface MarketHeaderProps {
   onAgentCashChange: (value: number) => void;
   onAgentClassChange: (value: string) => void;
   onAddAgent: () => void;
+  newCommodity: any;
+  onCommodityNameChange: (value: string) => void;
+  onCommodityPriceChange: (value: number) => void;
+  onAddCommodity: () => void;
+  newSecurity: any;
+  onSecurityChange: (field: any, value: any) => void;
+  onAddSecurity: () => void;
 }
 
 export const MarketHeader = ({
@@ -25,33 +27,23 @@ export const MarketHeader = ({
   onAgentCashChange,
   onAgentClassChange,
   onAddAgent,
+  newCommodity,
+  onCommodityNameChange,
+  onCommodityPriceChange,
+  onAddCommodity,
+  newSecurity,
+  onSecurityChange,
+  onAddSecurity,
 }: MarketHeaderProps) => {
-  const handleEnvironmentalFactorChange = (factor: string, value: number) => {
-    // Handle environmental factor changes
-  };
-
   return (
-    <div className="flex justify-between items-center">
-      <h2 className="text-3xl font-bold tracking-tight">Market Simulator</h2>
-      <div className="flex items-center gap-4">
-        <div className="relative w-72">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-8" />
-        </div>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="icon">
-              <Settings2 className="h-4 w-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <EnvironmentalControls onFactorChange={handleEnvironmentalFactorChange} />
-          </PopoverContent>
-        </Popover>
+    <div className="flex justify-between items-center mb-6">
+      <h1 className="text-2xl sm:text-3xl font-bold">Market Overview</h1>
+      <div className="flex gap-2">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
+              Add Agent
             </Button>
           </DialogTrigger>
           <AddAgentDialog
@@ -60,6 +52,35 @@ export const MarketHeader = ({
             onAgentCashChange={onAgentCashChange}
             onAgentClassChange={onAgentClassChange}
             onAddAgent={onAddAgent}
+          />
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Add Commodity
+            </Button>
+          </DialogTrigger>
+          <AddCommodityDialog
+            newCommodity={newCommodity}
+            onCommodityNameChange={onCommodityNameChange}
+            onCommodityPriceChange={onCommodityPriceChange}
+            onAddCommodity={onAddCommodity}
+          />
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Add Security
+            </Button>
+          </DialogTrigger>
+          <AddSecurityDialog
+            newSecurity={newSecurity}
+            onSecurityChange={onSecurityChange}
+            onAddSecurity={onAddSecurity}
           />
         </Dialog>
       </div>
