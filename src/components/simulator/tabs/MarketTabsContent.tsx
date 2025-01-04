@@ -30,9 +30,11 @@ export const MarketTabsContent = ({
 
   const renderTabContent = (tab: typeof MARKET_TABS[number]) => {
     if ('agentClasses' in tab) {
+      const filteredAgents = filterAgentsByClass(agents, tab.agentClasses);
+      console.log(`Filtered agents for ${tab.value}:`, filteredAgents); // Debug log
       return (
         <AgentTab
-          agents={filterAgentsByClass(agents, tab.agentClasses)}
+          agents={filteredAgents}
           onAgentEdit={onAgentEdit}
           onAgentDelete={onAgentDelete}
         />
