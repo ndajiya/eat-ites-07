@@ -48,72 +48,79 @@ export const MarketHeader = ({
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
       <h1 className="text-2xl sm:text-3xl font-bold">Market Overview</h1>
-      <div className="flex items-center gap-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon" title="Add Agent">
-              <Plus className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <AddAgentDialog
-            newAgent={newAgent}
-            onAgentNameChange={onAgentNameChange}
-            onAgentCashChange={onAgentCashChange}
-            onAgentClassChange={onAgentClassChange}
-            onAddAgent={onAddAgent}
-          />
-        </Dialog>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="icon" title="Upload Data">
+                <Upload className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DataUploadDialog
+              onAgentUpload={onAgentUpload}
+              onCommodityUpload={onCommodityUpload}
+              onSecurityUpload={onSecurityUpload}
+            />
+          </Dialog>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon" title="Add Commodity">
-              <Plus className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <AddCommodityDialog
-            newCommodity={newCommodity}
-            onCommodityNameChange={onCommodityNameChange}
-            onCommodityPriceChange={onCommodityPriceChange}
-            onAddCommodity={onAddCommodity}
-          />
-        </Dialog>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon" title="Settings">
+                <Settings2 className="h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <EnvironmentalControls onFactorChange={() => {}} />
+            </PopoverContent>
+          </Popover>
+        </div>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon" title="Add Security">
-              <Plus className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <AddSecurityDialog
-            newSecurity={newSecurity}
-            onSecurityChange={onSecurityChange}
-            onAddSecurity={onAddSecurity}
-          />
-        </Dialog>
+        <div className="flex items-center gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Agent
+              </Button>
+            </DialogTrigger>
+            <AddAgentDialog
+              newAgent={newAgent}
+              onAgentNameChange={onAgentNameChange}
+              onAgentCashChange={onAgentCashChange}
+              onAgentClassChange={onAgentClassChange}
+              onAddAgent={onAddAgent}
+            />
+          </Dialog>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon" title="Upload Data">
-              <Upload className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DataUploadDialog
-            onAgentUpload={onAgentUpload}
-            onCommodityUpload={onCommodityUpload}
-            onSecurityUpload={onSecurityUpload}
-          />
-        </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Commodity
+              </Button>
+            </DialogTrigger>
+            <AddCommodityDialog
+              newCommodity={newCommodity}
+              onCommodityNameChange={onCommodityNameChange}
+              onCommodityPriceChange={onCommodityPriceChange}
+              onAddCommodity={onAddCommodity}
+            />
+          </Dialog>
 
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="icon" title="Settings">
-              <Settings2 className="h-4 w-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <EnvironmentalControls onFactorChange={() => {}} />
-          </PopoverContent>
-        </Popover>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Security
+              </Button>
+            </DialogTrigger>
+            <AddSecurityDialog
+              newSecurity={newSecurity}
+              onSecurityChange={onSecurityChange}
+              onAddSecurity={onAddSecurity}
+            />
+          </Dialog>
+        </div>
       </div>
     </div>
   );
