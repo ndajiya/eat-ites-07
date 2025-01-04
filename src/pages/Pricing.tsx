@@ -14,7 +14,7 @@ const PricingPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Associates Plan */}
+          {/* Associate's Plan */}
           <Card className="flex flex-col glass-card">
             <CardHeader>
               <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-serotonin/10 mb-4">
@@ -75,6 +75,10 @@ const PricingPage = () => {
                 <li className="flex items-center text-sm">
                   <Check className="h-4 w-4 text-dopamine mr-3" />
                   Integration capabilities
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="h-4 w-4 text-dopamine mr-3" />
+                  Access to Principles tools
                 </li>
               </ul>
             </CardContent>
