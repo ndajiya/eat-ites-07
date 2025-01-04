@@ -14,10 +14,10 @@ type NonAgentTab = BaseTab & {
 type MarketTab = AgentTab | NonAgentTab;
 
 export const MARKET_TABS: readonly MarketTab[] = [
-  { value: "central-bank", label: "Central Bank", agentClasses: ["CentralBank"] },
-  { value: "government", label: "Government", agentClasses: ["Government"] },
-  { value: "firm", label: "Firm", agentClasses: ["Firm"] },
-  { value: "individual", label: "Individual", agentClasses: ["Household", "Trader"] },
+  { value: "central-banks", label: "Central Banks", agentClasses: ["CentralBanks"] },
+  { value: "governments", label: "Governments", agentClasses: ["Governments"] },
+  { value: "firms", label: "Firms", agentClasses: ["Firms"] },
+  { value: "individuals", label: "Individuals", agentClasses: ["Households", "Traders"] },
   { value: "commodities", label: "Commodities", type: "commodity" },
   { value: "securities", label: "Securities", type: "security" },
 ] as const;

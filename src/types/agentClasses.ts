@@ -18,18 +18,18 @@ export type AgentClass = {
 };
 
 export const AGENT_CLASSES: Record<string, AgentClass> = {
-  Household: {
-    name: "Household",
-    description: "Individual or group that consumes goods and services and supplies labor.",
+  Households: {
+    name: "Households",
+    description: "Individuals or groups that consume goods and services and supply labor.",
     roles: [
-      "Consumer of goods and services",
-      "Supplier of labor",
-      "Basic investor"
+      "Consumers of goods and services",
+      "Suppliers of labor",
+      "Basic investors"
     ],
     examples: [
-      "Family unit",
-      "Individual consumer",
-      "Retail investor"
+      "Family units",
+      "Individual consumers",
+      "Retail investors"
     ],
     defaultInventory: [
       {
@@ -41,18 +41,18 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.3,
     tradingStrategy: "conservative"
   },
-  Firm: {
-    name: "Firm",
-    description: "Organization that produces goods and services for profit.",
+  Firms: {
+    name: "Firms",
+    description: "Organizations that produce goods and services for profit.",
     roles: [
-      "Producer of goods",
-      "Service provider",
-      "Market maker"
+      "Producers of goods",
+      "Service providers",
+      "Market makers"
     ],
     examples: [
-      "Manufacturing company",
-      "Service company",
-      "Trading firm"
+      "Manufacturing companies",
+      "Service companies",
+      "Trading firms"
     ],
     defaultProduction: [
       {
@@ -71,18 +71,18 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.6,
     tradingStrategy: "balanced"
   },
-  Trader: {
-    name: "Trader",
-    description: "Specialized entity focused on market operations and arbitrage.",
+  Traders: {
+    name: "Traders",
+    description: "Specialized entities focused on market operations and arbitrage.",
     roles: [
-      "Market maker",
-      "Arbitrageur",
-      "Speculator"
+      "Market makers",
+      "Arbitrageurs",
+      "Speculators"
     ],
     examples: [
-      "Trading desk",
-      "Market maker",
-      "Hedge fund"
+      "Trading desks",
+      "Market makers",
+      "Hedge funds"
     ],
     defaultInventory: [
       {
@@ -94,18 +94,18 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.8,
     tradingStrategy: "aggressive"
   },
-  ResourceOwner: {
-    name: "Resource Owner",
-    description: "Entity that controls and manages natural resources.",
+  ResourceOwners: {
+    name: "Resource Owners",
+    description: "Entities that control and manage natural resources.",
     roles: [
       "Resource extraction",
       "Resource management",
       "Supply control"
     ],
     examples: [
-      "Mining company",
-      "Oil producer",
-      "Land owner"
+      "Mining companies",
+      "Oil producers",
+      "Land owners"
     ],
     defaultProduction: [
       {
@@ -117,9 +117,9 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.5,
     tradingStrategy: "conservative"
   },
-  Government: {
-    name: "Government",
-    description: "State entity responsible for fiscal policy, regulation, and public services.",
+  Governments: {
+    name: "Governments",
+    description: "State entities responsible for fiscal policy, regulation, and public services.",
     roles: [
       "Policy making",
       "Market regulation",
@@ -128,8 +128,8 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     ],
     examples: [
       "Federal government",
-      "State government",
-      "Municipal authority"
+      "State governments",
+      "Municipal authorities"
     ],
     defaultInventory: [
       {
@@ -141,9 +141,9 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.2,
     tradingStrategy: "conservative"
   },
-  CentralBank: {
-    name: "Central Bank",
-    description: "Monetary authority responsible for monetary policy and financial stability.",
+  CentralBanks: {
+    name: "Central Banks",
+    description: "Monetary authorities responsible for monetary policy and financial stability.",
     roles: [
       "Monetary policy implementation",
       "Interest rate management",
