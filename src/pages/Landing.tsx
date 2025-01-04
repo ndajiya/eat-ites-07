@@ -23,7 +23,7 @@ const Landing = () => {
           </p>
 
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link to="/simulator">
+            <Link to="/pricing">
               <Button size="lg" className="group bg-dopamine hover:bg-dopamine/90">
                 Launch Simulator
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
