@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { Security } from "@/types/securities";
 import * as XLSX from "xlsx";
+import { useToast } from "@/hooks/use-toast";
 
 interface SecuritiesTabContentProps {
-  onFileUpload: (file: File) => void;
+  onFileUpload: (securities: Security[]) => void;
 }
 
 export const SecuritiesTabContent = ({ onFileUpload }: SecuritiesTabContentProps) => {
+  const { toast } = useToast();
+
   const downloadTemplate = () => {
     const headers = ["id", "name", "class", "type", "price", "volatility", "quantity", "issuer", "description"];
     const exampleData = [
@@ -38,6 +41,36 @@ export const SecuritiesTabContent = ({ onFileUpload }: SecuritiesTabContentProps
     XLSX.writeFile(wb, "securities_template.xlsx");
   };
 
+  const handleFileUpload = async (file: File) => {
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+      const securities = jsonData.map((row: any) => ({
+        id: row.id,
+        name: row.name,
+        class: row.class,
+        type: row.type,
+        price: Number(row.price),
+        volatility: Number(row.volatility),
+        quantity: Number(row.quantity),
+        issuer: row.issuer,
+        description: row.description,
+      }));
+
+      onFileUpload(securities);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to parse the uploaded file. Please check the format.",
+        variant: "destructive",
+      });
+      console.error("File upload error:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <p className="text-sm text-muted-foreground">
@@ -58,7 +91,7 @@ export const SecuritiesTabContent = ({ onFileUpload }: SecuritiesTabContentProps
           accept=".xlsx,.xls,.csv"
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) onFileUpload(file);
+            if (file) handleFileUpload(file);
           }}
           className="cursor-pointer flex-1"
         />

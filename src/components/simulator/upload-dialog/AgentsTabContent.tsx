@@ -3,12 +3,15 @@ import { Download } from "lucide-react";
 import { AGENT_CLASSES } from "@/types/agentClasses";
 import { Agent } from "@/types/simulator";
 import * as XLSX from "xlsx";
+import { useToast } from "@/hooks/use-toast";
 
 interface AgentsTabContentProps {
-  onFileUpload: (file: File) => void;
+  onFileUpload: (agents: Agent[]) => void;
 }
 
 export const AgentsTabContent = ({ onFileUpload }: AgentsTabContentProps) => {
+  const { toast } = useToast();
+
   const downloadTemplate = () => {
     const headers = ["name", "cash", "class"];
     const exampleData = [
@@ -32,6 +35,33 @@ export const AgentsTabContent = ({ onFileUpload }: AgentsTabContentProps) => {
     XLSX.writeFile(wb, "agents_template.xlsx");
   };
 
+  const handleFileUpload = async (file: File) => {
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+      const agents = jsonData.map((row: any) => ({
+        name: row.name,
+        cash: Number(row.cash),
+        class: row.class,
+        lastRoundDifference: 0,
+        bookkeeping: new Bookkeeping(),
+        inventory: []
+      }));
+
+      onFileUpload(agents);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to parse the uploaded file. Please check the format.",
+        variant: "destructive",
+      });
+      console.error("File upload error:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <p className="text-sm text-muted-foreground">
@@ -52,7 +82,7 @@ export const AgentsTabContent = ({ onFileUpload }: AgentsTabContentProps) => {
           accept=".xlsx,.xls,.csv"
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) onFileUpload(file);
+            if (file) handleFileUpload(file);
           }}
           className="cursor-pointer flex-1"
         />
