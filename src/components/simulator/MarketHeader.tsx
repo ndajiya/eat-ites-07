@@ -1,9 +1,8 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, Upload, Settings2 } from "lucide-react";
+import { Plus, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Agent, Commodity } from "@/types/simulator";
 import { Security } from "@/types/securities";
-import { DataUploadDialog } from "./DataUploadDialog";
 import { AddAgentDialog } from "./AddAgentDialog";
 import { AddCommodityDialog } from "./AddCommodityDialog";
 import { AddSecurityDialog } from "./AddSecurityDialog";
@@ -50,19 +49,6 @@ export const MarketHeader = ({
       <h1 className="text-2xl sm:text-3xl font-bold">Market Overview</h1>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="icon" title="Upload Data">
-                <Upload className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DataUploadDialog
-              onAgentUpload={onAgentUpload}
-              onCommodityUpload={onCommodityUpload}
-              onSecurityUpload={onSecurityUpload}
-            />
-          </Dialog>
-
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="icon" title="Settings">
