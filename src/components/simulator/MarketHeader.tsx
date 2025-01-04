@@ -50,18 +50,11 @@ export const MarketHeader = ({
       <h1 className="text-2xl sm:text-3xl font-bold">Market Overview</h1>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="icon" title="Import Data">
-                <Upload className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DataUploadDialog
-              onAgentUpload={onAgentUpload}
-              onCommodityUpload={onCommodityUpload}
-              onSecurityUpload={onSecurityUpload}
-            />
-          </Dialog>
+          <DataUploadDialog
+            onAgentUpload={onAgentUpload}
+            onCommodityUpload={onCommodityUpload}
+            onSecurityUpload={onSecurityUpload}
+          />
 
           <Popover>
             <PopoverTrigger asChild>
