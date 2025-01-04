@@ -9,6 +9,7 @@ import { Documentation } from "@/pages/Documentation";
 import Index from "@/pages/Index";
 import MoneyAndBanking from "@/pages/MoneyAndBanking";
 import Dashboard from "@/pages/Dashboard";
+import PricingPage from "@/pages/Pricing";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/simulator" element={<Index />} />
           <Route path="/money-and-banking" element={<MoneyAndBanking />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pricing" element={<PricingPage />} />
         </Routes>
       </Router>
       <Toaster />
