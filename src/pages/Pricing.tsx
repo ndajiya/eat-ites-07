@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Check, GraduationCap, Award, BookOpen } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const PricingPage = () => {
   return (
@@ -41,7 +42,9 @@ const PricingPage = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" variant="outline">Get Started</Button>
+              <Link to="/" className="w-full">
+                <Button className="w-full" variant="outline">Get Started</Button>
+              </Link>
             </CardFooter>
           </Card>
 
@@ -83,7 +86,9 @@ const PricingPage = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Get Started</Button>
+              <Link to="/dashboard" className="w-full">
+                <Button className="w-full">Get Started</Button>
+              </Link>
             </CardFooter>
           </Card>
 
