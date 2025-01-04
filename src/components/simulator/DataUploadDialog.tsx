@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Agent, Commodity } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Bookkeeping } from "@/utils/Bookkeeping";
 
 interface DataUploadDialogProps {
   onAgentUpload: (agents: Agent[]) => void;
@@ -38,11 +39,7 @@ export const DataUploadDialog = ({
               cash: Number(item.cash),
               class: item.class,
               lastRoundDifference: 0,
-              bookkeeping: {
-                transactions: [],
-                accounts: {},
-                accountTypes: {}
-              },
+              bookkeeping: new Bookkeeping(),
               inventory: [],
               production: item.production ? JSON.parse(item.production) : undefined,
               monetaryPolicy: item.monetaryPolicy ? JSON.parse(item.monetaryPolicy) : undefined,
