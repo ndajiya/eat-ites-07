@@ -1,6 +1,7 @@
 import { AssociatePlan } from "@/components/pricing/AssociatePlan"
 import { BachelorPlan } from "@/components/pricing/BachelorPlan"
 import { MasterPlan } from "@/components/pricing/MasterPlan"
+import { PhDPlan } from "@/components/pricing/PhDPlan"
 
 const PricingPage = () => {
   return (
@@ -13,10 +14,11 @@ const PricingPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <AssociatePlan />
           <BachelorPlan />
           <MasterPlan />
+          <PhDPlan />
         </div>
       </div>
     </div>
