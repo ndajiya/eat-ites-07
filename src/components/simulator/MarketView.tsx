@@ -1,7 +1,7 @@
 import { Tabs } from "@/components/ui/tabs";
 import { Agent } from "@/types/simulator";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
@@ -70,6 +70,25 @@ export const MarketView = ({
     });
   };
 
+  const handleAgentUpload = (uploadedAgents: Agent[]) => {
+    uploadedAgents.forEach(agent => {
+      onAgentEdit(agent);
+    });
+  };
+
+  const handleCommodityUpload = (uploadedCommodities: any[]) => {
+    uploadedCommodities.forEach(commodity => {
+      onCommodityEdit(commodity);
+    });
+  };
+
+  const handleSecurityUpload = (uploadedSecurities: any[]) => {
+    uploadedSecurities.forEach(security => {
+      // Assuming onSecurityChange can handle adding new securities
+      onSecurityChange("new", security);
+    });
+  };
+
   return (
     <div className="space-y-6">
       <MarketHeader
@@ -85,6 +104,9 @@ export const MarketView = ({
         newSecurity={newSecurity}
         onSecurityChange={onSecurityChange}
         onAddSecurity={onAddSecurity}
+        onAgentUpload={handleAgentUpload}
+        onCommodityUpload={handleCommodityUpload}
+        onSecurityUpload={handleSecurityUpload}
       />
 
       <Tabs defaultValue="firms" className="w-full">
