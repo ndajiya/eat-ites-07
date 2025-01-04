@@ -1,7 +1,11 @@
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Commodity } from "@/types/simulator";
+import { CommodityClassSelect } from "./CommodityClassSelect";
+import { CommodityTypeSelect } from "./CommodityTypeSelect";
+import { MarketTypeSelect } from "./MarketTypeSelect";
 
 interface AddCommodityDialogProps {
   newCommodity: Omit<Commodity, "priceTrend">;
@@ -23,18 +27,45 @@ export const AddCommodityDialog = ({
       </DialogHeader>
       <div className="space-y-4 py-4">
         <div className="space-y-2">
-          <label>Name</label>
+          <Label htmlFor="commodity-name">Name</Label>
           <Input
-            value={newCommodity.name}
+            id="commodity-name"
+            value={newCommodity.name || ""}
             onChange={(e) => onCommodityNameChange(e.target.value)}
+            placeholder="Enter commodity name"
+            required
           />
         </div>
         <div className="space-y-2">
-          <label>Average Price</label>
+          <Label htmlFor="commodity-price">Average Price</Label>
           <Input
+            id="commodity-price"
             type="number"
-            value={newCommodity.averagePrice}
+            value={newCommodity.averagePrice || 0}
             onChange={(e) => onCommodityPriceChange(Number(e.target.value))}
+            placeholder="Enter average price"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Class</Label>
+          <CommodityClassSelect
+            value={newCommodity.class}
+            onChange={(value) => onCommodityNameChange(value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Type</Label>
+          <CommodityTypeSelect
+            value={newCommodity.type}
+            onChange={(value) => onCommodityNameChange(value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Market Type</Label>
+          <MarketTypeSelect
+            value={newCommodity.marketType}
+            onChange={(value) => onCommodityNameChange(value)}
           />
         </div>
         <Button className="w-full" onClick={onAddCommodity}>
