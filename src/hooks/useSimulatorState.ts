@@ -11,6 +11,42 @@ export const useSimulatorState = () => {
   
   const [agents, setAgents] = useState<Agent[]>([
     { 
+      name: "Federal Reserve", 
+      cash: 1000000000, 
+      class: "CentralBanks", 
+      lastRoundDifference: 0,
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      monetaryPolicy: {
+        interestRate: 0.05,
+        reserveRequirement: 0.1
+      }
+    },
+    { 
+      name: "European Central Bank", 
+      cash: 900000000, 
+      class: "CentralBanks", 
+      lastRoundDifference: 0,
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      monetaryPolicy: {
+        interestRate: 0.04,
+        reserveRequirement: 0.08
+      }
+    },
+    { 
+      name: "Bank of Japan", 
+      cash: 800000000, 
+      class: "CentralBanks", 
+      lastRoundDifference: 0,
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      monetaryPolicy: {
+        interestRate: 0.01,
+        reserveRequirement: 0.06
+      }
+    },
+    { 
       name: "Producer", 
       cash: 1000, 
       class: "Firms", 
