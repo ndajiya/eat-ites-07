@@ -16,13 +16,12 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/simulator" element={<Index />} />
           <Route path="/merit" element={<Merit />} />
           <Route path="/considerations" element={<Considerations />} />
           <Route path="/todo" element={<TodoList />} />
           <Route path="/docs" element={<Documentation />} />
-          <Route path="/simulator" element={<Index />} />
           <Route path="/money-and-banking" element={<MoneyAndBanking />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pricing" element={<PricingPage />} />
