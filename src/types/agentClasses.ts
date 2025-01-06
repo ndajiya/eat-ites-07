@@ -71,60 +71,13 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     riskTolerance: 0.6,
     tradingStrategy: "balanced"
   },
-  Traders: {
-    name: "Traders",
-    description: "Specialized entities focused on market operations and arbitrage.",
-    roles: [
-      "Market makers",
-      "Arbitrageurs",
-      "Speculators"
-    ],
-    examples: [
-      "Trading desks",
-      "Market makers",
-      "Hedge funds"
-    ],
-    defaultInventory: [
-      {
-        commodityName: "Various Commodities",
-        quantity: 200,
-        averagePurchasePrice: 30
-      }
-    ],
-    riskTolerance: 0.8,
-    tradingStrategy: "aggressive"
-  },
-  ResourceOwners: {
-    name: "Resource Owners",
-    description: "Entities that control and manage natural resources.",
-    roles: [
-      "Resource extraction",
-      "Resource management",
-      "Supply control"
-    ],
-    examples: [
-      "Mining companies",
-      "Oil producers",
-      "Land owners"
-    ],
-    defaultProduction: [
-      {
-        commodityName: "Raw Materials",
-        rate: 20,
-        cost: 30
-      }
-    ],
-    riskTolerance: 0.5,
-    tradingStrategy: "conservative"
-  },
   Governments: {
     name: "Governments",
-    description: "State entities responsible for fiscal policy, regulation, and public services.",
+    description: "State entities responsible for fiscal policy and public services.",
     roles: [
       "Policy making",
       "Market regulation",
-      "Public services provision",
-      "Tax collection"
+      "Public services provision"
     ],
     examples: [
       "Federal government",
@@ -147,8 +100,7 @@ export const AGENT_CLASSES: Record<string, AgentClass> = {
     roles: [
       "Monetary policy implementation",
       "Interest rate management",
-      "Financial system oversight",
-      "Currency issuance"
+      "Financial system oversight"
     ],
     examples: [
       "Federal Reserve",
