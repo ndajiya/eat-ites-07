@@ -81,14 +81,6 @@ const Dashboard = () => {
           onSecurityChange={handleSecurityChange}
           onAddSecurity={handleAddSecurity}
         />
-        <div className="flex justify-center mt-6 mb-8">
-          <Button 
-            onClick={simulateNewRound}
-            className="bg-green-500 hover:bg-green-600 text-white"
-          >
-            Simulate Round
-          </Button>
-        </div>
       </div>
     </div>
   );
