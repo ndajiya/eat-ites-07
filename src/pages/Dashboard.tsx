@@ -56,15 +56,13 @@ const Dashboard = () => {
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-      <div className="absolute top-4 left-4">
-        <Link to="/docs">
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4" />
-            Documentation
-          </Button>
-        </Link>
-      </div>
-      <div className="container mx-auto">
+      <Link to="/docs" className="absolute top-4 left-4">
+        <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <BookOpen className="h-4 w-4" />
+          Documentation
+        </Button>
+      </Link>
+      <div className="container mx-auto pt-16">
         <MarketView 
           agents={agents}
           commodities={commodities}
