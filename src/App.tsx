@@ -6,7 +6,7 @@ import Merit from "@/pages/Merit";
 import Considerations from "@/pages/Considerations";
 import TodoList from "@/pages/TodoList";
 import { Documentation } from "@/pages/Documentation";
-import Index from "@/pages/Index";
+import Associates from "@/pages/Associates";
 import MoneyAndBanking from "@/pages/MoneyAndBanking";
 import Bachelors from "@/pages/Bachelors";
 import PricingPage from "@/pages/Pricing";
@@ -17,7 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/simulator" element={<Index />} />
+          <Route path="/associates" element={<Associates />} />
           <Route path="/merit" element={<Merit />} />
           <Route path="/considerations" element={<Considerations />} />
           <Route path="/todo" element={<TodoList />} />
