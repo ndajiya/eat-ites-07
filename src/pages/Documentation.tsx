@@ -3,21 +3,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgentClassesSection } from "@/components/documentation/AgentClassesSection";
 import { CommoditiesSection } from "@/components/documentation/CommoditiesSection";
 import { SecuritiesSection } from "@/components/documentation/SecuritiesSection";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Documentation = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Simulator Documentation</h1>
-        <Link to="/simulator">
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
-            Launch Simulator
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </Link>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex items-center gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Go Back
+        </Button>
       </div>
       
       <Tabs defaultValue="agents" className="w-full">
