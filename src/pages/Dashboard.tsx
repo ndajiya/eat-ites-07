@@ -54,7 +54,7 @@ const Dashboard = () => {
   // Add priceTrend to newCommodity and id to newSecurity
   const commodityWithTrend = {
     ...newCommodity,
-    priceTrend: []
+    priceTrend: "Up" as const
   };
 
   const securityWithId = {

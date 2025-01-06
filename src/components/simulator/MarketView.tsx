@@ -4,7 +4,7 @@ import { DataUploadDialog } from "./DataUploadDialog";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
 import { MarketTabsContent } from "./tabs/MarketTabsContent";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Bookkeeping } from "@/utils/Bookkeeping";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
