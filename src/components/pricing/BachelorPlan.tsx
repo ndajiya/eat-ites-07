@@ -46,7 +46,7 @@ export const BachelorPlan = () => {
         </ul>
       </CardContent>
       <CardFooter>
-        <Link to="/dashboard" className="w-full">
+        <Link to="/bachelors" className="w-full">
           <Button className="w-full">Get Started</Button>
         </Link>
       </CardFooter>
