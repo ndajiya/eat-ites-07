@@ -1,32 +1,34 @@
 export const MARKET_TABS = [
   {
+    value: "individuals",
+    label: "Individuals",
+    agentClasses: ["Households"] as const
+  },
+  {
     value: "firms",
     label: "Firms",
-    agentClasses: ["Firms"]
+    agentClasses: ["Firms"] as const
   },
   {
     value: "governments",
     label: "Governments",
-    agentClasses: ["Governments"]
+    agentClasses: ["Governments"] as const
   },
   {
     value: "central-banks",
     label: "Central Banks",
-    agentClasses: ["CentralBanks"]
-  },
-  {
-    value: "individuals",
-    label: "Individuals",
-    agentClasses: ["Households"]
+    agentClasses: ["CentralBanks"] as const
   },
   {
     value: "commodities",
     label: "Commodities",
-    type: "commodity"
+    type: "commodity" as const
   },
   {
     value: "securities",
     label: "Securities",
-    type: "security"
+    type: "security" as const
   }
 ] as const;
+
+export type MarketTabValue = typeof MARKET_TABS[number]["value"];
