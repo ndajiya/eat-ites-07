@@ -35,7 +35,7 @@ export const AssociatePlan = () => {
         </ul>
       </CardContent>
       <CardFooter>
-        <Link to="/" className="w-full">
+        <Link to="/simulator" className="w-full">
           <Button className="w-full" variant="outline">Get Started</Button>
         </Link>
       </CardFooter>
