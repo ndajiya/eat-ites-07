@@ -25,12 +25,16 @@ export const MarketTabsContent = ({
   onSecurityTrade,
 }: MarketTabsContentProps) => {
   const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
-    return agents.filter(agent => classes.includes(agent.class));
+    return agents.filter(agent => {
+      console.log('Filtering agent:', agent.name, 'class:', agent.class, 'matches:', classes.includes(agent.class));
+      return classes.includes(agent.class);
+    });
   };
 
   const renderTabContent = (tab: typeof MARKET_TABS[number]) => {
     if ('agentClasses' in tab) {
       const filteredAgents = filterAgentsByClass(agents, tab.agentClasses);
+      console.log(`Filtered agents for ${tab.value}:`, filteredAgents);
       return (
         <AgentTab
           agents={filteredAgents}
