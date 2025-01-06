@@ -6,6 +6,7 @@ import { Bookkeeping } from "@/utils/Bookkeeping";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
 import { MarketTabsContent } from "./tabs/MarketTabsContent";
+import { Button } from "@/components/ui/button";
 
 interface MarketViewProps {
   agents: Agent[];
@@ -84,7 +85,6 @@ export const MarketView = ({
 
   const handleSecurityUpload = (uploadedSecurities: any[]) => {
     uploadedSecurities.forEach(security => {
-      // Assuming onSecurityChange can handle adding new securities
       onSecurityChange("new", security);
     });
   };
@@ -110,6 +110,14 @@ export const MarketView = ({
       />
 
       <Tabs defaultValue="firms" className="w-full">
+        <div className="flex justify-center mb-4">
+          <Button 
+            onClick={() => {}}
+            className="bg-green-500 hover:bg-green-600 text-white"
+          >
+            Simulate Round
+          </Button>
+        </div>
         <MarketTabsList />
         <MarketTabsContent
           agents={agents}
