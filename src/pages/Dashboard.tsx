@@ -53,7 +53,13 @@ const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen bg-background">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center gap-4">
+        <Button 
+          onClick={simulateNewRound}
+          className="bg-green-500 hover:bg-green-600 text-white"
+        >
+          Simulate Round
+        </Button>
         <ThemeToggle />
       </div>
       <div className="absolute top-4 left-4">
