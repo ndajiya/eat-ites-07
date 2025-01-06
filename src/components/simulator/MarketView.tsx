@@ -4,6 +4,10 @@ import { DataUploadDialog } from "./DataUploadDialog";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
 import { MarketTabsContent } from "./tabs/MarketTabsContent";
+import { Tabs } from "@/components/ui/tabs";
+import { Bookkeeping } from "@/utils/Bookkeeping";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface MarketViewProps {
   agents: Agent[];
@@ -38,6 +42,36 @@ export const MarketView = ({
   onSecurityChange,
   onAddSecurity,
 }: MarketViewProps) => {
+  const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
+    name: "",
+    cash: 1000,
+    class: "",
+    bookkeeping: new Bookkeeping(),
+    inventory: [],
+    production: [],
+  });
+  const { toast } = useToast();
+
+  const handleAddAgent = () => {
+    const agentWithDifference = {
+      ...newAgent,
+      lastRoundDifference: 0,
+    };
+    onAgentEdit(agentWithDifference);
+    setNewAgent({
+      name: "",
+      cash: 1000,
+      class: "",
+      bookkeeping: new Bookkeeping(),
+      inventory: [],
+      production: [],
+    });
+    toast({
+      title: "Agent Added",
+      description: `${newAgent.name} has been added to the simulation.`,
+    });
+  };
+
   const handleAgentUpload = (uploadedAgents: any[]) => {
     uploadedAgents.forEach(agent => {
       onAgentEdit(agent);
@@ -58,7 +92,23 @@ export const MarketView = ({
 
   return (
     <div className="space-y-4">
-      <MarketHeader />
+      <MarketHeader 
+        newAgent={newAgent}
+        onAgentNameChange={(value) => setNewAgent({ ...newAgent, name: value })}
+        onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
+        onAgentClassChange={(value) => setNewAgent({ ...newAgent, class: value })}
+        onAddAgent={handleAddAgent}
+        newCommodity={newCommodity}
+        onCommodityNameChange={onCommodityNameChange}
+        onCommodityPriceChange={onCommodityPriceChange}
+        onAddCommodity={onAddCommodity}
+        newSecurity={newSecurity}
+        onSecurityChange={onSecurityChange}
+        onAddSecurity={onAddSecurity}
+        onAgentUpload={handleAgentUpload}
+        onCommodityUpload={handleCommodityUpload}
+        onSecurityUpload={handleSecurityUpload}
+      />
       <DataUploadDialog
         onAgentUpload={handleAgentUpload}
         onCommodityUpload={handleCommodityUpload}

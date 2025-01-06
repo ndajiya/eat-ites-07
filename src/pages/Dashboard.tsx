@@ -51,6 +51,17 @@ const Dashboard = () => {
     setNewSecurity
   );
 
+  // Add priceTrend to newCommodity and id to newSecurity
+  const commodityWithTrend = {
+    ...newCommodity,
+    priceTrend: []
+  };
+
+  const securityWithId = {
+    ...newSecurity,
+    id: Date.now().toString()
+  };
+
   return (
     <div className="relative min-h-screen bg-background">
       <div className="absolute top-4 right-4">
@@ -73,22 +84,14 @@ const Dashboard = () => {
           onAgentDelete={handleAgentDelete}
           onCommodityEdit={handleCommodityEdit}
           onSecurityTrade={handleSecurityTrade}
-          newCommodity={newCommodity}
+          newCommodity={commodityWithTrend}
           onCommodityNameChange={(value) => setNewCommodity({ ...newCommodity, name: value })}
           onCommodityPriceChange={(value) => setNewCommodity({ ...newCommodity, averagePrice: value })}
           onAddCommodity={handleAddCommodity}
-          newSecurity={newSecurity}
+          newSecurity={securityWithId}
           onSecurityChange={handleSecurityChange}
           onAddSecurity={handleAddSecurity}
         />
-        <div className="flex justify-center mt-6 mb-8">
-          <Button 
-            onClick={simulateNewRound}
-            className="bg-green-500 hover:bg-green-600 text-white"
-          >
-            Simulate Round
-          </Button>
-        </div>
       </div>
     </div>
   );
