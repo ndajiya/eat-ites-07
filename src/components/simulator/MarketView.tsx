@@ -1,28 +1,27 @@
-import { Agent, Commodity } from "@/types/simulator";
-import { Security, Trade } from "@/types/securities";
-import { DataUploadDialog } from "./DataUploadDialog";
+import { Tabs } from "@/components/ui/tabs";
+import { Agent } from "@/types/simulator";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { Bookkeeping } from "@/utils/Bookkeeping";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
 import { MarketTabsContent } from "./tabs/MarketTabsContent";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Bookkeeping } from "@/utils/Bookkeeping";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 interface MarketViewProps {
   agents: Agent[];
-  commodities: Commodity[];
-  securities: Security[];
+  commodities: any[];
+  securities: any[];
   onAgentEdit: (agent: Agent) => void;
   onAgentDelete: (agentName: string) => void;
-  onCommodityEdit: (commodity: Commodity) => void;
-  onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
-  newCommodity: Commodity;
+  onCommodityEdit: (commodity: any) => void;
+  onSecurityTrade: (trade: any) => void;
+  newCommodity: any;
   onCommodityNameChange: (value: string) => void;
   onCommodityPriceChange: (value: number) => void;
   onAddCommodity: () => void;
-  newSecurity: Security;
-  onSecurityChange: (field: string, value: any) => void;
+  newSecurity: any;
+  onSecurityChange: (field: any, value: any) => void;
   onAddSecurity: () => void;
 }
 
@@ -72,7 +71,7 @@ export const MarketView = ({
     });
   };
 
-  const handleAgentUpload = (uploadedAgents: any[]) => {
+  const handleAgentUpload = (uploadedAgents: Agent[]) => {
     uploadedAgents.forEach(agent => {
       onAgentEdit(agent);
     });
@@ -91,8 +90,8 @@ export const MarketView = ({
   };
 
   return (
-    <div className="space-y-4">
-      <MarketHeader 
+    <div className="space-y-6">
+      <MarketHeader
         newAgent={newAgent}
         onAgentNameChange={(value) => setNewAgent({ ...newAgent, name: value })}
         onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
@@ -109,13 +108,16 @@ export const MarketView = ({
         onCommodityUpload={handleCommodityUpload}
         onSecurityUpload={handleSecurityUpload}
       />
-      <DataUploadDialog
-        onAgentUpload={handleAgentUpload}
-        onCommodityUpload={handleCommodityUpload}
-        onSecurityUpload={handleSecurityUpload}
-      />
 
       <Tabs defaultValue="firms" className="w-full">
+        <div className="flex justify-center mb-4">
+          <Button 
+            onClick={() => {}}
+            className="bg-green-500 hover:bg-green-600 text-white"
+          >
+            Simulate Round
+          </Button>
+        </div>
         <MarketTabsList />
         <MarketTabsContent
           agents={agents}
