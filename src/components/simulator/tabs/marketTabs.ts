@@ -12,7 +12,7 @@ export const MARKET_TABS = [
   {
     value: "governments",
     label: "Governments",
-    agentClasses: ["Governments"] as const
+    agentClasses: ["Government"] as const  // Changed from "Governments" to match the class name
   },
   {
     value: "central-banks",

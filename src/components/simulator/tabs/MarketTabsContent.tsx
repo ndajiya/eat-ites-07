@@ -26,18 +26,18 @@ export const MarketTabsContent = ({
 }: MarketTabsContentProps) => {
   const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
     return agents.filter(agent => {
-      // Normalize both strings for comparison
       const normalizedAgentClass = agent.class.toLowerCase();
-      const matchesClass = classes.some(cls => cls.toLowerCase() === normalizedAgentClass);
-      console.log('Filtering agent:', agent.name, 'class:', agent.class, 'matches:', matchesClass);
-      return matchesClass;
+      return classes.some(cls => {
+        console.log(`Comparing agent class: ${normalizedAgentClass} with tab class: ${cls.toLowerCase()}`);
+        return cls.toLowerCase() === normalizedAgentClass;
+      });
     });
   };
 
   const renderTabContent = (tab: typeof MARKET_TABS[number]) => {
     if ('agentClasses' in tab) {
       const filteredAgents = filterAgentsByClass(agents, tab.agentClasses);
-      console.log(`Filtered agents for ${tab.value}:`, filteredAgents);
+      console.log(`Tab ${tab.value} filtered agents:`, filteredAgents);
       return (
         <AgentTab
           agents={filteredAgents}
