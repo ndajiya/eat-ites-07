@@ -1,4 +1,4 @@
-import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Agent } from "@/types/simulator";
@@ -41,6 +41,9 @@ export const AddAgentDialog = ({
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Add New Agent</DialogTitle>
+        <DialogDescription>
+          Add a new agent to the simulation. Select the appropriate class for the agent's role.
+        </DialogDescription>
       </DialogHeader>
       <div className="space-y-4 py-4">
         <div className="space-y-2">
