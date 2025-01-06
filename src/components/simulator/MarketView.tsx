@@ -1,27 +1,24 @@
-import { Tabs } from "@/components/ui/tabs";
-import { Agent } from "@/types/simulator";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { Bookkeeping } from "@/utils/Bookkeeping";
+import { Agent, Commodity } from "@/types/simulator";
+import { Security, Trade } from "@/types/securities";
+import { DataUploadDialog } from "./DataUploadDialog";
 import { MarketHeader } from "./MarketHeader";
 import { MarketTabsList } from "./tabs/MarketTabsList";
 import { MarketTabsContent } from "./tabs/MarketTabsContent";
-import { Button } from "@/components/ui/button";
 
 interface MarketViewProps {
   agents: Agent[];
-  commodities: any[];
-  securities: any[];
+  commodities: Commodity[];
+  securities: Security[];
   onAgentEdit: (agent: Agent) => void;
   onAgentDelete: (agentName: string) => void;
-  onCommodityEdit: (commodity: any) => void;
-  onSecurityTrade: (trade: any) => void;
-  newCommodity: any;
+  onCommodityEdit: (commodity: Commodity) => void;
+  onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
+  newCommodity: Commodity;
   onCommodityNameChange: (value: string) => void;
   onCommodityPriceChange: (value: number) => void;
   onAddCommodity: () => void;
-  newSecurity: any;
-  onSecurityChange: (field: any, value: any) => void;
+  newSecurity: Security;
+  onSecurityChange: (field: string, value: any) => void;
   onAddSecurity: () => void;
 }
 
@@ -41,37 +38,7 @@ export const MarketView = ({
   onSecurityChange,
   onAddSecurity,
 }: MarketViewProps) => {
-  const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
-    name: "",
-    cash: 1000,
-    class: "",
-    bookkeeping: new Bookkeeping(),
-    inventory: [],
-    production: [],
-  });
-  const { toast } = useToast();
-
-  const handleAddAgent = () => {
-    const agentWithDifference = {
-      ...newAgent,
-      lastRoundDifference: 0,
-    };
-    onAgentEdit(agentWithDifference);
-    setNewAgent({
-      name: "",
-      cash: 1000,
-      class: "",
-      bookkeeping: new Bookkeeping(),
-      inventory: [],
-      production: [],
-    });
-    toast({
-      title: "Agent Added",
-      description: `${newAgent.name} has been added to the simulation.`,
-    });
-  };
-
-  const handleAgentUpload = (uploadedAgents: Agent[]) => {
+  const handleAgentUpload = (uploadedAgents: any[]) => {
     uploadedAgents.forEach(agent => {
       onAgentEdit(agent);
     });
@@ -90,34 +57,15 @@ export const MarketView = ({
   };
 
   return (
-    <div className="space-y-6">
-      <MarketHeader
-        newAgent={newAgent}
-        onAgentNameChange={(value) => setNewAgent({ ...newAgent, name: value })}
-        onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
-        onAgentClassChange={(value) => setNewAgent({ ...newAgent, class: value })}
-        onAddAgent={handleAddAgent}
-        newCommodity={newCommodity}
-        onCommodityNameChange={onCommodityNameChange}
-        onCommodityPriceChange={onCommodityPriceChange}
-        onAddCommodity={onAddCommodity}
-        newSecurity={newSecurity}
-        onSecurityChange={onSecurityChange}
-        onAddSecurity={onAddSecurity}
+    <div className="space-y-4">
+      <MarketHeader />
+      <DataUploadDialog
         onAgentUpload={handleAgentUpload}
         onCommodityUpload={handleCommodityUpload}
         onSecurityUpload={handleSecurityUpload}
       />
 
       <Tabs defaultValue="firms" className="w-full">
-        <div className="flex justify-center mb-4">
-          <Button 
-            onClick={() => {}}
-            className="bg-green-500 hover:bg-green-600 text-white"
-          >
-            Simulate Round
-          </Button>
-        </div>
         <MarketTabsList />
         <MarketTabsContent
           agents={agents}
