@@ -8,7 +8,7 @@ import TodoList from "@/pages/TodoList";
 import { Documentation } from "@/pages/Documentation";
 import Index from "@/pages/Index";
 import MoneyAndBanking from "@/pages/MoneyAndBanking";
-import Dashboard from "@/pages/Dashboard";
+import Bachelors from "@/pages/Bachelors";
 import PricingPage from "@/pages/Pricing";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           <Route path="/todo" element={<TodoList />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/money-and-banking" element={<MoneyAndBanking />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/bachelors" element={<Bachelors />} />
           <Route path="/pricing" element={<PricingPage />} />
         </Routes>
       </Router>
