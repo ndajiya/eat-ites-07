@@ -50,6 +50,7 @@ export const MarketView = ({
     production: [],
   });
   const { toast } = useToast();
+  const [isSimulating, setIsSimulating] = useState(false);
 
   const handleAddAgent = () => {
     const agentWithDifference = {
@@ -89,6 +90,46 @@ export const MarketView = ({
     });
   };
 
+  const handleSimulateRound = async () => {
+    try {
+      setIsSimulating(true);
+      // Simulate market operations for each agent
+      agents.forEach(agent => {
+        const randomChange = Math.floor(Math.random() * 201) - 100; // Random value between -100 and 100
+        const updatedAgent = {
+          ...agent,
+          cash: agent.cash + randomChange,
+          lastRoundDifference: randomChange
+        };
+        onAgentEdit(updatedAgent);
+      });
+
+      // Update commodity prices
+      commodities.forEach(commodity => {
+        const priceChange = Math.random() > 0.5 ? 1.1 : 0.9; // 10% up or down
+        const updatedCommodity = {
+          ...commodity,
+          averagePrice: commodity.averagePrice * priceChange,
+          priceTrend: priceChange > 1 ? "Up" : "Down"
+        };
+        onCommodityEdit(updatedCommodity);
+      });
+
+      toast({
+        title: "Round Simulated",
+        description: "Market conditions have been updated.",
+      });
+    } catch (error) {
+      toast({
+        title: "Simulation Failed",
+        description: "An error occurred during the simulation.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSimulating(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <MarketHeader
@@ -112,10 +153,11 @@ export const MarketView = ({
       <Tabs defaultValue="firms" className="w-full">
         <div className="flex justify-center mb-4">
           <Button 
-            onClick={() => {}}
+            onClick={handleSimulateRound}
+            disabled={isSimulating}
             className="bg-green-500 hover:bg-green-600 text-white"
           >
-            Simulate Round
+            {isSimulating ? "Simulating..." : "Simulate Round"}
           </Button>
         </div>
         <MarketTabsList />
