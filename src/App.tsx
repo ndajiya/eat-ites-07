@@ -10,6 +10,7 @@ import Associates from "@/pages/Associates";
 import MoneyAndBanking from "@/pages/MoneyAndBanking";
 import Bachelors from "@/pages/Bachelors";
 import PricingPage from "@/pages/Pricing";
+import AIAlignment from "@/pages/AIAlignment";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/money-and-banking" element={<MoneyAndBanking />} />
           <Route path="/bachelors" element={<Bachelors />} />
           <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/ai-alignment" element={<AIAlignment />} />
         </Routes>
       </Router>
       <Toaster />

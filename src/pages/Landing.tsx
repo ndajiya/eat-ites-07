@@ -35,6 +35,11 @@ const Landing = () => {
                 Documentation
               </Button>
             </Link>
+            <Link to="/ai-alignment">
+              <Button size="lg" variant="outline" className="group border-serotonin text-serotonin hover:bg-serotonin/10">
+                AI Alignment Research
+              </Button>
+            </Link>
           </div>
         </motion.div>
 
