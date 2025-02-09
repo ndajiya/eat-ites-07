@@ -87,6 +87,24 @@ export const MarketView = ({
     });
   };
 
+  const handleNewSecurity = () => {
+    const securityToAdd = {
+      ...newSecurity,
+      id: Date.now().toString(),
+    };
+    securities.push(securityToAdd);
+    // Reset the form
+    onSecurityChange("name", "");
+    onSecurityChange("issuer", "");
+    onSecurityChange("price", 0);
+    onSecurityChange("quantity", 0);
+    onSecurityChange("description", "");
+    toast({
+      title: "Security Added",
+      description: `${newSecurity.name} has been added to the market.`,
+    });
+  };
+
   const handleAgentUpload = (uploadedAgents: Agent[]) => {
     uploadedAgents.forEach(agent => {
       onAgentEdit(agent);
@@ -159,7 +177,7 @@ export const MarketView = ({
         onAddCommodity={handleNewCommodity}
         newSecurity={newSecurity}
         onSecurityChange={onSecurityChange}
-        onAddSecurity={onAddSecurity}
+        onAddSecurity={handleNewSecurity}
         onAgentUpload={handleAgentUpload}
         onCommodityUpload={handleCommodityUpload}
         onSecurityUpload={handleSecurityUpload}
