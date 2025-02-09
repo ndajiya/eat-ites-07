@@ -1,3 +1,4 @@
+
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { calculateNewPrice, determinePriceTrend } from "./commodityPricing";
@@ -11,7 +12,7 @@ interface Transaction {
   date: string;
   description: string;
   accountName: string;
-  accountType: "Revenue" | "Expenses";
+  accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
 }
 
 function processInChunks<T>(
@@ -64,34 +65,69 @@ export const simulateRound = async (
     }
   );
 
-  // Generate transactions with more detailed descriptions based on agent type
+  // Generate transactions with more specific categorization
   const transactions: Transaction[] = agents.map((agent) => {
     const baseChange = Math.floor(Math.random() * 201) - 100;
     let description = "";
-    let accountType: "Revenue" | "Expenses" = baseChange >= 0 ? "Revenue" : "Expenses";
+    let accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
     let accountName = "";
 
     // Customize transaction details based on agent class
     switch (agent.class) {
       case "Household":
-        accountName = baseChange >= 0 ? "Wage Income" : "Household Expenses";
-        description = baseChange >= 0 ? "Monthly wage income" : "Monthly household expenses";
+        if (baseChange >= 0) {
+          accountType = "Revenue";
+          accountName = "Wage Income";
+          description = "Monthly wage income";
+        } else {
+          accountType = "Expenses";
+          accountName = "Household Expenses";
+          description = "Monthly household expenses";
+        }
         break;
       case "Firm":
-        accountName = baseChange >= 0 ? "Sales Revenue" : "Operating Expenses";
-        description = baseChange >= 0 ? "Product sales revenue" : "Business operating costs";
+        if (baseChange >= 0) {
+          accountType = "Revenue";
+          accountName = "Sales Revenue";
+          description = "Product sales revenue";
+        } else {
+          accountType = "Expenses";
+          accountName = "Operating Expenses";
+          description = "Business operating costs";
+        }
         break;
       case "Government":
-        accountName = baseChange >= 0 ? "Tax Revenue" : "Government Spending";
-        description = baseChange >= 0 ? "Tax collection" : "Public expenditure";
+        if (baseChange >= 0) {
+          accountType = "Revenue";
+          accountName = "Tax Revenue";
+          description = "Tax collection";
+        } else {
+          accountType = "Expenses";
+          accountName = "Government Spending";
+          description = "Public expenditure";
+        }
         break;
-      case "CentralBank":
-        accountName = baseChange >= 0 ? "Interest Income" : "Monetary Operations";
-        description = baseChange >= 0 ? "Interest earned on securities" : "Cost of monetary operations";
+      case "CentralBanks":
+        if (baseChange >= 0) {
+          accountType = "Revenue";
+          accountName = "Interest Income";
+          description = "Interest earned on securities";
+        } else {
+          accountType = "Expenses";
+          accountName = "Monetary Operations";
+          description = "Cost of monetary operations";
+        }
         break;
       default:
-        accountName = baseChange >= 0 ? "Trading Income" : "Trading Expenses";
-        description = baseChange >= 0 ? "General income" : "General expenses";
+        if (baseChange >= 0) {
+          accountType = "Revenue";
+          accountName = "Trading Income";
+          description = "General income";
+        } else {
+          accountType = "Expenses";
+          accountName = "Trading Expenses";
+          description = "General expenses";
+        }
     }
 
     return {
@@ -114,8 +150,7 @@ export const simulateRound = async (
       const { cashChange, date, description, accountName, accountType } = transaction;
       const newCash = agent.cash + cashChange;
       
-      // Record the transaction in the bookkeeping system
-      // First record the revenue/expense entry
+      // Record the revenue/expense transaction
       agent.bookkeeping.addTransaction(
         date,
         accountType,
@@ -125,13 +160,13 @@ export const simulateRound = async (
         cashChange >= 0 ? "Increase" : "Decrease"
       );
 
-      // Then record the corresponding cash entry
+      // Record the corresponding cash transaction
       agent.bookkeeping.addTransaction(
         date,
         "Assets",
         "Cash",
         Math.abs(cashChange),
-        `Round ${currentRound} cash adjustment`,
+        description,
         cashChange >= 0 ? "Increase" : "Decrease"
       );
 
