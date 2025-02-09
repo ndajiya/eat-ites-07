@@ -1,3 +1,4 @@
+
 import { Security } from "@/types/securities";
 import { useToast } from "@/components/ui/use-toast";
 import { useCallback } from "react";
@@ -38,7 +39,18 @@ export const useSecurityHandlers = (
     });
   }, [setSecurities, setNewSecurity, toast]);
 
+  const handleSecurityDelete = useCallback((securityId: string) => {
+    setSecurities(prevSecurities => 
+      prevSecurities.filter(security => security.id !== securityId)
+    );
+    toast({
+      title: "Security Deleted",
+      description: "Security has been deleted successfully.",
+    });
+  }, [setSecurities, toast]);
+
   return {
     handleAddSecurity,
+    handleSecurityDelete,
   };
 };

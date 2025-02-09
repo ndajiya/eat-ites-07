@@ -1,3 +1,4 @@
+
 import { Agent, Commodity } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { useAgentHandlers } from "./handlers/useAgentHandlers";
@@ -13,8 +14,8 @@ export const useEntityHandlers = (
   setNewSecurity: (security: Omit<Security, "id">) => void,
 ) => {
   const { handleAgentEdit, handleAgentDelete, handleAddAgent } = useAgentHandlers(setAgents, setNewAgent);
-  const { handleCommodityEdit, handleAddCommodity } = useCommodityHandlers(setCommodities, setNewCommodity);
-  const { handleAddSecurity } = useSecurityHandlers(setSecurities, setNewSecurity);
+  const { handleCommodityEdit, handleAddCommodity, handleCommodityDelete } = useCommodityHandlers(setCommodities, setNewCommodity);
+  const { handleAddSecurity, handleSecurityDelete } = useSecurityHandlers(setSecurities, setNewSecurity);
 
   return {
     handleAgentEdit,
@@ -23,5 +24,7 @@ export const useEntityHandlers = (
     handleAddAgent,
     handleAddCommodity,
     handleAddSecurity,
+    handleCommodityDelete,
+    handleSecurityDelete,
   };
 };

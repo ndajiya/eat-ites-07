@@ -22,6 +22,8 @@ interface SimulatorGridProps {
   setNewAgent: (agent: Omit<Agent, "lastRoundDifference">) => void;
   setNewCommodity: (commodity: Omit<Commodity, "priceTrend">) => void;
   onSecurityChange: (field: keyof Omit<Security, "id">, value: any) => void;
+  onCommodityDelete: (commodityName: string) => void;
+  onSecurityDelete: (securityId: string) => void;
 }
 
 export const SimulatorGrid = ({
@@ -41,6 +43,8 @@ export const SimulatorGrid = ({
   setNewAgent,
   setNewCommodity,
   onSecurityChange,
+  onCommodityDelete,
+  onSecurityDelete,
 }: SimulatorGridProps) => {
   const handleAgentNameChange = (value: string) => {
     setNewAgent({
@@ -97,7 +101,7 @@ export const SimulatorGrid = ({
         onAddCommodity={onAddCommodity}
         onCommodityNameChange={handleCommodityNameChange}
         onCommodityPriceChange={handleCommodityPriceChange}
-        onDelete={onAgentDelete}
+        onDelete={onCommodityDelete}
       />
 
       <SecuritiesSection
@@ -107,7 +111,7 @@ export const SimulatorGrid = ({
         onSecurityTrade={onSecurityTrade}
         onAddSecurity={onAddSecurity}
         onSecurityChange={onSecurityChange}
-        onDelete={onAgentDelete}
+        onDelete={onSecurityDelete}
       />
     </div>
   );

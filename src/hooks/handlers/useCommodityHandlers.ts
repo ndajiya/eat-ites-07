@@ -1,3 +1,4 @@
+
 import { Commodity } from "@/types/simulator";
 import { useToast } from "@/components/ui/use-toast";
 import { useCallback } from "react";
@@ -17,6 +18,16 @@ export const useCommodityHandlers = (
     toast({
       title: "Commodity Updated",
       description: `${updatedCommodity.name} has been updated successfully.`,
+    });
+  }, [setCommodities, toast]);
+
+  const handleCommodityDelete = useCallback((commodityName: string) => {
+    setCommodities(prevCommodities => 
+      prevCommodities.filter(commodity => commodity.name !== commodityName)
+    );
+    toast({
+      title: "Commodity Deleted",
+      description: `${commodityName} has been deleted successfully.`,
     });
   }, [setCommodities, toast]);
 
@@ -46,6 +57,7 @@ export const useCommodityHandlers = (
 
   return {
     handleCommodityEdit,
+    handleCommodityDelete,
     handleAddCommodity,
   };
 };
