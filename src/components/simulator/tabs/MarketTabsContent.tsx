@@ -77,7 +77,7 @@ export const MarketTabsContent = ({
   return (
     <>
       {MARKET_TABS.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
+        <TabsContent key={tab.value} value={tab.value} className="mt-4 space-y-4">
           {renderTabContent(tab)}
         </TabsContent>
       ))}
