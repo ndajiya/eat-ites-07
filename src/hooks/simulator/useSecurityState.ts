@@ -35,7 +35,7 @@ const BACHELORS_SECURITIES: Security[] = [
   {
     id: "1",
     name: "Growth Fund ETF",
-    class: "Equity",
+    class: "Fund",
     type: "ETF",
     price: 250,
     volatility: 0.25,
@@ -47,7 +47,7 @@ const BACHELORS_SECURITIES: Security[] = [
   {
     id: "2",
     name: "Corporate Bond A",
-    class: "Corporate",
+    class: "Debt",
     type: "CorporateBond",
     price: 1000,
     volatility: 0.15,

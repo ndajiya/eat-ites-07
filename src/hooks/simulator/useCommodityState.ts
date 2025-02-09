@@ -27,7 +27,7 @@ const BACHELORS_COMMODITIES: Commodity[] = [
     averagePrice: 1800, 
     priceTrend: "Up" as const,
     class: "Hard",
-    type: "Precious",
+    type: "Luxury",
     marketType: "Spot"
   },
   { 
