@@ -1,3 +1,4 @@
+
 import { TabsContent } from "@/components/ui/tabs";
 import { Agent } from "@/types/simulator";
 import { AgentTab } from "./AgentTab";
@@ -26,10 +27,10 @@ export const MarketTabsContent = ({
 }: MarketTabsContentProps) => {
   const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
     return agents.filter(agent => {
-      const normalizedAgentClass = agent.class.toLowerCase();
+      const normalizedAgentClass = agent.class.toLowerCase().trim();
       return classes.some(cls => {
-        console.log(`Comparing agent class: ${normalizedAgentClass} with tab class: ${cls.toLowerCase()}`);
-        return cls.toLowerCase() === normalizedAgentClass;
+        console.log(`Agent class: ${normalizedAgentClass}, Tab class: ${cls.toLowerCase().trim()}`);
+        return cls.toLowerCase().trim() === normalizedAgentClass;
       });
     });
   };
