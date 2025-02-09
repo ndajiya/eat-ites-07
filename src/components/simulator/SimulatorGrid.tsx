@@ -1,3 +1,4 @@
+
 import { Agent, Commodity } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { AgentSection } from "./grid/AgentSection";
@@ -96,6 +97,7 @@ export const SimulatorGrid = ({
         onAddCommodity={onAddCommodity}
         onCommodityNameChange={handleCommodityNameChange}
         onCommodityPriceChange={handleCommodityPriceChange}
+        onDelete={onAgentDelete}
       />
 
       <SecuritiesSection
@@ -105,6 +107,7 @@ export const SimulatorGrid = ({
         onSecurityTrade={onSecurityTrade}
         onAddSecurity={onAddSecurity}
         onSecurityChange={onSecurityChange}
+        onDelete={onAgentDelete}
       />
     </div>
   );
