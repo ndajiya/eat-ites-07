@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { SecuritiesTable } from "../SecuritiesTable";
 import { Plus } from "lucide-react";
@@ -14,6 +15,7 @@ interface SecuritiesSectionProps {
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddSecurity: () => void;
   onSecurityChange: (field: keyof Omit<Security, "id">, value: any) => void;
+  onDelete: (securityId: string) => void;
 }
 
 export const SecuritiesSection = ({
@@ -23,6 +25,7 @@ export const SecuritiesSection = ({
   onSecurityTrade,
   onAddSecurity,
   onSecurityChange,
+  onDelete,
 }: SecuritiesSectionProps) => {
   return (
     <div className="glass-card p-6 space-y-4 w-full">
@@ -46,6 +49,7 @@ export const SecuritiesSection = ({
           securities={securities} 
           agents={agents}
           onTrade={onSecurityTrade}
+          onDelete={onDelete}
         />
       </div>
     </div>

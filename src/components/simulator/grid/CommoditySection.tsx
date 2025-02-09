@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { CommodityTable } from "../CommodityTable";
 import { Plus } from "lucide-react";
@@ -13,6 +14,7 @@ interface CommoditySectionProps {
   onAddCommodity: () => void;
   onCommodityNameChange: (value: string) => void;
   onCommodityPriceChange: (value: number) => void;
+  onDelete: (commodityName: string) => void;
 }
 
 export const CommoditySection = ({
@@ -22,6 +24,7 @@ export const CommoditySection = ({
   onAddCommodity,
   onCommodityNameChange,
   onCommodityPriceChange,
+  onDelete,
 }: CommoditySectionProps) => {
   return (
     <div className="glass-card p-6 space-y-4 w-full">
@@ -45,6 +48,7 @@ export const CommoditySection = ({
         <CommodityTable 
           commodities={commodities} 
           onCommodityEdit={onCommodityEdit}
+          onDelete={onDelete}
         />
       </div>
     </div>
