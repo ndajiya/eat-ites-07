@@ -105,6 +105,40 @@ export const MarketView = ({
     });
   };
 
+  const handleDeleteAgent = (agentName: string) => {
+    const index = agents.findIndex(agent => agent.name === agentName);
+    if (index !== -1) {
+      agents.splice(index, 1);
+      toast({
+        title: "Agent Deleted",
+        description: `${agentName} has been removed from the simulation.`,
+      });
+    }
+  };
+
+  const handleDeleteCommodity = (commodityName: string) => {
+    const index = commodities.findIndex(commodity => commodity.name === commodityName);
+    if (index !== -1) {
+      commodities.splice(index, 1);
+      toast({
+        title: "Commodity Deleted",
+        description: `${commodityName} has been removed from the market.`,
+      });
+    }
+  };
+
+  const handleDeleteSecurity = (securityId: string) => {
+    const index = securities.findIndex(security => security.id === securityId);
+    if (index !== -1) {
+      const securityName = securities[index].name;
+      securities.splice(index, 1);
+      toast({
+        title: "Security Deleted",
+        description: `${securityName} has been removed from the market.`,
+      });
+    }
+  };
+
   const handleAgentUpload = (uploadedAgents: Agent[]) => {
     uploadedAgents.forEach(agent => {
       onAgentEdit(agent);
@@ -199,9 +233,11 @@ export const MarketView = ({
           commodities={commodities}
           securities={securities}
           onAgentEdit={onAgentEdit}
-          onAgentDelete={onAgentDelete}
+          onAgentDelete={handleDeleteAgent}
           onCommodityEdit={onCommodityEdit}
           onSecurityTrade={onSecurityTrade}
+          onDeleteCommodity={handleDeleteCommodity}
+          onDeleteSecurity={handleDeleteSecurity}
         />
       </Tabs>
     </div>

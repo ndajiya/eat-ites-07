@@ -14,6 +14,8 @@ interface MarketTabsContentProps {
   onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: any) => void;
   onSecurityTrade: (trade: any) => void;
+  onDeleteCommodity: (commodityName: string) => void;
+  onDeleteSecurity: (securityId: string) => void;
 }
 
 export const MarketTabsContent = ({
@@ -24,25 +26,16 @@ export const MarketTabsContent = ({
   onAgentDelete,
   onCommodityEdit,
   onSecurityTrade,
+  onDeleteCommodity,
+  onDeleteSecurity,
 }: MarketTabsContentProps) => {
   const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
-    console.log("All agents:", agents);
-    console.log("Filtering for classes:", classes);
-    
-    return agents.filter(agent => {
-      console.log(`Checking agent ${agent.name} with class ${agent.class}`);
-      return classes.some(cls => {
-        const matches = agent.class === cls;
-        console.log(`Comparing ${agent.class} with ${cls}: ${matches}`);
-        return matches;
-      });
-    });
+    return agents.filter(agent => classes.some(cls => agent.class === cls));
   };
 
   const renderTabContent = (tab: typeof MARKET_TABS[number]) => {
     if ('agentClasses' in tab) {
       const filteredAgents = filterAgentsByClass(agents, tab.agentClasses);
-      console.log(`Tab ${tab.value} filtered agents:`, filteredAgents);
       return (
         <AgentTab
           agents={filteredAgents}
@@ -57,6 +50,7 @@ export const MarketTabsContent = ({
         <CommodityTable
           commodities={commodities}
           onCommodityEdit={onCommodityEdit}
+          onDelete={onDeleteCommodity}
         />
       );
     }
@@ -67,6 +61,7 @@ export const MarketTabsContent = ({
           securities={securities}
           agents={agents}
           onTrade={onSecurityTrade}
+          onDelete={onDeleteSecurity}
         />
       );
     }

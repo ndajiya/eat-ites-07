@@ -1,21 +1,25 @@
+
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Edit2, ArrowUpRight, ArrowDownRight, Factory } from "lucide-react";
+import { Edit2, ArrowUpRight, ArrowDownRight, Factory, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Commodity } from "@/types/simulator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { TablePagination } from "./TablePagination";
 import { CommodityEditDialog } from "./CommodityEditDialog";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 
 interface CommodityTableProps {
   commodities: Commodity[];
   onCommodityEdit: (commodity: Commodity) => void;
+  onDelete: (commodityName: string) => void;
   agents?: Array<{ name: string; production?: Array<{ commodityName: string; rate: number }> }>;
 }
 
-export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: CommodityTableProps) => {
+export const CommodityTable = ({ commodities, onCommodityEdit, onDelete, agents = [] }: CommodityTableProps) => {
   const [editingCommodity, setEditingCommodity] = useState<Commodity | null>(null);
+  const [deletingCommodity, setDeletingCommodity] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -98,7 +102,7 @@ export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: Co
                     "-"
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="space-x-2">
                   <Dialog open={editingCommodity?.name === commodity.name} onOpenChange={(open) => !open && setEditingCommodity(null)}>
                     <DialogTrigger asChild>
                       <Button variant="ghost" size="icon" onClick={() => setEditingCommodity(commodity)}>
@@ -111,6 +115,37 @@ export const CommodityTable = ({ commodities, onCommodityEdit, agents = [] }: Co
                       onSave={onCommodityEdit}
                     />
                   </Dialog>
+
+                  <AlertDialog open={deletingCommodity === commodity.name} onOpenChange={(open) => !open && setDeletingCommodity(null)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() => setDeletingCommodity(commodity.name)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Commodity</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete {commodity.name}? This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setDeletingCommodity(null)}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            onDelete(commodity.name);
+                            setDeletingCommodity(null);
+                          }}
+                          className="bg-red-500 hover:bg-red-600"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
               </TableRow>
             );
