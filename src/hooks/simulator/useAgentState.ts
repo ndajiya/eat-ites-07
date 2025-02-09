@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Agent, EducationLevel } from "@/types/simulator";
 import { Bookkeeping } from "@/utils/Bookkeeping";
