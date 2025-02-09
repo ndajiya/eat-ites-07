@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Agent } from "@/types/simulator";
 
@@ -11,6 +12,7 @@ export const LedgerTab = ({ agent }: LedgerTabProps) => {
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>
+          <TableHead>Account Type</TableHead>
           <TableHead>Account</TableHead>
           <TableHead>Amount</TableHead>
           <TableHead>Type</TableHead>
@@ -21,8 +23,11 @@ export const LedgerTab = ({ agent }: LedgerTabProps) => {
         {agent.bookkeeping.getLedger().map((transaction, index) => (
           <TableRow key={index}>
             <TableCell>{transaction.date}</TableCell>
+            <TableCell>{transaction.accountType}</TableCell>
             <TableCell>{transaction.account}</TableCell>
-            <TableCell>${Math.abs(transaction.amount).toLocaleString()}</TableCell>
+            <TableCell className={transaction.amount >= 0 ? "text-green-500" : "text-red-500"}>
+              ${Math.abs(transaction.amount).toLocaleString()}
+            </TableCell>
             <TableCell>{transaction.entryType}</TableCell>
             <TableCell>{transaction.description}</TableCell>
           </TableRow>
