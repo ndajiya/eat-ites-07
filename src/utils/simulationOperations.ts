@@ -1,34 +1,10 @@
+
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { calculateNewPrice, determinePriceTrend } from "./commodityPricing";
 import { generateRandomPriceFluctuation } from "./marketOperations";
-
-const CHUNK_SIZE = 50;
-
-interface Transaction {
-  agentId: string;
-  cashChange: number;
-  date: string;
-  description: string;
-  accountName: string;
-  accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
-}
-
-function processInChunks<T>(
-  items: T[],
-  processor: (item: T, index: number) => T,
-  chunkSize: number = CHUNK_SIZE
-): T[] {
-  const results: T[] = [];
-  
-  for (let i = 0; i < items.length; i += chunkSize) {
-    const chunk = items.slice(i, i + chunkSize);
-    const processedChunk = chunk.map((item, index) => processor(item, i + index));
-    results.push(...processedChunk);
-  }
-  
-  return results;
-}
+import { processInChunks } from "./processInChunks";
+import { generateTransactions } from "./transactions/generateTransactions";
 
 export const simulateRound = async (
   currentRound: number,
@@ -65,80 +41,7 @@ export const simulateRound = async (
   );
 
   // Generate transactions for each agent
-  const transactions: Transaction[] = agents.map((agent) => {
-    const baseChange = Math.floor(Math.random() * 201) - 100;
-    let description = "";
-    let accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
-    let accountName = "";
-    let operatingCategory = "Operating"; // Default for cash flow statement
-
-    // Customize transaction details based on agent class
-    switch (agent.class) {
-      case "Household":
-        if (baseChange >= 0) {
-          accountType = "Revenue";
-          accountName = "Wage Income";
-          description = "Monthly wage income";
-        } else {
-          accountType = "Expenses";
-          accountName = "Living Expenses";
-          description = "Monthly household expenses";
-        }
-        break;
-      case "Firm":
-        if (baseChange >= 0) {
-          accountType = "Revenue";
-          accountName = "Sales Revenue";
-          description = "Product sales revenue";
-        } else {
-          accountType = "Expenses";
-          accountName = "Operating Expenses";
-          description = "Business operating costs";
-        }
-        break;
-      case "Government":
-        if (baseChange >= 0) {
-          accountType = "Revenue";
-          accountName = "Tax Revenue";
-          description = "Tax collection";
-        } else {
-          accountType = "Expenses";
-          accountName = "Public Spending";
-          description = "Government expenditure";
-        }
-        break;
-      case "CentralBanks":
-        if (baseChange >= 0) {
-          accountType = "Revenue";
-          accountName = "Interest Income";
-          description = "Interest earned on securities";
-        } else {
-          accountType = "Expenses";
-          accountName = "Monetary Operations";
-          description = "Cost of monetary operations";
-        }
-        break;
-      default:
-        if (baseChange >= 0) {
-          accountType = "Revenue";
-          accountName = "Trading Income";
-          description = "General income";
-        } else {
-          accountType = "Expenses";
-          accountName = "Trading Expenses";
-          description = "General expenses";
-        }
-    }
-
-    return {
-      agentId: agent.name,
-      cashChange: baseChange,
-      date: new Date().toISOString().split('T')[0],
-      description: `Round ${currentRound}: ${description}`,
-      accountName,
-      accountType
-    };
-  });
+  const transactions = generateTransactions(agents, currentRound);
 
   // Process agents in chunks with their transactions
   const updatedAgents = processInChunks<Agent>(
