@@ -1,3 +1,4 @@
+
 export const MARKET_TABS = [
   {
     value: "individuals",
@@ -7,12 +8,12 @@ export const MARKET_TABS = [
   {
     value: "firms",
     label: "Firms",
-    agentClasses: ["Firms"] as const
+    agentClasses: ["Firms"] as const  // Changed to match the exact class name from agents data
   },
   {
     value: "governments",
     label: "Governments",
-    agentClasses: ["Government"] as const  // Changed from "Governments" to match the class name
+    agentClasses: ["Government"] as const
   },
   {
     value: "central-banks",

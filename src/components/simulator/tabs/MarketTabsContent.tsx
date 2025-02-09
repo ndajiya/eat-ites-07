@@ -26,11 +26,15 @@ export const MarketTabsContent = ({
   onSecurityTrade,
 }: MarketTabsContentProps) => {
   const filterAgentsByClass = (agents: Agent[], classes: readonly string[]) => {
+    console.log("All agents:", agents);
+    console.log("Filtering for classes:", classes);
+    
     return agents.filter(agent => {
-      const normalizedAgentClass = agent.class.toLowerCase().trim();
+      console.log(`Checking agent ${agent.name} with class ${agent.class}`);
       return classes.some(cls => {
-        console.log(`Agent class: ${normalizedAgentClass}, Tab class: ${cls.toLowerCase().trim()}`);
-        return cls.toLowerCase().trim() === normalizedAgentClass;
+        const matches = agent.class === cls;
+        console.log(`Comparing ${agent.class} with ${cls}: ${matches}`);
+        return matches;
       });
     });
   };
