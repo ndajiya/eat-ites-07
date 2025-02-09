@@ -1,4 +1,3 @@
-
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security } from "@/types/securities";
 import { calculateNewPrice, determinePriceTrend } from "./commodityPricing";
@@ -71,7 +70,7 @@ export const simulateRound = async (
     let description = "";
     let accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
     let accountName = "";
-    let operatingCategory = ""; // For cash flow statement
+    let operatingCategory = "Operating"; // Default for cash flow statement
 
     // Customize transaction details based on agent class
     switch (agent.class) {
@@ -80,12 +79,10 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Wage Income";
           description = "Monthly wage income";
-          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Living Expenses";
           description = "Monthly household expenses";
-          operatingCategory = "Operating";
         }
         break;
       case "Firm":
@@ -93,12 +90,10 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Sales Revenue";
           description = "Product sales revenue";
-          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Operating Expenses";
           description = "Business operating costs";
-          operatingCategory = "Operating";
         }
         break;
       case "Government":
@@ -106,12 +101,10 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Tax Revenue";
           description = "Tax collection";
-          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Public Spending";
           description = "Government expenditure";
-          operatingCategory = "Operating";
         }
         break;
       case "CentralBanks":
@@ -119,12 +112,10 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Interest Income";
           description = "Interest earned on securities";
-          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Monetary Operations";
           description = "Cost of monetary operations";
-          operatingCategory = "Operating";
         }
         break;
       default:
@@ -132,12 +123,10 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Trading Income";
           description = "General income";
-          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Trading Expenses";
           description = "General expenses";
-          operatingCategory = "Operating";
         }
     }
 
@@ -161,7 +150,7 @@ export const simulateRound = async (
       const { cashChange, date, description, accountName, accountType } = transaction;
       const newCash = agent.cash + cashChange;
       
-      // Record the revenue/expense transaction
+      // First record the revenue/expense transaction
       agent.bookkeeping.addTransaction(
         date,
         accountType,
@@ -171,7 +160,7 @@ export const simulateRound = async (
         cashChange >= 0 ? "Increase" : "Decrease"
       );
 
-      // Record the corresponding cash transaction
+      // Then record the corresponding cash transaction
       agent.bookkeeping.addTransaction(
         date,
         "Assets",
