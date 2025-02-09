@@ -1,3 +1,4 @@
+
 import { Tabs } from "@/components/ui/tabs";
 import { Agent } from "@/types/simulator";
 import { useState } from "react";
@@ -52,12 +53,12 @@ export const MarketView = ({
   const { toast } = useToast();
   const [isSimulating, setIsSimulating] = useState(false);
 
-  const handleAddAgent = () => {
-    const agentWithDifference = {
+  const handleNewAgent = () => {
+    const agentToAdd = {
       ...newAgent,
       lastRoundDifference: 0,
     };
-    onAgentEdit(agentWithDifference);
+    agents.push(agentToAdd); // Add to agents array
     setNewAgent({
       name: "",
       cash: 1000,
@@ -137,7 +138,7 @@ export const MarketView = ({
         onAgentNameChange={(value) => setNewAgent({ ...newAgent, name: value })}
         onAgentCashChange={(value) => setNewAgent({ ...newAgent, cash: value })}
         onAgentClassChange={(value) => setNewAgent({ ...newAgent, class: value })}
-        onAddAgent={handleAddAgent}
+        onAddAgent={handleNewAgent}
         newCommodity={newCommodity}
         onCommodityNameChange={onCommodityNameChange}
         onCommodityPriceChange={onCommodityPriceChange}
