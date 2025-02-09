@@ -1,3 +1,4 @@
+
 import { SimulatorGrid } from "../SimulatorGrid";
 import { Agent, Commodity } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
@@ -19,6 +20,8 @@ interface MainContentProps {
   setNewAgent: (agent: Omit<Agent, "lastRoundDifference">) => void;
   setNewCommodity: (commodity: Omit<Commodity, "priceTrend">) => void;
   onSecurityChange: (field: keyof Omit<Security, "id">, value: any) => void;
+  onCommodityDelete: (commodityName: string) => void;
+  onSecurityDelete: (securityId: string) => void;
 }
 
 export const MainContent = ({
@@ -38,6 +41,8 @@ export const MainContent = ({
   setNewAgent,
   setNewCommodity,
   onSecurityChange,
+  onCommodityDelete,
+  onSecurityDelete,
 }: MainContentProps) => {
   return (
     <div className="lg:col-span-2">
@@ -58,6 +63,8 @@ export const MainContent = ({
         setNewAgent={setNewAgent}
         setNewCommodity={setNewCommodity}
         onSecurityChange={onSecurityChange}
+        onCommodityDelete={onCommodityDelete}
+        onSecurityDelete={onSecurityDelete}
       />
     </div>
   );

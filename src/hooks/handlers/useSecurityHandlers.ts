@@ -1,6 +1,6 @@
 
 import { Security } from "@/types/securities";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useCallback } from "react";
 
 export const useSecurityHandlers = (

@@ -43,6 +43,8 @@ const Dashboard = () => {
     handleAddAgent,
     handleAddCommodity,
     handleAddSecurity,
+    handleCommodityDelete,
+    handleSecurityDelete,
   } = useEntityHandlers(
     setAgents,
     setCommodities,
@@ -79,6 +81,8 @@ const Dashboard = () => {
           newSecurity={newSecurity}
           onSecurityChange={handleSecurityChange}
           onAddSecurity={handleAddSecurity}
+          onCommodityDelete={handleCommodityDelete}
+          onSecurityDelete={handleSecurityDelete}
         />
       </div>
     </div>
