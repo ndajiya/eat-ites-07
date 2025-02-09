@@ -9,6 +9,9 @@ interface Transaction {
   agentId: string;
   cashChange: number;
   date: string;
+  description: string;
+  accountName: string;
+  accountType: "Revenue" | "Expenses";
 }
 
 function processInChunks<T>(
@@ -61,12 +64,45 @@ export const simulateRound = async (
     }
   );
 
-  // Generate transactions
-  const transactions: Transaction[] = agents.map((agent) => ({
-    agentId: agent.name,
-    cashChange: Math.floor(Math.random() * 201) - 100,
-    date: new Date().toISOString().split('T')[0]
-  }));
+  // Generate transactions with more detailed descriptions based on agent type
+  const transactions: Transaction[] = agents.map((agent) => {
+    const baseChange = Math.floor(Math.random() * 201) - 100;
+    let description = "";
+    let accountType: "Revenue" | "Expenses" = baseChange >= 0 ? "Revenue" : "Expenses";
+    let accountName = "";
+
+    // Customize transaction details based on agent class
+    switch (agent.class) {
+      case "Household":
+        accountName = baseChange >= 0 ? "Wage Income" : "Household Expenses";
+        description = baseChange >= 0 ? "Monthly wage income" : "Monthly household expenses";
+        break;
+      case "Firm":
+        accountName = baseChange >= 0 ? "Sales Revenue" : "Operating Expenses";
+        description = baseChange >= 0 ? "Product sales revenue" : "Business operating costs";
+        break;
+      case "Government":
+        accountName = baseChange >= 0 ? "Tax Revenue" : "Government Spending";
+        description = baseChange >= 0 ? "Tax collection" : "Public expenditure";
+        break;
+      case "CentralBank":
+        accountName = baseChange >= 0 ? "Interest Income" : "Monetary Operations";
+        description = baseChange >= 0 ? "Interest earned on securities" : "Cost of monetary operations";
+        break;
+      default:
+        accountName = baseChange >= 0 ? "Trading Income" : "Trading Expenses";
+        description = baseChange >= 0 ? "General income" : "General expenses";
+    }
+
+    return {
+      agentId: agent.name,
+      cashChange: baseChange,
+      date: new Date().toISOString().split('T')[0],
+      description: `Round ${currentRound}: ${description}`,
+      accountName,
+      accountType
+    };
+  });
 
   // Process agents in chunks with their transactions
   const updatedAgents = processInChunks<Agent>(
@@ -75,19 +111,21 @@ export const simulateRound = async (
       const transaction = transactions.find(t => t.agentId === agent.name);
       if (!transaction) return agent;
 
-      const cashChange = transaction.cashChange;
-      const date = transaction.date;
+      const { cashChange, date, description, accountName, accountType } = transaction;
       const newCash = agent.cash + cashChange;
       
+      // Record the transaction in the bookkeeping system
+      // First record the revenue/expense entry
       agent.bookkeeping.addTransaction(
         date,
-        "Revenue",
-        cashChange >= 0 ? "Trading Income" : "Trading Expenses",
+        accountType,
+        accountName,
         Math.abs(cashChange),
-        `Round ${currentRound} trading result`,
+        description,
         cashChange >= 0 ? "Increase" : "Decrease"
       );
 
+      // Then record the corresponding cash entry
       agent.bookkeeping.addTransaction(
         date,
         "Assets",
