@@ -65,12 +65,13 @@ export const simulateRound = async (
     }
   );
 
-  // Generate transactions with more specific categorization
+  // Generate transactions for each agent
   const transactions: Transaction[] = agents.map((agent) => {
     const baseChange = Math.floor(Math.random() * 201) - 100;
     let description = "";
     let accountType: "Revenue" | "Expenses" | "Assets" | "Liabilities";
     let accountName = "";
+    let operatingCategory = ""; // For cash flow statement
 
     // Customize transaction details based on agent class
     switch (agent.class) {
@@ -79,10 +80,12 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Wage Income";
           description = "Monthly wage income";
+          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
-          accountName = "Household Expenses";
+          accountName = "Living Expenses";
           description = "Monthly household expenses";
+          operatingCategory = "Operating";
         }
         break;
       case "Firm":
@@ -90,10 +93,12 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Sales Revenue";
           description = "Product sales revenue";
+          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Operating Expenses";
           description = "Business operating costs";
+          operatingCategory = "Operating";
         }
         break;
       case "Government":
@@ -101,10 +106,12 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Tax Revenue";
           description = "Tax collection";
+          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
-          accountName = "Government Spending";
-          description = "Public expenditure";
+          accountName = "Public Spending";
+          description = "Government expenditure";
+          operatingCategory = "Operating";
         }
         break;
       case "CentralBanks":
@@ -112,10 +119,12 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Interest Income";
           description = "Interest earned on securities";
+          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Monetary Operations";
           description = "Cost of monetary operations";
+          operatingCategory = "Operating";
         }
         break;
       default:
@@ -123,10 +132,12 @@ export const simulateRound = async (
           accountType = "Revenue";
           accountName = "Trading Income";
           description = "General income";
+          operatingCategory = "Operating";
         } else {
           accountType = "Expenses";
           accountName = "Trading Expenses";
           description = "General expenses";
+          operatingCategory = "Operating";
         }
     }
 
