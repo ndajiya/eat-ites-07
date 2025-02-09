@@ -58,7 +58,7 @@ export const MarketView = ({
       ...newAgent,
       lastRoundDifference: 0,
     };
-    agents.push(agentToAdd); // Add to agents array
+    agents.push(agentToAdd);
     setNewAgent({
       name: "",
       cash: 1000,
@@ -70,6 +70,20 @@ export const MarketView = ({
     toast({
       title: "Agent Added",
       description: `${newAgent.name} has been added to the simulation.`,
+    });
+  };
+
+  const handleNewCommodity = () => {
+    const commodityToAdd = {
+      ...newCommodity,
+      priceTrend: "Up" as const
+    };
+    commodities.push(commodityToAdd);
+    onCommodityNameChange("");
+    onCommodityPriceChange(0);
+    toast({
+      title: "Commodity Added",
+      description: `${newCommodity.name} has been added to the market.`,
     });
   };
 
@@ -142,7 +156,7 @@ export const MarketView = ({
         newCommodity={newCommodity}
         onCommodityNameChange={onCommodityNameChange}
         onCommodityPriceChange={onCommodityPriceChange}
-        onAddCommodity={onAddCommodity}
+        onAddCommodity={handleNewCommodity}
         newSecurity={newSecurity}
         onSecurityChange={onSecurityChange}
         onAddSecurity={onAddSecurity}
