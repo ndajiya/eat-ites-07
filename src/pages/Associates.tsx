@@ -1,3 +1,4 @@
+
 import { SimulatorDashboard } from "@/components/simulator/SimulatorDashboard";
 import { useSimulatorState } from "@/hooks/useSimulatorState";
 import { useSimulatorActions } from "@/hooks/useSimulatorActions";
@@ -16,7 +17,7 @@ const Index = () => {
     setCommodities,
     securities,
     setSecurities
-  } = useSimulatorState();
+  } = useSimulatorState('ASSOCIATES');
 
   const {
     roundsHistory,

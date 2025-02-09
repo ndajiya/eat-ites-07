@@ -58,3 +58,5 @@ export interface RoundData {
     price: number
   }[]
 }
+
+export type EducationLevel = 'ASSOCIATES' | 'BACHELORS';

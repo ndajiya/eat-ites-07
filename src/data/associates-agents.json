@@ -1,0 +1,77 @@
+
+{
+  "agents": [
+    {
+      "name": "Federal Reserve",
+      "cash": 1000000000,
+      "class": "CentralBanks",
+      "lastRoundDifference": 0,
+      "monetaryPolicy": {
+        "interestRate": 0.05,
+        "reserveRequirement": 0.1
+      },
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "European Central Bank",
+      "cash": 900000000,
+      "class": "CentralBanks",
+      "lastRoundDifference": 0,
+      "monetaryPolicy": {
+        "interestRate": 0.04,
+        "reserveRequirement": 0.08
+      },
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "Bank of Japan",
+      "cash": 800000000,
+      "class": "CentralBanks",
+      "lastRoundDifference": 0,
+      "monetaryPolicy": {
+        "interestRate": 0.01,
+        "reserveRequirement": 0.06
+      },
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "US Treasury",
+      "cash": 2000000000,
+      "class": "Government",
+      "lastRoundDifference": 0,
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "Producer Corp",
+      "cash": 1000,
+      "class": "Firms",
+      "lastRoundDifference": 0,
+      "inventory": [],
+      "production": [
+        {
+          "commodityName": "Commodity1",
+          "rate": 10,
+          "cost": 30
+        }
+      ]
+    },
+    {
+      "name": "Trading LLC",
+      "cash": 800,
+      "class": "Firms",
+      "lastRoundDifference": 0,
+      "inventory": [
+        {
+          "commodityName": "Commodity1",
+          "quantity": 50,
+          "averagePurchasePrice": 45
+        }
+      ],
+      "production": []
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+
 import { SimulatorDashboard } from "@/components/simulator/SimulatorDashboard";
 import { useSimulatorState } from "@/hooks/useSimulatorState";
 import { useSimulatorActions } from "@/hooks/useSimulatorActions";
@@ -17,7 +18,7 @@ const Dashboard = () => {
     setCommodities,
     securities,
     setSecurities
-  } = useSimulatorState();
+  } = useSimulatorState('BACHELORS');
 
   const {
     roundsHistory,

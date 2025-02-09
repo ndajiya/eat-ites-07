@@ -1,0 +1,45 @@
+
+{
+  "agents": [
+    {
+      "name": "Federal Reserve",
+      "cash": 1500000000,
+      "class": "CentralBanks",
+      "lastRoundDifference": 0,
+      "monetaryPolicy": {
+        "interestRate": 0.045,
+        "reserveRequirement": 0.12
+      },
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "European Central Bank",
+      "cash": 1200000000,
+      "class": "CentralBanks",
+      "lastRoundDifference": 0,
+      "monetaryPolicy": {
+        "interestRate": 0.035,
+        "reserveRequirement": 0.09
+      },
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "Investment Bank A",
+      "cash": 50000000,
+      "class": "Firms",
+      "lastRoundDifference": 0,
+      "inventory": [],
+      "production": []
+    },
+    {
+      "name": "Hedge Fund B",
+      "cash": 75000000,
+      "class": "Firms",
+      "lastRoundDifference": 0,
+      "inventory": [],
+      "production": []
+    }
+  ]
+}
