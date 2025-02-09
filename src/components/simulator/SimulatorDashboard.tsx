@@ -1,3 +1,4 @@
+
 import { Agent, Commodity, RoundData } from "@/types/simulator";
 import { Security, Trade } from "@/types/securities";
 import { DashboardHeader } from "./dashboard/DashboardHeader";
@@ -16,6 +17,8 @@ interface SimulatorDashboardProps {
   onAgentEdit: (agent: Agent) => void;
   onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: Commodity) => void;
+  onCommodityDelete: (commodityName: string) => void;
+  onSecurityDelete: (securityId: string) => void;
   onSecurityTrade: (trade: Omit<Trade, "id" | "timestamp">) => void;
   onAddAgent: () => void;
   onAddCommodity: () => void;
@@ -37,6 +40,8 @@ export const SimulatorDashboard = ({
   onAgentEdit,
   onAgentDelete,
   onCommodityEdit,
+  onCommodityDelete,
+  onSecurityDelete,
   onSecurityTrade,
   onAddAgent,
   onAddCommodity,
@@ -66,6 +71,8 @@ export const SimulatorDashboard = ({
           setNewAgent={setNewAgent}
           setNewCommodity={setNewCommodity}
           onSecurityChange={onSecurityChange}
+          onCommodityDelete={onCommodityDelete}
+          onSecurityDelete={onSecurityDelete}
         />
       </div>
       <AnalyticsSection

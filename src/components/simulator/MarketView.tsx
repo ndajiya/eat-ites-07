@@ -16,6 +16,7 @@ interface MarketViewProps {
   onAgentEdit: (agent: Agent) => void;
   onAgentDelete: (agentName: string) => void;
   onCommodityEdit: (commodity: any) => void;
+  onCommodityDelete: (commodityName: string) => void;
   onSecurityTrade: (trade: any) => void;
   newCommodity: any;
   onCommodityNameChange: (value: string) => void;
@@ -24,6 +25,7 @@ interface MarketViewProps {
   newSecurity: any;
   onSecurityChange: (field: any, value: any) => void;
   onAddSecurity: () => void;
+  onSecurityDelete: (securityId: string) => void;
 }
 
 export const MarketView = ({
@@ -33,6 +35,7 @@ export const MarketView = ({
   onAgentEdit,
   onAgentDelete,
   onCommodityEdit,
+  onCommodityDelete,
   onSecurityTrade,
   newCommodity,
   onCommodityNameChange,
@@ -41,6 +44,7 @@ export const MarketView = ({
   newSecurity,
   onSecurityChange,
   onAddSecurity,
+  onSecurityDelete,
 }: MarketViewProps) => {
   const [newAgent, setNewAgent] = useState<Omit<Agent, "lastRoundDifference">>({
     name: "",
@@ -208,10 +212,10 @@ export const MarketView = ({
         newCommodity={newCommodity}
         onCommodityNameChange={onCommodityNameChange}
         onCommodityPriceChange={onCommodityPriceChange}
-        onAddCommodity={handleNewCommodity}
+        onAddCommodity={onAddCommodity}
         newSecurity={newSecurity}
         onSecurityChange={onSecurityChange}
-        onAddSecurity={handleNewSecurity}
+        onAddSecurity={onAddSecurity}
         onAgentUpload={handleAgentUpload}
         onCommodityUpload={handleCommodityUpload}
         onSecurityUpload={handleSecurityUpload}
@@ -233,11 +237,11 @@ export const MarketView = ({
           commodities={commodities}
           securities={securities}
           onAgentEdit={onAgentEdit}
-          onAgentDelete={handleDeleteAgent}
+          onAgentDelete={onAgentDelete}
           onCommodityEdit={onCommodityEdit}
           onSecurityTrade={onSecurityTrade}
-          onDeleteCommodity={handleDeleteCommodity}
-          onDeleteSecurity={handleDeleteSecurity}
+          onDeleteCommodity={onCommodityDelete}
+          onDeleteSecurity={onSecurityDelete}
         />
       </Tabs>
     </div>
