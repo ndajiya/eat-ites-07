@@ -42,6 +42,8 @@ const Index = () => {
     handleAddAgent,
     handleAddCommodity,
     handleAddSecurity,
+    handleCommodityDelete,
+    handleSecurityDelete,
   } = useEntityHandlers(
     setAgents,
     setCommodities,
@@ -76,6 +78,8 @@ const Index = () => {
         onAgentEdit={handleAgentEdit}
         onAgentDelete={handleAgentDelete}
         onCommodityEdit={handleCommodityEdit}
+        onCommodityDelete={handleCommodityDelete}
+        onSecurityDelete={handleSecurityDelete}
         onSecurityTrade={handleSecurityTrade}
         onAddAgent={handleAddAgent}
         onAddCommodity={handleAddCommodity}
@@ -89,3 +93,4 @@ const Index = () => {
 };
 
 export default Index;
+
