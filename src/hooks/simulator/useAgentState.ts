@@ -32,20 +32,22 @@ export const useAgentState = (level: EducationLevel) => {
 
       // For central banks, record monetary policy settings
       if (agent.class === 'CentralBanks' && 'monetaryPolicy' in agent) {
+        // Record interest rate as a monetary asset
         agent.bookkeeping.addTransaction(
           new Date().toISOString(),
-          'Policy',
-          'Interest Rate',
-          agent.monetaryPolicy.interestRate,
+          'Assets',
+          'Interest Rate Reserve',
+          agent.monetaryPolicy.interestRate * 100, // Convert to percentage for clearer display
           'Initial interest rate setting',
           'Increase'
         );
 
+        // Record reserve requirement as a monetary asset
         agent.bookkeeping.addTransaction(
           new Date().toISOString(),
-          'Policy',
-          'Reserve Requirement',
-          agent.monetaryPolicy.reserveRequirement,
+          'Assets',
+          'Required Reserves',
+          agent.monetaryPolicy.reserveRequirement * 100, // Convert to percentage for clearer display
           'Initial reserve requirement setting',
           'Increase'
         );
