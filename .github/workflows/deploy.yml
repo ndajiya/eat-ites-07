@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # or master, depending on your default branch name
+      - main
 
 jobs:
   build-and-deploy:
@@ -23,9 +23,15 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          CI: false
+
+      - name: Configure CNAME
+        run: echo "reasonable.nomadsconnect.com" > ./dist/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          cname: reasonable.nomadsconnect.com
